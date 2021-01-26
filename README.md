@@ -297,7 +297,7 @@ Existem mais parâmetros que são explicados na documentação do [Servidor de D
 
 Captura de tela do depurador em ação:
 
-![captura-de-tela-do-depurador-em-ação](./images/debugger.png)
+![captura-de-tela-do-depurador-em-ação](./static_files/debugger.png)
 
 Mais informações sobre o uso do depurador pode ser encontrado na [documentação do Werkzeug](https://werkzeug.palletsprojects.com/debug/#using-the-debugger).
 
