@@ -347,12 +347,12 @@ def show_subpath(subpath):
 Tipos de conversores:
 
 
- Tipo     | Descrição 
- -------- | -------------------------------------------------- 
+ Tipo     | Descrição
+ -------- | --------------------------------------------------
  `string` | (padrão) aceita qualquer texto sem barra inclinada
- `int`    | aceita número posítivo inteiro                  
- `float`  | aceita número posítivo com ponto flutuante       
- `path`   | como `string` mas também aceita barra inclinada    
+ `int`    | aceita número posítivo inteiro
+ `float`  | aceita número posítivo com ponto flutuante
+ `path`   | como `string` mas também aceita barra inclinada
 
 
 ### URLs Únicas / Comportamento de Redirecionamento
@@ -798,7 +798,7 @@ O método **`escape()`** mencionado aqui faz o escapamento por você se você n�
 > ## Como gerar um boas chaves secretas:
 >
 > Uma chave secreta deveria ser a mais aleatória possível. Seu sistema operacional tem maneiras de gerar dados bons e aleatórias baseados em um gerador aleatório criptográfico. Use os seguintes comandos para rapidamente gerar um valor para **`Flask.secret_key`** (ou **`SECRET_KEY`**):
-> 
+>
 > $ `python -c 'import os; print(os.urandom(16))'`
 >
 > b'_5#y2L"F4Q8z\n\xec]/'
@@ -855,3 +855,100 @@ Para saber mais sobre extensões no Flask, dê uma olhada em [Extensões](#exten
 ## Instalar em um Servidor Web
 
 Pronto para instalar sua nova aplicação Flask? Vá para [Opções de Instalação](#opções-de-instalação).
+
+# Tutorial
+
+## Estrutura do Projeto
+
+Crie uma pasta para o projeto e entre nela:
+
+```sh
+$ mkdir flask-tutorial
+$ cd flask-tutorial
+```
+
+Depois siga as [instruções de instalação](#instalação) para configurar um ambiente virtual em Python e instalar o Flask para o seu projeto.
+
+O tutorial assumirá que você está trabalhando a partir da pasta `flask-tutorial` a partir de agora. O nome de arquivo em cima de cada bloco de código são relativos a essa pasta.
+
+---
+
+Uma aplicação Flask que pode ser tão símples quanto um único arquivo.
+
+`hello.py`
+```py
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def hello():
+    return 'Hello, World!'
+```
+
+Todavia, como um projeto vai ficando maior, se torna insustentável, manter todo código em um único arquivo. Projetos em Python usam *pacotes* para organizar código dentro de vários módulos que pode ser importados onde é necessitado e o tutorial fará isso também.
+
+A pasta do projeto conterá:
+
+* `flaskr/`, um pacote Python contendo o código e arquivos da sua aplicação.
+* `tests/`, uma pasta contendo módulos de teste.
+* `venv/`, um ambiente virtual em Python onde o Flask e outras dependências está instaladas.
+* Arquivos de instalação dizem ao Python como instalar o seu projeto.
+* Configuração para controle de versão, tal como [git](https://git-scm.com/). Você deveria tornar um habito o uso algum tipo de controle de versão para todos os seus projetos, indepedente do seu tamanho.
+* Quaisquer outros arquivos do projeto que você poderá adicionar no futuro.
+
+Por fim, a estrutura do seu projeto parecerá com isso:
+
+```
+/home/user/Projects/flask-tutorial
+├── flaskr/
+│   ├── __init__.py
+│   ├── db.py
+│   ├── schema.sql
+│   ├── auth.py
+│   ├── blog.py
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── auth/
+│   │   │   ├── login.html
+│   │   │   └── register.html
+│   │   └── blog/
+│   │       ├── create.html
+│   │       ├── index.html
+│   │       └── update.html
+│   └── static/
+│       └── style.css
+├── tests/
+│   ├── conftest.py
+│   ├── data.sql
+│   ├── test_factory.py
+│   ├── test_db.py
+│   ├── test_auth.py
+│   └── test_blog.py
+├── venv/
+├── setup.py
+└── MANIFEST.in
+```
+
+Se você estiver usando um controle de versão, os arquivos a seguir que são gerados durante a execução do seu projeto deveriam ser ignorados. Deve haver outros arquivos baseados no editor que estiver a usar. Em geral, ignore arquivos que você não escreveu. Por exemplo, com o git:
+
+`.gitignore`
+```
+venv/
+
+*.pyc
+__pycache__/
+
+instance/
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+dist/
+build/
+*.egg-info/
+```
+
+Siga para [Configuração da Aplicação](#configuração-da-aplicação).
