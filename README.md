@@ -1867,3 +1867,89 @@ def delete(id):
 Parabens, você acabou de escrever usa aplicação! Tire algum templo para testar tudo no browser. De qualquer maneira, ainda há mais por se fazer antes do projeto estar completo.
 
 Continue para [Tornar o Projeto Instalável](#tornar-o-projeto-instalável).
+
+## Tornar o Projeto Instalável
+
+Tornar seu projeto instalável significa que você pode construir um arquivo de distribuição e instala-lo em outros ambientes, do mesmo jeito que você instalou o Flask no ambiente do seu projeto. Isto faz com que implementação do seu projeto seja o mesmo que instalar qualquer outra biblioteca, assim você está usando todas as ferramentas padrão do Python para gerenciar tudo.
+
+A instalação também vem com outros beneficios que podem não estar obvios no tutorial ou para usuário de Python inexperientes, incluindo:
+
+* Atualmente, o Python e o Flask entendem como usar o pacote `flaskr` somente porque você está executando a partir da pasta da sua aplicação. A instalação significa que você pode importa-lo não importa onde é executado.
+
+* Você pode gerenciar as dependências da sua aplicação tal como fazes com outros pacotes, então `pip install yourproject.whl` instala-os.
+
+* Ferramentas de testes podem insolar seu ambiente de testes do seu ambiente de desenvolvimento.
+
+
+> ## Nota:
+> Isto está sendo introduzido no final do tutorial, mas em seus futuros projetos você deve sempre começar com ele.
+
+### Descreva o Projeto
+
+O arquivo `setup.py` descreve seu projeto e os arquivos que pertencem a ele.
+
+
+`setup.py`
+
+```py
+from setuptools import find_packages, setup
+
+setup(
+    name='flaskr',
+    version='1.0.0',
+    packages=find_packages(),
+    include_package_data=True,
+    zip_safe=False,
+    install_requires=[
+        'flask',
+    ],
+)
+```
+
+`packages` informa ao Python quais pastas de pacotes (e os arquivos Python que eles contêm) incluir. `find_packages()` encontra essas pastas automaticamente assim você não tem que informa-los. Para incluir outros arquivos, tais como a pastas de arquivos estáticos e templates, `include_package_data` é configurado. O Python precisa de outro arquivo chamado `MANIFEST.in` para informar quais são esses outros dados.
+
+`MANIFEST.in`
+
+```
+include flaskr/schema.sql
+graft flaskr/static
+graft flaskr/templates
+global-exclude *.pyc
+```
+
+Isso diz ao Python para copiar tudo dentro das pastas `static` e `templates`, e o arquivo `schema.sql`, contudo exclui todos arquivos de bytecode.
+
+Veja o [guia oficial de empacotamento](https://packaging.python.org/tutorials/packaging-projects/) para obter outras explicações sobre os arquivos e opções usadas.
+
+### Instale o Projeto
+
+Use `pip` para instalar seu projeto em seu ambiente virtual.
+
+```sh
+$ pip install -e .
+```
+
+Isto informa ao pip para achar o `setup.py` na pasta atual e instala-lo no modo *editable* (editável) ou *development* (desenvolvimento). Modo editável significa que assim que você fizer mudanças em seu código local, você só precisará instalar se você mudar os metadados sobre o projeto, tal como suas dependências.
+
+Você pode observar com `pip list` que o projeto agora está instalado.
+
+```sh
+$ pip list
+
+Package        Version   Location
+-------------- --------- ----------------------------------
+click          6.7
+Flask          1.0
+flaskr         1.0.0     /home/user/Projects/flask-tutorial
+itsdangerous   0.24
+Jinja2         2.10
+MarkupSafe     1.0
+pip            9.0.3
+setuptools     39.0.1
+Werkzeug       0.14.1
+wheel          0.30.0
+```
+
+Nada muda no que diz respeito a como você tem estado a executar seu projeto. `FLASK_APP` continua a estar configurado para o `flaskr` e `flask run` continua a executar a aplicação, mas agora você pode chama-lo de qualquer, não apenas na dentro da pasta `flask-tutorial`.
+
+Continue para [Cobertura de Testes](#cobertura-de-testes).
