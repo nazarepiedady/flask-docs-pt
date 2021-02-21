@@ -1601,3 +1601,269 @@ Vá para http://127.0.0.1:5000/auth/login e a página deve se parecer com captur
 Você pode ler mais sobre CSS na [documentação da Mozilla](https://developer.mozilla.org/docs/Web/CSS). Se você mudar um arquivo estático, recarrege a página do browser. Se a mudança não for exibida, tente limpar o cache do seu browser.
 
 Continue em [Blueprint do Blogue](#blueprint-do-blogue).
+
+## Blueprint do Blogue
+
+Você usará a mesma tecnica que você aprendeu quando escrever a blueprint de autenticação para escrever o blueprint do blogue. O blogue deve listar todos as publicações, permitir usuários logados criar publicações, e permiter o autor da publicação editar ou elimina-lo.
+
+Ao implementar cada view, mantenha o servidor de desenvolvidos em execução. Ao você guardar suas mudanças, tente ir para o URL em seu browser e testa-los.
+
+### O Blueprint
+
+Defina o blueprint e regista-o na fabrica da aplicação.
+
+`flaskr/blog.py`
+
+```py
+from flask import (
+    Blueprint, flash, g, redirect, render_template, request, url_for
+)
+from werkzeug.exceptions import abort
+
+from flaskr.auth import login_required
+from flaskr.db import get_db
+
+bp = Blueprint('blog', __name__)
+```
+
+Importa e regista o blueprint da fabrica usando [**`app.register_blueprint()`**](#flask.register_blueprint). Coloque o novo código no final da função de fabricação antes de retornar o app.
+
+`flaskr/__init__.py`
+
+```py
+def create_app():
+    app = ...
+    # código existente omitido
+
+    from . import blog
+    app.register_blueprint(blog.bp)
+    app.add_url_rule('/', endpoint='index')
+
+    return app
+```
+
+Ao contrário do blueprint de autenticação, o blueprint do blogue não tem um `url_prefix`. Então a view `index` estará em `/`, a view `create` em `/create`, e por aí vai. O blogue é funcionalidade principal do Flaskr, então faz sentido que o index do blogue será o index principal.
+
+No entanto, o endpoint para a view `index` definida aboixo será `blog.index`. Alguns das views de autenticação referem-se a um endpoint do index plano. [**`app.add_url_rule()`**](#flask.add_url_rule) associa o endpoint com o nome `'index'` com a url `/` de modo que `url_for('index')` ou `url_for('blog.index')` ambos funcionarão, gerando a mesma URL `/` de qualquer maneira.
+
+Em outra aplicação você pode dar ao blueprint do blogue uma `url_prefix` e definir uma view `index` separada na fábrica da aplicação, semelhante a view `hello`. Então os endpoints `index` e `blog.index` e as URLs seriam diferentes.
+
+### Index
+
+O index exibirá todas as publicações, com as mais recentes em primeiro. Um `JOIN` é usado para que as informações do autor na tabela do usuário estejam disponível no resultado.
+
+`flaskr/blog.py`
+
+```py
+@bp.route('/')
+def index():
+    db = get_db()
+    posts = db.execute(
+        'SELECT p.id, title, body, created, author_id, username'
+        ' FROM post p JOIN user u ON p.author_id = u.id'
+        ' ORDER BY created DESC'
+    ).fetchall()
+    return render_template('blog/index.html', posts=posts)
+```
+
+`flaskr/templates/blog/index.html`
+
+```jinja
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Posts{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('blog.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for post in posts %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ post['title'] }}</h1>
+          <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d') }}</div>
+        </div>
+        {% if g.user['id'] == post['author_id'] %}
+          <a class="action" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
+        {% endif %}
+      </header>
+      <p class="body">{{ post['body'] }}</p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
+```
+
+Quando um usuário estiver logado, o bloco do `header` adiciona um link para a view `create`. Quando os usuários forem os autores de uma publicação, eles verão um link "Edit" para a view `update` para aquela pulicação. `loop.last` é uma variável disponível dentro do [Jinja para loops](http://jinja.pocoo.org/docs/templates/#for). É usado para exibir uma linha depois de cada publicação excepto a última, para separa-los visualmente.
+
+### Create
+
+A view `create` funciona da mesma forma que a view de autenticação `register`. Ou formulário é exibido, ou os dados publicados são validados e a publicação é adicionada ao banco de dados ou um erro é mostrado.
+
+O decorador `login_required` que você escreveu anteriormente é usado nas views do blogue. Um usuário deve estar logado para visitar essas views, caso contrário, eles serão redirecionados para a página de entrada(login).
+
+`flaskr/blog.py`
+
+```py
+@bp.route('/create', methods=('GET', 'POST'))
+@login_required
+def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        error = None
+
+        if not title:
+            error = 'Title is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'INSERT INTO post (title, body, author_id)'
+                ' VALUES (?, ?, ?)',
+                (title, body, g.user['id'])
+            )
+            db.commit()
+            return redirect(url_for('blog.index'))
+
+    return render_template('blog/create.html')
+```
+
+`flaskr/templates/blog/create.html`
+
+```jinja
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}New Post{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="title">Title</label>
+    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+    <label for="body">Body</label>
+    <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}
+```
+### Update
+
+Ambos a view `update` e `delete` precisarão buscar um `post` por `id` e verificar se o autor corresponde ao usuário logado. Evite código duplicado, você pode escrever uma função para receber o `post` e chame-o em cada view.
+
+`flaskr/blog.py`
+
+```py
+def get_post(id, check_author=True):
+    post = get_db().execute(
+        'SELECT p.id, title, body, created, author_id, username'
+        ' FROM post p JOIN user u ON p.author_id = u.id'
+        ' WHERE p.id = ?',
+        (id,)
+    ).fetchone()
+
+    if post is None:
+        abort(404, "Post id {0} doesn't exist.".format(id))
+
+    if check_author and post['author_id'] != g.user['id']:
+        abort(403)
+
+    return post
+```
+
+[**`abort()`**](#flask.abort) irá levantar uma exceção especial que retorna um código de estado HTTP. Ele leva uma mensagem opcianal para mostrar com um erro, caso contrário uma mensagem padrão é usada. `404` significa "Não Encontrado", e `403` significa "Proibido". (`401` significa "Não Autorizado", porém você redireciona para a página de entrada (login) ao invés de retornar aquele estado.)
+
+O argumento `check_author` é definido para que a função possa ser usado para obter uma publicação sem verificar o autor. Isso seria útil se você escreveu uma view para mostrar uma publicação individual em uma página, onde o usuário não importa porque eles não modificam a publicação.
+
+`flaskr/blog.py`
+
+```py
+@bp.route('/<int:id>/update', methods=('GET', 'POST'))
+@login_required
+def update(id):
+    post = get_post(id)
+
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        error = None
+
+        if not title:
+            error = 'Title is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'UPDATE post SET title = ?, body = ?'
+                ' WHERE id = ?',
+                (title, body, id)
+            )
+            db.commit()
+            return redirect(url_for('blog.index'))
+
+    return render_template('blog/update.html', post=post)
+```
+
+Ao contrário das views que você escreveu até agora, a função `update` leva um argumento, `id`. Que corresponde ao `<int:id>` na rota. Uma URL real será parecerido com `/1/update`. O Flask capturará o `1`, garante que seja um [**`int`**](https://docs.python.org/3/library/functions.html#int), e passa-lo como o argumento `id`. Se você não especificar `int:` e ao invés disso fizer `<id>`, ele será uma string. Para gerar um URL para a página de atualização, [**`url_for()`**](#flask.url_for) precisa ser passado o `id` assim ele sabe o que preencher: `url_for('blog.update', id=post['id'])`. Isto está também no arquivo `index.html` acima.
+
+As views `create` e `update` parecem muito similares. A princípal diferença é que a view `update` usa um objeto `post` e uma consulta de tipo `UPDATE` ao invés de um `INSERT`. Com alguma refatoração inteligente, você poderia usar uma view e template para ambas ações, porém para o tutorial é mais claro mante-los separados.
+
+`flaskr/templates/blog/update.html`
+
+```jinja
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Edit "{{ post['title'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="title">Title</label>
+    <input name="title" id="title"
+      value="{{ request.form['title'] or post['title'] }}" required>
+    <label for="body">Body</label>
+    <textarea name="body" id="body">{{ request.form['body'] or post['body'] }}</textarea>
+    <input type="submit" value="Save">
+  </form>
+  <hr>
+  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+{% endblock %}
+```
+
+Este template tem dois formulários. O primeiro publica os dados editados para a página atual (`/<id>/update`). O outro formulário somente contém um botão e especifica um atributo `action` que publica para a view delete. O botão usa algum JavaScript para mostrar uma dialogo de confirmação antes do envio.
+
+O padrão `{{ request.form['title'] or post['title'] }}` é usado para escolher quais dados aparecem no formulário. Quando o formulário não tiver sido enviado, os dados `post` originais aparecem, mas se um formulário com dados invalidos foram publicados, você deseja exibir-lo então o usuário pode corrigir o erro, assim `request.form` é usado em vez disso. [**`request`**](#flask.request)  é outra variável que está automaticamente disponível nos templates.
+
+### Delete
+
+A view delete não tem seu próprio template, o botão delete é parte do `update.html` e publica para a URL `/<id>/delete`. Como não há template, ele irá somente lidar com o método `POST` e depois redirecionar para view `index`.
+
+`flaskr/blog.py`
+
+```py
+@bp.route('/<int:id>/delete', methods=('POST',))
+@login_required
+def delete(id):
+    get_post(id)
+    db = get_db()
+    db.execute('DELETE FROM post WHERE id = ?', (id,))
+    db.commit()
+    return redirect(url_for('blog.index'))
+```
+
+Parabens, você acabou de escrever usa aplicação! Tire algum templo para testar tudo no browser. De qualquer maneira, ainda há mais por se fazer antes do projeto estar completo.
+
+Continue para [Tornar o Projeto Instalável](#tornar-o-projeto-instalável).
