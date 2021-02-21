@@ -1547,3 +1547,57 @@ Tente clicar no botão "Register" sem preencher o formulário e veja o que o bro
 Preencha o nome de usuário e senha e você será redirecionado para uma página de entrada (login). Tente inserir um nome de usuário incorreto, ou o nome de usuário correto e senha incorreta. Se você entrar, você receberá um erro porque ainda não existe uma view `index` para qual redirecionar.
 
 Continue para [Arquivos Estáticos](#arquivos-estáticos).
+
+## Arquivos Estáticos
+
+As views de autenticação e templates funcionam, porém eles parecem muito plano por agora. Algum [CSS](https://developer.mozilla.org/docs/Web/CSS) pode ser adicionado para adicionar estilo ao lagout HTML que você construiu. O estilo não irá mudar, assim é um arquivo *estático* em vez de um template.
+
+O Flask automaticamente adiciona uma view `static` que pega um caminho relativo para pasta `flaskr/static` e servi-o. O template `base.html` já tem um link para o arquivo `style.css`:
+
+```jinja
+{{ url_for('static', filename='style.css') }}
+```
+Fora o CSS, outros tipos de arquivos estáticos pode ser arquivos com funções JavaScript, ou uma imagem com logotipo. Eles são todos colocados na pasta `flaskr/static` e referenciados com `url_for('static', filaname='...')`.
+
+Este tutorial não é focado em como escrever CSS, então pode simplesmente copiar o seguinte para o arquivo `flaskr/static/style.css`:
+
+`flaskr/static/style.css`
+
+```css
+html { font-family: sans-serif; background: #eee; padding: 1rem; }
+body { max-width: 960px; margin: 0 auto; background: white; }
+h1 { font-family: serif; color: #377ba8; margin: 1rem 0; }
+a { color: #377ba8; }
+hr { border: none; border-top: 1px solid lightgray; }
+nav { background: lightgray; display: flex; align-items: center; padding: 0 0.5rem; }
+nav h1 { flex: auto; margin: 0; }
+nav h1 a { text-decoration: none; padding: 0.25rem 0.5rem; }
+nav ul  { display: flex; list-style: none; margin: 0; padding: 0; }
+nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
+.content { padding: 0 1rem 1rem; }
+.content > header { border-bottom: 1px solid lightgray; display: flex; align-items: flex-end; }
+.content > header h1 { flex: auto; margin: 1rem 0 0.25rem 0; }
+.flash { margin: 1em 0; padding: 1em; background: #cae6f6; border: 1px solid #377ba8; }
+.post > header { display: flex; align-items: flex-end; font-size: 0.85em; }
+.post > header > div:first-of-type { flex: auto; }
+.post > header h1 { font-size: 1.5em; margin-bottom: 0; }
+.post .about { color: slategray; font-style: italic; }
+.post .body { white-space: pre-line; }
+.content:last-child { margin-bottom: 0; }
+.content form { margin: 1em 0; display: flex; flex-direction: column; }
+.content label { font-weight: bold; margin-bottom: 0.5em; }
+.content input, .content textarea { margin-bottom: 1em; }
+.content textarea { min-height: 12em; resize: vertical; }
+input.danger { color: #cc2f2e; }
+input[type=submit] { align-self: start; min-width: 10em; }
+```
+
+Você pode encontrar uma versão mais compacta do `style.css` em [código de exemplo](https://github.com/pallets/flask/tree/1.1.2/examples/tutorial/flaskr/static/style.css).
+
+Vá para http://127.0.0.1:5000/auth/login e a página deve se parecer com captura de tela abaixo.
+
+![página inicial](./static_files/flaskr_login.png)
+
+Você pode ler mais sobre CSS na [documentação da Mozilla](https://developer.mozilla.org/docs/Web/CSS). Se você mudar um arquivo estático, recarrege a página do browser. Se a mudança não for exibida, tente limpar o cache do seu browser.
+
+Continue em [Blueprint do Blogue](#blueprint-do-blogue).
