@@ -1427,3 +1427,123 @@ Por exemplo, a view `hello()` que foi adicionada a fábrica de aplicação mais 
 Ao usar um blueprint, o nome do blueprint é predefinido para o nome da função, então o endpoint para a função `login` que você escreveu acima é `auth.login` porque você adicionou ele ao blueprint `auth`.
 
 Siga para [Templates](#templates).
+
+## Templates
+
+Você escreveu a view de autenticação para sua aplicação, mas se está executando o servidor e tentar ir para quaisqueres URLs, verá um erro `TemplateNotFound`. Isso porque as views estão chamando [**`render_template()`**](#flask.render_template), porém você ainda não escreveu nenhum template. Os arquivos de templates serão guardados na pasta `templates` dentro do pacote `flaskr`.
+
+Templates são arquivos que contêm dados estáticos como també espaços reservados para dados dinâmicos. Um template é renderizado com dado especifico para produzir um documento final. O Flask usa a biblioteca de templates [Jinja](#http://jinja.pocoo.org/docs/templates/) para renderizar templates.
+
+Em sua aplicação, você usará templates para renderizar o [HTML](https://developer.mozilla.org/docs/Web/HTML) que será exibido no browser do usuário. No Flask, o Jinja é configurado para auto-escapar qualquer dado que for renderizado nos templates HTML. Isso significa que é seguro renderizar a entrada do usuário; quaisquer caracteres que eles entrarem que possa mexer com o HTML, tal como `<` e `>` serão escapados com valores *seguros* que se parecem com os mesmos no browser mas sem causar efeitos colaterais.
+
+O Jinja parece e se comporta principalmente como Python. Delimitadores especiais são usados para diferenciar a sintáxe do Jinja do conteúdo estático no template. Qualquer coisa entre `{{` e `}}` é uma expessão que será emitida para o documento final. `{%` e `%}` denota uma declaração de controle de fluxo como `if` e `for`. Ao contrário do Python, blocos são denotados por tags iniciais e finais, em vez de indentação, já que o texto estático dentro de um bloco pode alterar a indentação.
+
+
+### O Layout Básico
+
+Cada página na aplicação terá o mesmo layout básica em torno de um corpo diferente. Ao invés de escrever toda a estrutura HTML em cada template, cada template extenderá um template básico e sobrescrever seções específicas.
+
+`flaskr/templates/base.html`
+
+```jinja
+<!doctype html>
+<title>{% block title %}{% endblock %} - Flaskr</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<nav>
+  <h1>Flaskr</h1>
+  <ul>
+    {% if g.user %}
+      <li><span>{{ g.user['username'] }}</span>
+      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+    {% else %}
+      <li><a href="{{ url_for('auth.register') }}">Register</a>
+      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+    {% endif %}
+  </ul>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>
+```
+
+[**`g`**](#flask.g) está automaticamente disponível nos  templates. Baseado em que se `g.user` estiver definido (a partir de `load_logged_in_user`), tanto o nome do usuário e um link de saída (logout) são exibidos, ou links para registar e um para entrar (login) são exibidos. [**`url_for()`**](#flask.url_for) está também automaticamente disponível, e é usado para gerar URLs para as views ao invés de escreve-los manualmente.
+
+Depois do título da página, e antes do conteúdo, o template faz um loop em cada mensagem retornada por [**`get_flashed_messages()`**](#flask.get_flashed_messages). Você usou [**`flash()`**](#flask.flash) nas views para mostrar mensagens de erros, e este é o código que irá exibi-los.
+
+Existem três blocos definidos aqui que serão sobrescritos em outros templates:
+
+1. `{% block title %}` mudará o título exibido na aba do browser e título da janela.
+
+2. `{% block header %}` é similar ao `title` porém irá mudar o título exibido na página.
+
+3. `{% block content %}` é onde o conteúdo de cada página irá, tal como formulário de entrada (login) ou uma publicação do blogue.
+
+O template básico está diretamente dentro da pasta `templates`. Para manter os outros organizados, os templates para um blueprint serão postos dentro de uma pasta com o mesmo nome que o blueprint.
+
+### Register
+
+`flaskr/templates/auth/register.html`
+
+```jinja
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+    <input type="submit" value="Register">
+  </form>
+{% endblock %}
+```
+
+`{% extends 'base.html' %}` diz ao Jinja que este template deve substituir os blocos do template básico. Todo o conteúdo renderizado deve aparecer dentro das tags `{% block %}` que sobreescreve os blocos do template básico.
+
+Um padrão útil usado aqui é pôr `{% block title %}` dentro de `{% block header %}`. Isto definirá o bloco de título e em seguida produzir o valor dele dentro do bloco de cabeçalho, assim ambos a janela e a página partilham o mesmo título sem ter escreve duas vezes.
+
+A tag `input` está usando aqui o atributo `required`. Isso diz ao browser para não submeter o formulário até que aqueles campos estejam preenchidos. Se os usuários estiverem usando um browser antigo que não suporta aquele atributo, ou se eles estiverem usando algo além do browser para fazer requisições, você ainda deseja validar os daods na view do Flask. É importante sempre validar completamente os daods no servidor, mesmo se o cliente fazer alguma validação também.
+
+### Log In
+
+Este é identico ao template register excepto para o título e botão de submissão.
+
+`flaskr/templates/auth/login.html`
+
+```jinja
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Log In{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="username">Username</label>
+    <input name="username" id="username" required>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+    <input type="submit" value="Log In">
+  </form>
+{% endblock %}
+```
+
+### Registar um Usuário
+
+Agora que os templates de autenticação estão escritos, você pode registar um usuário. Certifique-se de que o servidor ainda está executando (`flask run` se não estiver), depois siga para http://127.0.0.1:5000/auth/register.
+
+Tente clicar no botão "Register" sem preencher o formulário e veja o que o browser mostra uma mensagem de erro. Tente remover os atributos `required` do template `register.html` e clique de novo em "Register". Ao invés de o browser mostrar um erro, a página recarregará e o erro do [**`flash()`**](#flask.flash) na view será exibido.
+
+Preencha o nome de usuário e senha e você será redirecionado para uma página de entrada (login). Tente inserir um nome de usuário incorreto, ou o nome de usuário correto e senha incorreta. Se você entrar, você receberá um erro porque ainda não existe uma view `index` para qual redirecionar.
+
+Continue para [Arquivos Estáticos](#arquivos-estáticos).
