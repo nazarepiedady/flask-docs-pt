@@ -1953,3 +1953,465 @@ wheel          0.30.0
 Nada muda no que diz respeito a como você tem estado a executar seu projeto. `FLASK_APP` continua a estar configurado para o `flaskr` e `flask run` continua a executar a aplicação, mas agora você pode chama-lo de qualquer, não apenas na dentro da pasta `flask-tutorial`.
 
 Continue para [Cobertura de Testes](#cobertura-de-testes).
+
+## Cobertura de Testes
+
+Escrever testes unitários para sua aplicação permite você verificar se o código que você escreveu funciona da maneira esperada por você. O Flask fornece um cliente de teste que simula requisições para a aplicação e retorna os dados da resposta.
+
+Você deve testar o máximo possível do seu código. O códigos dentro de funções só executam quando a função é chamada, e o códigos em ramos, tais como blocos `if`, somente executam quando a condição é atendida. Você quer ter a certeza de que cada função é testada com os dados que cobrem cada ramificação.
+
+Quanto mais próximo conseguir chegar de 100% de cobertura, mais confiante você pode estar de que fazer uma mudança não irá inesperadamente mudar outros comportamentos. De qualquer maneira 100% de cobertura não garante que sua aplicação não tenha bugs. Em particular, ele não testa como o usuário interage com a aplicação no browser. A despeito disso, cobertura de teste é uma ferramenta importante de se usar durante o desenvolvimento.
+
+> ## Nota:
+> Isto está sendo introduzindo tarde no tutorial, mas em seus projetos futuros você deve testar durante o desenvolvimento.
+
+Você usará [pytest](https://pytest.readthedocs.io/) e [coverage](https://coverage.readthedocs.io/) para testar e medir seu código. Instale-os ambos:
+
+```sh
+$ pip install pytest coverage
+```
+
+### Setup and Fixtures
+
+O código de teste está localizado na pasta `tests`. Esta pasta está *próxima* ao `flaskr`, não dentro dele. O arquivo `tests/conftest.py` contém funções de configuração chamadas *fixtures* que cada teste usará. Em Python, testes são módulos que começam com `test_`, e cada função de teste nesses módulos também começam com `test_`.
+
+Cada teste criará um novo arquivo de banco de dados temporário e popular com alguns dados que serão usados nos testes. Escreva um arquivo SQL para inserir aqueles dados.
+
+`tests/data.sql`
+
+```sql
+INSERT INTO user (username, password)
+VALUES
+  ('test', 'pbkdf2:sha256:50000$TCI4GzcX$0de171a4f4dac32e3364c7ddc7c14f3e2fa61f2d17574483f7ffbb431b4acb2f'),
+  ('other', 'pbkdf2:sha256:50000$kJPKsz6N$d2d4784f1b030a9761f5ccaeeaca413f27f2ecb76d6168407af962ddce849f79');
+
+INSERT INTO post (title, body, author_id, created)
+VALUES
+  ('test title', 'test' || x'0a' || 'body', 1, '2018-01-01 00:00:00');
+```
+
+O `app` fixture chamará a fábrica (factory) e passar `test_config` para configurar a aplicação e banco de dados para testar ao invés de usar sua configuração de desenvolvimento local.
+
+`tests/conftest.py`
+
+```py
+import os
+import tempfile
+
+import pytest
+from flaskr import create_app
+from flaskr.db import get_db, init_db
+
+with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
+    _data_sql = f.read().decode('utf8')
+
+
+@pytest.fixture
+def app():
+    db_fd, db_path = tempfile.mkstemp()
+
+    app = create_app({
+        'TESTING': True,
+        'DATABASE': db_path,
+    })
+
+    with app.app_context():
+        init_db()
+        get_db().executescript(_data_sql)
+
+    yield app
+
+    os.close(db_fd)
+    os.unlink(db_path)
+
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
+
+
+@pytest.fixture
+def runner(app):
+    return app.test_cli_runner()
+```
+
+[**tempfile.mkstemp()**](https://docs.python.org/3/library/tempfile.html#tempfile.mkstemp) cria e abri um arquivo temporário, retornando o objeto do arquivo e o caminho para ele. O caminho `DATABASE` é substituido, então ele aponta para este caminho temporário ao invés da pasta da instância. Depois de configurar o caminho, as tabelas do banco de dados são criados e os dados de teste são inseridos. Depois o teste estiver terminado, o arquivo temporário é fechado e removido.
+
+[**TESTING**](#testing) diz ao Flask que a aplicação está no modo de este. O Flask muda alguns comportamentos internos, então é mais fácil testar, e outras extensões podem também usar a flag (bandeira) para fazer teste neles facilmente.
+
+O `client` fixture chama [**app.test_client()**](#flask.test_client) com o objeto da aplicação criada pelo `app` fixture. Os testes usarão o cliente para fazer requisições para a aplicação sem executar o servidor.
+
+O `runner` fixture é similar ao `client`. [**app.test_cli_runner**](#flask.test_cli_runner) cria um corredor que pode chamar os comandos do Click registado com a aplicação.
+
+O Pytest usa fixtures, combinando seus nomes de funções com nomes de argumentos nas funções de teste. Por exemplo, a função `test_hello` que você escreverá a seguir recebe um argumento `client`. O Pytest corresponde com a função `client`, chama-a, e passa o valor retornado para a função de teste.
+
+### Fábrica (Factory)
+
+Não há muito que testar na própria fábrica. A maioria do código será executado para cada teste pronto, so se algo falhar os outros testes notarão.
+
+O único comportamento que pode alterar é passar a configuração de teste. Se a configuração não estiver passada, deve haver alguma configuração padrão, ao contrário da configuração que seria substituida.
+
+`tests/test_factory.py`
+
+```py
+from flaskr import create_app
+
+
+def test_config():
+    assert not create_app().testing
+    assert create_app({'TESTING': True}).testing
+
+
+def test_hello(client):
+    response = client.get('/hello')
+    assert response.data == b'Hello, World!'
+```
+
+Você adicionou a rota `hello` como um exempo quando escrever a fábrica desde o início do tutorial. Ele retorna "Hello, World!", então o teste verifica se os dados da resposta combinam.
+
+### Banco de Dados
+
+Dentro do contexto de uma aplicação, `get_db` deve retornar a mesma conexão toda vez que é chamado. Depois do contexto, a conexão deve ser terminada.
+
+`tests/test_db.py`
+
+```py
+import sqlite3
+
+import pytest
+from flaskr.db import get_db
+
+
+def test_get_close_db(app):
+    with app.app_context():
+        db = get_db()
+        assert db is get_db()
+
+    with pytest.raises(sqlite3.ProgrammingError) as e:
+        db.execute('SELECT 1')
+
+    assert 'closed' in str(e.value)
+```
+
+O comando `init-db` deve chamar a função `init_db` e exibir uma mensagem.
+
+`tests/test_db.py`
+
+```py
+def test_init_db_command(runner, monkeypatch):
+    class Recorder(object):
+        called = False
+
+    def fake_init_db():
+        Recorder.called = True
+
+    monkeypatch.setattr('flaskr.db.init_db', fake_init_db)
+    result = runner.invoke(args=['init-db'])
+    assert 'Initialized' in result.output
+    assert Recorder.called
+```
+
+Este teste usa o fixture `monkeypatch` do Pytest para substituir a função `init_db` com um daqueles registros que estão sendo chamados. O fixture `runner` que você escreveu acima é usado para chamar o comando `init-db` pelo nome.
+
+
+### Autenticação
+
+Para a maioria das views, um usuário precisa estar logado. A maneira mais fácil de fazer isso nos testes é fazer uma requisição `POST` para a view `login` com o cliente. Em vez de escrever isso todas as vezes, você pode escrever um classe com metódos para fazer isso, e usar uma fixture para passa-lo para o cliente em cada teste.
+
+`tests/conftest.py`
+
+```py
+class AuthActions(object):
+    def __init__(self, client):
+        self._client = client
+
+    def login(self, username='test', password='test'):
+        return self._client.post(
+            '/auth/login',
+            data={'username': username, 'password': password}
+        )
+
+    def logout(self):
+        return self._client.get('/auth/logout')
+
+
+@pytest.fixture
+def auth(client):
+    return AuthActions(client)
+```
+
+Com a fixture `auth`, você pode chamar `auth.login()` em um teste para logar como usuário `test`, que foi inserido como parte dos dados do teste na fixture `app`.
+
+A view `register` deve renderizar com sucesso em `GET`. No `POST` com dados de formulário validos, ele deve redirecionar para a URL de login e o dados do usuário devem estar dentro do banco de dados. Dados invalidos devem exibir mensagens de erro.
+
+`tests/test_auth.py`
+
+```py
+import pytest
+from flask import g, session
+from flaskr.db import get_db
+
+
+def test_register(client, app):
+    assert client.get('/auth/register').status_code == 200
+    response = client.post(
+        '/auth/register', data={'username': 'a', 'password': 'a'}
+    )
+    assert 'http://localhost/auth/login' == response.headers['Location']
+
+    with app.app_context():
+        assert get_db().execute(
+            "select * from user where username = 'a'",
+        ).fetchone() is not None
+
+
+@pytest.mark.parametrize(('username', 'password', 'message'), (
+    ('', '', b'Username is required.'),
+    ('a', '', b'Password is required.'),
+    ('test', 'test', b'already registered'),
+))
+def test_register_validate_input(client, username, password, message):
+    response = client.post(
+        '/auth/register',
+        data={'username': username, 'password': password}
+    )
+    assert message in response.data
+```
+
+[**client.get()**](https://werkzeug.palletsprojects.com/en/1.0.x/test/#werkzeug.test.Client.get) faz uma requisição `GET` e retorna o objeto [**Response**](#flask.response) retornado pelo Flask. Semelhantemente, [**client.post()**](https://werkzeug.palletsprojects.com/en/1.0.x/test/#werkzeug.test.Client.post) faz uma requisição `POST`, convertendo o dicionário `data` em dado de formulário.
+
+Para testar que a página renderiza com sucesso, uma simples requisição é feita e confirmada por um [**status_code**](#flask.response.status_code) `200 OK`. Se a renderização falhar, o Flask retornaria um código `500 Internal Server Error`.
+
+[**headers**](#flask.response.headers) terá um cabeçalho `Location` com a URL do login quando a view register redireciona para a view de login.
+
+[**data**](#flask.response.data) contém o corpo da resposta como bytes. Se você espera um certo valor para renderizar na página, verifique se está dentro do `data`. Bytes devem ser comparados a bytes. Se você quiser comparar texto Unicode, use [**get_data(as_text=True)**](https://werkzeug.palletsprojects.com/en/1.0.x/wrappers/#werkzeug.wrappers.BaseResponse.get_data).
+
+`pytest.mark.parametrize` diz ao Pytest para executar a mesma função de teste com diferentes argumentos. Você pode usa-lo aqui para testar diferentes entradas invalidas e mensagens de erro sem escrever a mesma código três vezes.
+
+Os testes para a view `login` são muito similar a aqueles para o `register`. Ao invês de testar os dados dentro do banco de dados, [**session**](#flask.session) deve ter o `user_id` configurado depois de logado.
+
+`tests/test_auth.py`
+
+```py
+def test_login(client, auth):
+    assert client.get('/auth/login').status_code == 200
+    response = auth.login()
+    assert response.headers['Location'] == 'http://localhost/'
+
+    with client:
+        client.get('/')
+        assert session['user_id'] == 1
+        assert g.user['username'] == 'test'
+
+
+@pytest.mark.parametrize(('username', 'password', 'message'), (
+    ('a', 'test', b'Incorrect username.'),
+    ('test', 'a', b'Incorrect password.'),
+))
+def test_login_validate_input(auth, username, password, message):
+    response = auth.login(username, password)
+    assert message in response.data
+```
+
+Usando o `client` em um bloco `with` permite acessar variáveis de contexto tais como [**session**](#flask.session) depois da resposta retornada. Normalmente, acessar a `session` fora da requisição levantaria um erro.
+
+Testar o `logout` é o oposto de `login`. [**session**](#flask.session) não deve conter o `user_id` depois de deslogar.
+
+`tests/test_auth.py`
+
+```py
+def test_logout(client, auth):
+    auth.login()
+
+    with client:
+        auth.logout()
+        assert 'user_id' not in session
+```
+
+### Blog
+
+Todas as views do blog usam a fixture `auth` que você escreveu mais cedo. Chama `auth.login()` e as requisições subsequentes do cliente irão ser logadas como usuário `test`.
+
+A view `index` deve exibir informação sobre a publicação que foi adicionada com o dados do teste. Quando logado como o autor, deve haver um link para editar a publicação.
+
+Você pode também testar mais algum comportamento de autenticação enquanto testa a view `index`. Quando não estiver logado, cada página exibe links para logar ou registar. Quando logado, há um link para deslogar.
+
+`tests/test_blog.py`
+
+```py
+import pytest
+from flaskr.db import get_db
+
+
+def test_index(client, auth):
+    response = client.get('/')
+    assert b"Log In" in response.data
+    assert b"Register" in response.data
+
+    auth.login()
+    response = client.get('/')
+    assert b'Log Out' in response.data
+    assert b'test title' in response.data
+    assert b'by test on 2018-01-01' in response.data
+    assert b'test\nbody' in response.data
+    assert b'href="/1/update"' in response.data
+```
+
+Um usuário deve estar logado para acessar as views `create`, `update`, e `delete`. O usuário logado deve ser o autor da publicação para acessar o `update` e o `delete`, do contrário um estado `403 Forbidden` é retornado. Se um `post` com o `id` dado não existir, `update` e `delete` devem retornar `404 Not Found`.
+
+`tests/test_blog.py`
+
+```py
+@pytest.mark.parametrize('path', (
+    '/create',
+    '/1/update',
+    '/1/delete',
+))
+def test_login_required(client, path):
+    response = client.post(path)
+    assert response.headers['Location'] == 'http://localhost/auth/login'
+
+
+def test_author_required(app, client, auth):
+    # change the post author to another user
+    with app.app_context():
+        db = get_db()
+        db.execute('UPDATE post SET author_id = 2 WHERE id = 1')
+        db.commit()
+
+    auth.login()
+    # current user can't modify other user's post
+    assert client.post('/1/update').status_code == 403
+    assert client.post('/1/delete').status_code == 403
+    # current user doesn't see edit link
+    assert b'href="/1/update"' not in client.get('/').data
+
+
+@pytest.mark.parametrize('path', (
+    '/2/update',
+    '/2/delete',
+))
+def test_exists_required(client, auth, path):
+    auth.login()
+    assert client.post(path).status_code == 404
+```
+
+As views `create` e o `update` devem renderizar e retornar um estado `200 OK` para a requisição `GET`. Quando um dado valido é enviado em uma requisição `POST`, `create` deve inserir um novo dado de publicação dentro do banco de dados, e `update` deve modificar o dado existe. Ambas as páginas devem exibir uma mensagem de erro em um dado invalido.
+
+`tests/test_blog.py`
+
+```py
+def test_create(client, auth, app):
+    auth.login()
+    assert client.get('/create').status_code == 200
+    client.post('/create', data={'title': 'created', 'body': ''})
+
+    with app.app_context():
+        db = get_db()
+        count = db.execute('SELECT COUNT(id) FROM post').fetchone()[0]
+        assert count == 2
+
+
+def test_update(client, auth, app):
+    auth.login()
+    assert client.get('/1/update').status_code == 200
+    client.post('/1/update', data={'title': 'updated', 'body': ''})
+
+    with app.app_context():
+        db = get_db()
+        post = db.execute('SELECT * FROM post WHERE id = 1').fetchone()
+        assert post['title'] == 'updated'
+
+
+@pytest.mark.parametrize('path', (
+    '/create',
+    '/1/update',
+))
+def test_create_update_validate(client, auth, path):
+    auth.login()
+    response = client.post(path, data={'title': '', 'body': ''})
+    assert b'Title is required.' in response.data
+```
+
+A view `delete` deve redirecionar a URL do index e a publicação não deve mais existir dentro do banco de dados.
+
+`tests/test_blog.py`
+
+```py
+def test_delete(client, auth, app):
+    auth.login()
+    response = client.post('/1/delete')
+    assert response.headers['Location'] == 'http://localhost/'
+
+    with app.app_context():
+        db = get_db()
+        post = db.execute('SELECT * FROM post WHERE id = 1').fetchone()
+        assert post is None
+```
+
+### Executando os Testes
+
+Alguma configuração extra, que não é necessária mas que torna a execução dos testes com o coverage menos verbosa, pode ser adicionado ao arquivo `setup.cfg` do projeto.
+
+`setup.cfg`
+
+```cfg
+[tool:pytest]
+testpaths = tests
+
+[coverage:run]
+branch = True
+source =
+    flaskr
+```
+
+Para executar os testes, use o comando `pytest`. Ele encontrará e executará todas as funções de teste que você escreveu.
+
+```sh
+$ pytest
+
+========================= test session starts ==========================
+platform linux -- Python 3.6.4, pytest-3.5.0, py-1.5.3, pluggy-0.6.0
+rootdir: /home/user/Projects/flask-tutorial, inifile: setup.cfg
+collected 23 items
+
+tests/test_auth.py ........                                      [ 34%]
+tests/test_blog.py ............                                  [ 86%]
+tests/test_db.py ..                                              [ 95%]
+tests/test_factory.py ..                                         [100%]
+
+====================== 24 passed in 0.64 seconds =======================
+```
+
+Se qualquer teste falhar, o pytest exibirá o erro que foi levantado. Você pode executar `pytest -v` para receber uma lista de cada função de teste ao invês de pontos.
+
+Para medir a cobertura do código dos seus testes, use o comando `coverage` para chamar o pytest ao invês de executa-lo diretamente.
+
+```sh
+$ coverage run -m pytest
+```
+
+Você pode visualizar um relatório de cobertura simples no terminal:
+
+```sh
+$ coverage report
+
+Name                 Stmts   Miss Branch BrPart  Cover
+------------------------------------------------------
+flaskr/__init__.py      21      0      2      0   100%
+flaskr/auth.py          54      0     22      0   100%
+flaskr/blog.py          54      0     16      0   100%
+flaskr/db.py            24      0      4      0   100%
+------------------------------------------------------
+TOTAL                  153      0     44      0   100%
+```
+
+Um relatório em HTML permite você ver quais linhas foram cobertas em cada arquivo:
+
+```sh
+$ coverage html
+```
+
+Isto gera arquivos dentro da pasta `htmlcov`. Abra o `htmlcov/index.html` em seu browser para ver o relatório.
+
+Continue para  [Deploy para Produção](#deploy-para-produção).
