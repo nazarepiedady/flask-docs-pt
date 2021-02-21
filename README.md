@@ -952,3 +952,117 @@ build/
 ```
 
 Siga para [Configuração da Aplicação](#configuração-da-aplicação).
+
+## Configuração da Aplicação
+
+Uma aplicação Flask é uma instância da classe **`Flask`**. Tudo que diz respeito a aplicação, tal como a configuração e URLs, serão registradas com essa classe.
+
+A mais simples de criar uma aplicação Flask é criar uma instância global diretamente no topo do seu código, tipo como é feito no exemplo "Hello, World!" da seção anterior. Enquanto isso é simples e útil em alguns casos, ele pode causar alguns problemas dificeis a medida que o projeto vai crescendo.
+
+Ao invés de criar uma instância do **`Flask`** globalmente, você irá cria-lo dentro de uma função. Esta função é conhecida como a fabrica da aplicação (application factory). Qualquer configuração, registro, ou outra configuração que a aplicação precise irá acontecer dentro da função, depois a aplicação será retornada.
+
+### A Fabrica da Aplicação
+
+É hora de começar a codificar! Crie a pasta `flaskr` e adiciona o arquivo `__init__.py`. O `__init__.py` serve a duas responsabilidades: ela irá conter a fabrica da aplicação, e ele dirá ao Python que a pasta `flaskr` deve ser tratada como um pacote.
+
+```sh
+$ mkdir flaskr
+```
+
+`flaskr/__init__.py`
+
+```py
+import os
+
+from flask import Flask
+
+
+def create_app(test_config=None):
+    # cria e configura a aplicação
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(
+        SECRET_KEY='dev',
+        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+    )
+
+    if test_config is None:
+        # carrega a configuração da instância, se ela existir, quando não hover testes
+        app.config.from_pyfile('config.py', silent=True)
+    else:
+        # carrega a configuração do teste se ele for passado
+        app.config.from_mapping(test_config)
+
+    # garantir a existência da pasta da instância
+    try:
+        os.makedirs(app.instance_path)
+    except OSError:
+        pass
+
+    # um página simples que diz 'hello'
+    @app.route('/hello')
+    def hello():
+        return 'Hello, World!'
+
+    return app
+```
+
+`create_app` é a função de fabrico da aplicação. Você irá adicionar mas coisas depois no tutorial, mas por agora ele já faz muita coisa.
+
+1. `app = Flask(__name__, instance_relative_config=True)` cria a instância **`Flask`**.
+    * `__name__` é o nome do módulo atual do Python. O app precisa saber onde está localizado para configurar alguns caminhos, e `__name__` é uma maneira conveniente de dizer isso a ele.
+    * `instance_relative_config=True` diz a app que as arquivos de configuração são relativo a [pasta da instância](#pasta-da-instância). A pasta da instância se encontra fora do pacote `flaskr` e pode segurar dados locais que não deveriam ser consolidados pelo controlo de versão, tal como configurações secretas e o arquivo do banco de dados.
+
+2. **`app.config.from_mapping()`** configura alguma configuração padrão que a app usará:
+    * **`SECRET_KEY`** é usado pelo Flask e suas extensões para manter os dados em segurança. Está configurado para `dev` para fornecer um valor conveniente durante o desenvolvimento, mas ele deve ser sobrescrito com um valor aleatório quando estiver instalando.
+    * `DATABASE` é o caminho onde o arquivo do banco de dados SQLite será salvo. Está embaixo de `app.instance_path`, que é o caminho que o Flask escolheu para a pasta da instância. Você aprenderá mais sobre o banco de dados na prôxima seção.
+3. **`app.config.from_pyfile()`** sobrescreve as configurações padrão com valores dadas pelo arquivo `config.py` na pasta da instância se ela existir. Por exemplo, quando instalando, isso pode ser usado para configurar uma `SECRET_KEY` real.
+    * `test_config` pode também ser passado para a fabrica, e será usado ao invés da instância de configuração. Isto é, os testes que você escreverá depois no tutorial podem ser configurado independentemente de quaisquer valores de desenvolvimento que você tem configurado.
+4. **`os.makedirs()`** garante que **`app.instance_path`** exista. O Flask não cria a pasta da instância automaticamente, mas ela precisa ser criada porque seu projeto irá criar o arquivo do banco de dados SQLite lá.
+5. **`@app.route()`** cria uma simples rotas então você pode ver a aplicação trabalhando antes de ter contato com o resto do tutorial. Ele cria uma conexão entre a URL `/hello` e uma função que retorna uma resposta, neste caso a string(texto) `Hello, World!`.
+
+
+### Executar a Aplicação
+
+Agora você pode executar a sua aplicação usando o comando `flask`. A partir do terminal, diz ao Flask onde encontrar a sua aplicação, depois executa ela no modo de desenvolvimento. Lembre, você deve estar no nível superior da pasta `flask-tutorial`, não no pacote `flaskr`.
+
+O modo de desenvolvimento exibe um depurador interativo sempre que a página levantar uma exceção, e reinicia o servidor sempre que você fizer uma mudança no código. Você pode deixar ele executando e apenas recarregar a página do browser enquanto você segue o tutorial:
+
+No Linux e Mac:
+
+```sh
+$ export FLASK_APP=flaskr
+$ export FLASK_ENV=development
+$ flask run
+```
+
+No linha de comando do Windows, usa `set` ao invés de `export`:
+
+```sh
+> set FLASK_APP=flaskr
+> set FLASK_ENV=development
+> flask run
+```
+
+No PowerSheell do Windows, use `$env:` ao invés de `export`:
+
+```sh
+> $env:FLASK_APP = "flaskr"
+> $env:FLASK_ENV = "development"
+> flask run
+```
+
+Você verá um saída parecida a esta:
+
+```sh
+* Serving Flask app "flaskr"
+* Environment: development
+* Debug mode: on
+* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+* Restarting with stat
+* Debugger is active!
+* Debugger PIN: 855-212-761
+```
+
+Visite http://127.0.0.1:5000/hello em um browser e você deve visualizar a mensagem "Hello, World!". Parabéns, você está agora executando a sua aplicação web em Flask.
+
+Siga para [Definir e Acessar o Banco de Dados](#definir-e-acessar-o-banco-de-dados).
