@@ -1214,3 +1214,216 @@ Initialized the database.
 Agora passará a existir um arquivo com o nome `flaskr.sqlite` dentro da pasta `instance` no seu projeto.
 
 Continue para [Blueprints(modelos) e views(visão)](#blueprints-e-views).
+
+## Blueprints e Views
+
+Uma função de view é o código que você escreve para responder a requisições para sua aplicação. O Flask usa um padrão para corresponder a URL da requisição de entrada para uma view que deve lidar com isso. A view retorna dados que o Flask transforma em uma resposta de saída. O Flask também pode ir em outra direção e gerar uma URL para uma view baseada em seu nome e argumentos.
+
+### Criar um Blueprint
+
+Um **`Blueprint`** é uma maneira de organizar um grupo de views relacionadas e outros códigos. Em vez de registrar views e outros códigos diretamente com uma aplicação, eles são registrados com um blueprint. Em seguida, o blueprint é registrado com a aplicação quando estiver disponível na função de fabricação.
+
+
+O Flaskr terá dois blueprints, uma para funções de autenticação e uma para as funções de publições do blogue. O código de cada blueprint irá em módulo separado. Já que o bloque precisa conhecer a autenticidade, você escreverá a autenticação primeiro.
+
+`flaskr/auth.py`
+
+```py
+import functools
+
+from flask import (
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
+)
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from flaskr.db import get_db
+
+bp = Blueprint('auth', __name__, url_prefix='/auth')
+```
+
+Isso cria um **`Blueprint`** com nome `'auth'`. Tal como o objeto da aplicação, o blueprint precisa saber onde está definida, então `__name__` é passado como segundo arguemento. O `url_prefix` estará preparado para todas URL associadas com a blueprint.
+
+Importa e regista o blueprint da fábrica usando **`app.register_blueprint()`**. Coloque o código novo no final da função de fabricação antes de retornar a aplicação(app).
+
+`flaskr/__init__.py`
+
+```py
+def create_app():
+    app = ...
+    # código existente omitido
+
+    from . import auth
+    app.register_blueprint(auth.bp)
+
+    return app
+```
+
+O blueprint de autenticação terá views para registar novos usuários e para entrar e para sair.
+
+### A Primeira View: Register(registrar)
+
+Quando os usuários visitarem a URL `/auth/register`, a view `register` retornará o HTML com um formulário para eles preencherem. Quando eles submeterem o formulário, ele validará sua entrada e ou mostra formulário com uma mensagem de erro ou cria um novo usuário e segue para a página de entrada (login).
+
+Por agora você irá apenas escrever o código da view. Na proxima página, você escreverá templates para gerar o formulário em HTML.
+
+`flaskr/auth.py`
+
+```py
+@bp.route('/register', methods=('GET', 'POST'))
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        db = get_db()
+        error = None
+
+        if not username:
+            error = 'Username is required.'
+        elif not password:
+            error = 'Password is required.'
+        elif db.execute(
+            'SELECT id FROM user WHERE username = ?', (username,)
+        ).fetchone() is not None:
+            error = 'User {} is already registered.'.format(username)
+
+        if error is None:
+            db.execute(
+                'INSERT INTO user (username, password) VALUES (?, ?)',
+                (username, generate_password_hash(password))
+            )
+            db.commit()
+            return redirect(url_for('auth.login'))
+
+        flash(error)
+
+    return render_template('auth/register.html')
+```
+
+Aqui está o que a função da view `register` está fazendo:
+
+1. **`@bp.route`** associa a URL `/register` a função da view `register`. Quando o Flask recebe uma requisição para `/auth/register`, ele chamará a view `register` e usa o valor retornado como resposta.
+
+2. Se o usuário submeteu o formulário, **`request.method`** será `POST`. Neste caso, começa validando a entrada.
+
+3. **`request.form`** é um tipo de mapeamento de dicionário especial de chaves e valores do formulário submetido. Os usuários entrarão com seus `username` e `password`.
+
+4. Faz a validação para ter a certeza de que o `username` e `password` não estão vazios.
+
+5. Faz a validação para saber se o `username` já não está registrado, consultando o banco de dados e verificando se um resultado é retornado. **`db.execute`** pega uma consulta SQL com espaços reservados por `?` para qualquer entradada do usuário, e uma tupla de valores para substituir os espaços reservados. A biblioteca do banco de dados cuidará do escapamento dos valores, então você não está vulnerável a ataques de injeção de código SQL (SQL injection attack).
+
+    [**`fetchone()`**](https://docs.python.org/3/library/sqlite3.html#sqlite3.Cursor.fetchone) retorna um linha da consulta. Se a consulta não retornou nenhum resultado, ela retorna `None`.
+    Depois, [**`fetchall()`**](https://docs.python.org/3/library/sqlite3.html#sqlite3.Cursor.fetchall) é usado, que retorna uma lista de todos os resultados.
+
+6. Se a validação for bem-sucedida, insere os dados do novo usuário dentro do banco de dados. Para segurança, senhas nunca devem ser armazenadas diretamente em um banco de dados. Ao invés disso, [**`generate_password_hash()`**](https://werkzeug.palletsprojects.com/en/1.0.x/utils/#werkzeug.security.generate_password_hash) é usado para seguramente criptografar a senha, e esse valor criptografado é armazenado. Como, essa consulta modifica dados, o [**`db.commit()`**](https://docs.python.org/3/library/sqlite3.html#sqlite3.Connection.commit) precisa ser chamado logo em seguida para salvar as alterações.
+
+7. Depois de armazenar os usuários, eles são redirecionados para a página de entrada (login). [**`url_for()`**](#flask.url_for) gera a URL para a view de entrada (login) baseado no seu nome.  Isso é preferível a escrever a URL diretamente, pois permite você alterar a URL mais tarde, sem alterar todo código que se vincula a ele. [**`redirect()`**](#flask.redirect) gera uma resposta de redirecionamento para a URL gerada.
+
+8. Se a validação falhar, o erro é exibido aos usuários. [**`flash()`**](#flask.flash) armazena mensagens que pode ser recuperadas ao renderizar o template.
+
+9. Quando os usuários inicialmente navegarem para `auth/register`, ou houve um erro de validação, um página HTML com o formulário de registro deve ser exibido. [**`render_template()`**] renderizará um template contendo o HTML, que você escreverá no próximo passo do tutorial.
+
+
+#### Login
+
+Essa views segue o mesmo padrão qua a view `register` acima.
+
+`flaskr/auth.py`
+
+```py
+@bp.route('/login', methods=('GET', 'POST'))
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        db = get_db()
+        error = None
+        user = db.execute(
+            'SELECT * FROM user WHERE username = ?', (username,)
+        ).fetchone()
+
+        if user is None:
+            error = 'Incorrect username.'
+        elif not check_password_hash(user['password'], password):
+            error = 'Incorrect password.'
+
+        if error is None:
+            session.clear()
+            session['user_id'] = user['id']
+            return redirect(url_for('index'))
+
+        flash(error)
+
+    return render_template('auth/login.html')
+```
+
+Existem algumas diferenças em relação a view `register`:
+
+1. O usuário é consultado primeiro e armazenado em uma variável para usar mais tarde.
+
+2. [**`check_password_hash()`**](#https://werkzeug.palletsprojects.com/en/1.0.x/utils/#werkzeug.security.check_password_hash) mistura a senha enviada da mesma maneira que o senha misturada guardada e seguramente compara elas. Se eles se corresponderem, a senha é valida.
+
+3. [**`session`**](#flask.session) é um [dicionário](https://docs.python.org/3/library/stdtypes.html#dict) que armazena dado enviado junto da requisição. Quando a validação for bem-sucedida, o `id` do usuário é armazenado em uma nova seção. O dado é armazenado em um *cookie* que é enviado para o browser, e o browser depois envia ele de volta já na proxima requisição. O Flask *assina* com segurança o dado para que não possa ser adulterado.
+
+
+Agora que o `id` do usuário está guardado em [**`session`**](#flask.session), estará disponível nas proximas requisições. Ao iniciar cada requisição, se um usuário estiver logado, suas informações devem ser carregadas e disponibilizadas para outras views.
+
+`flaskr/auth.py`
+
+```py
+@bp.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = get_db().execute(
+            'SELECT * FROM user WHERE id = ?', (user_id,)
+        ).fetchone()
+```
+
+[**`bp.before_app_request()`**](#flask.Blueprint.before_app_request) registra uma função que executa antes da função da view, não importa qual URL foi requesitada. `load_logged_in_user` verifica se um id de usuário está armazenado na [**`session`**](#flask.session) e pega esse dado do usuário do banco de dados, guarda-o em [**`g.user`**](#flask.g), que dura para o comprimento da requisição. Se não houver um id de usuário, ou se o id não existe, `g.user` será `None`.
+
+
+#### Logout
+
+Para terminar a seção, você precisa remover o id do usuário da [**`session`**](#flask.session). Assim `load_logged_in_user` não carregará um usuário na proxima requisição.
+
+`flaskr/auth.py`
+
+```py
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+```
+
+#### Exigir Autenticação em Outras Views
+
+Criar, editar, e eliminar publicações do blogue exigirá que o usuário esteja logado. Um *decorador* pode ser usado para verificar isso para cada view ao qual for aplicado.
+
+`flaskr/auth.py`
+
+```py
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('auth.login'))
+
+        return view(**kwargs)
+
+    return wrapped_view
+```
+
+Esse decorador retorna uma nova função view que envolve a view original ao qual é aplicada. A nova função verifica se um usuário está carregado e ou ao contrário redireciona para a página de entrada (login). Se um usuário estiver carregado a view original é chamada e continua normalmente. Você usará esse decorador ao escrever as views do blogue.
+
+### Endpoints e URLs
+
+A função [**`url_for()`**](#flask.url_for) gera a URL para uma view com base em um nome e argumentos. O nome associado a uma view é também chamado de *endpoint*, e por padrão é o mesmo nome da função view.
+
+Por exemplo, a view `hello()` que foi adicionada a fábrica de aplicação mais cedo durante o tutorial tem o nome `'hello'` e pode ser ligado a `url_for('hello')`. Se ela receber um argumento, o qual você verá mais tarde, seria ligado ao uso de `url_for('hello', who='World')`.
+
+Ao usar um blueprint, o nome do blueprint é predefinido para o nome da função, então o endpoint para a função `login` que você escreveu acima é `auth.login` porque você adicionou ele ao blueprint `auth`.
+
+Siga para [Templates](#templates).
