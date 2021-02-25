@@ -2414,4 +2414,86 @@ $ coverage html
 
 Isto gera arquivos dentro da pasta `htmlcov`. Abra o `htmlcov/index.html` em seu browser para ver o relatório.
 
-Continue para  [Deploy para Produção](#deploy-para-produção).
+Continue para  [Instalar em Produção](#instalar-em-produção).
+
+## Instalar em Produção
+
+Esta parte do tutorial assume que você tenha um servidor onde você quer fazer o deploy da sua aplicação. Ele concede uma visão geral de como criar um arquivo de distribuição e instala-lo, mas não entrará em assuntos especificos sobre servidor ou software usar. Você pode configurar um novo ambiente em seu computador de desenvolvimento para tentar aplicar as instruções abaixo, mas provavelmente não deveria usa-lo para hospedar uma aplicação pública real. Veja [Opções de Instalação](#opções-de-instalação) para uma listagem de varias diferentes maneiras de hospedar sua aplicação.
+
+
+### Construir e Instalar
+
+Quando você quiser instalar sua aplicação em outro lugar, você constróis um arquivo de distribuição. O atual padrão para distruibuição Python é o formato *wheel* (roda), com a extensão `.whl`. Certifique-se de que a biblioteca wheel seja instalada primeiro:
+
+```sh
+$ pip install wheel
+```
+
+Executar `setup.py` com Python dá para você uma ferramenta de linha de comando para emitir um comandos relacionados a construção. O comando `bdist_wheel` irá construir um arquivo de distribuição wheel.
+
+```sh
+$ python setup.py bdist_wheel
+```
+
+Você pode encontrar o arquivo em `dist/flaskr-1.0.0-py3-none-any.whl`. O nome do arquivo é o nome do projeto, a versão, e algumas tags (etiquetas) que o arquivo pode instalar.
+
+Copie este aquivo para outra maquina, [configure um novo ambiente virtual](#criar-um-ambiente), depois instale o arquivo com `pip`.
+
+```sh
+$ pip install flaskr-1.0.0-py3-none-any.whl
+```
+
+O pip instalará seu projeto junto com suas dependências.
+
+Desde que este seja uma maquina diferente, você precisa executar `init-db` novamente para criar o banco de dados na pasta da instância.
+
+```sh
+$ export FLASK_APP=flaskr
+$ flask init-db
+```
+
+Quando o Flask detecta que está instalado (não em modo editável), ele usa um diretório diferente para a pasta da instância. Você pode encontra-lo em `venv/var/flaskr-instance`.
+
+### Configurar a Chave Secreta (Secret Key)
+
+No início do tutorial que você deu um valor padrão para [**`SECRET_KEY`**](#secret_key). Este deve ser mudado para algum número de bytes aleatório em produção. Senão, invasores poderiam usar a chave pública `'dev'` para modificar o cookie da sessão, ou qualquer coisa que use a chave secreta.
+
+Você pode usar o seguinte comando para gerar uma chave secreta com valores aleatórios:
+
+```sh
+$ python -c 'import os; print(os.urandom(16))'
+
+b'_5#y2L"F4Q8z\n\xec]/'
+```
+
+Crie o arquivo `config.py` na pasta da instância, que a fábrica irá ler se ele existir. Copie o valor gerado para dentro dele.
+
+`venv/var/flask-instance/config.py`
+
+```py
+SECRET_KEY = b'_5#y2L"F4Q8z\n\xec]/'
+```
+
+Você pode também aplicar qualquer outra configuração necessária aqui, contudo `SECRET_KEY` é a unica necessária para o Flaskr.
+
+### Executar com um Servidor em Produção
+
+Quando estiver executando publicamente ao invês de em desenvolvimento, você não deve usar o servidor de desenvolvimento incluso (`flask run`). O servidor de desenvolvimento é fornecido pelo Werkzeug por conveniência, porém não está desenhado para ser particularmente eficiente, estável ou seguro.
+
+Ao invês disso, use um servidor WSGI de produção. Por exemplo, use o [Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/), primeiro instale-o em ambiente virtual:
+
+```sh
+$ pip install waitress
+```
+
+Você precisa informar ao Waitress sobre sua aplicação, porém ele não usa `FLASK_APP` como `flask run` faz. Você precisa dizer para ele importar e chamar a fábrica da aplicação para receber o objeto da aplicação.
+
+```sh
+$ waitress-serve --call 'flaskr:create_app'
+
+Serving on http://0.0.0.0:8080
+```
+
+Veja [Opções de Instalação](opções-de-instalação) para uma listagem de diferrentes maneiras de hospedar sua aplicação. Waitress é apenas um exemplo, escolhido para o tutorial porque ele é suportado em ambos Windows e Linux. Existem muitos servidores WSGI e opções de instalação que você pode escolher para seu projeto.
+
+Continue para [Continue Desenvolvendo!](#continue-desenvolvendo).
