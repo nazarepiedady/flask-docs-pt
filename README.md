@@ -2497,3 +2497,49 @@ Serving on http://0.0.0.0:8080
 Veja [Opções de Instalação](opções-de-instalação) para uma listagem de diferrentes maneiras de hospedar sua aplicação. Waitress é apenas um exemplo, escolhido para o tutorial porque ele é suportado em ambos Windows e Linux. Existem muitos servidores WSGI e opções de instalação que você pode escolher para seu projeto.
 
 Continue para [Continue Desenvolvendo!](#continue-desenvolvendo).
+
+## Continue Desenvolvendo
+
+Você aprendeu sobre alguns conceitos de Flask e Python ao longo do tutorial. Volte e revise o tutorial e compare o seu código com os passos que você tomou para chegar lá. Compare seu projeto ao [projeto de exemplo](https://github.com/pallets/flask/tree/1.1.2/examples/tutorial), que pode parecer um pouco diferente devido a natureza do passo a passo do tutorial.
+
+Há muito mais no Flask do que você viu até agora. Mesmo assim, agora você está equipado para iniciar desenvolvendo suas próprias aplicações web. Consulte o [Começo Rápido](#começo-rápido) para uma revisão daquilo que Flask é capaz de fazer, depois mergulhe para dentro da documentação para continuar aprendendo. O Flask usa [Jinja](https://palletsprojects.com/p/jinja/), [Click](https://palletsprojects.com/p/click/), [Werkzeug](https://palletsprojects.com/p/werkzeug/), e o [ItsDangerous](https://palletsprojects.com/p/itsdangerous/) por trás dos panos, e todos eles tem sua própria documentação também. Você também se interessará em [Extensões](#extensões) que realiza as tarefas como trabalhar com o banco de dados ou validação dos dados enviados pelo formulário do jeito fácil e poderoso.
+
+Se você quiser continuar desenvolvendo seu projeto Flaskr, aqui estão algumas ideias que você poderia tentar a seguir:
+
+* Um view detalhada para mostrar uma única publicação. Clique no título da publicação para ir para sua página.
+
+* Gostar / Desgostar uma publicação.
+
+* Comentários
+
+* Tags (etiquetas). Clicando em uma tag e mostrar todas publicações que têm a mesma tag.
+
+* A caixa de busca que filtra a página index pelo nome.
+
+* Exibir paginação. Mostre somente 5 publicações por página.
+
+* Carregar (upload) uma imagem para acompanhar uma publicação.
+
+* Formate as publicações usando o Markdown.
+
+* Um feed RSS de novas publicações.
+
+Divirta-se e contrua aplicações incríveis!
+
+Este tutorial encaminhará você através da criação de uma aplicação básica do tipo blogue chamada Flaskr. Os usuários será capazes de se registar, logar, criar publicações, e editar ou eliminar suas próprias publicações. Você será capaz de empacotar e instalar a aplicação em outros computadores.
+
+![página inicial do flaskr](./static_files/flaskr_index.png)
+
+É assumido que você já está familiarizado com o Python. O [tutotial oficial](https://docs.python.org/3/tutorial/) na documentação do Python é excelente maneira de aprender e revisar a linguagem.
+
+Enquanto é desenhado para fornecer um bom ponto de partida, o tutorial não cobri todas funcionalidades do Flask. Consulte o [Começo Rápido](#começo-rápido) para uma revisão daquilo que o Flask pode fazer, depois mergulhe dentro da documentação para encontrar mais. O tutorial somente usa o que é fornecido pelo Flask e Python. Em outro projeto, você pode decidir usar [Extensões](#extensões) ou outras bibliotecas para realizar algumas tarefas de maneira mais símples.
+
+![página de login do flaskr](./static_files/flaskr_login.png)
+
+O Flask é flexível. Ele não exige que você use qualquer projeto ou estutura de código em particular. No entanto, ao começar pela primeira vez, é útil use a solução mais estruturada. Isto signica que o tutorial exigirá um pouco de boilerplate no início, mas é feito para evitar muitos erros comuns com os quais desenvolvedores inexperientes se deparam, e ele cria um projeto que é fácil de expandir. Uma vez que você se sinta mais confortável com Flask, você pode abandonar esta estrutura e tirar vantagem da flexibilidade do Flask.
+
+![página de editar do flaskr](./static_files/flaskr_edit.png)
+
+[O projeto do tutorial está disponível como um exemplo no repositório do Flask](https://github.com/pallets/flask/tree/1.1.2/examples/tutorial), se você quiser comparar seu projeto com o produto final conforme você segue o tutorial.
+
+Continue para [Estrutura do Projeto](#estrutura-do-projeto).
