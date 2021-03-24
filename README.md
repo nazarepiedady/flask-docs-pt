@@ -2549,3 +2549,15 @@ Continue para [Estrutura do Projeto](#estrutura-do-projeto).
 O Flask usa o Jinja2 como seu gerador de templates. Obviamente você está livre para usar um gerador de template diferente, mas você ainda terá de instalar o Jinja2 para executar o Flask. Este requesito é necessário para ativar ricas extensões. Uma extensão pode depender da presença do Jinja2.
 
 Esta seção somente lhe proverá uma introdução rápida sobre como o Jinja2 é integrado ao Flask. Se você quiser informação sobre a sintáxi do gerador de template, se diriga a [Documentação Oficial de Template do Jinja2](http://jinja.pocoo.org/docs/templates/) para obter mais detalhes.
+
+## Configuração do Jinja2
+
+A menos que seja modificada, o Jinja2 é configurado pelo Flask da seguinte maneira:
+
+* autoescapamento está ativado para todos os templates com as extensões, `.html`, `.htm`, `.xml` como também `.xhtml` quando estiver usando a função **`render_template()`**.
+
+* autoescapamento está ativado para todas as strings quando estiver usando a função **`render_template_string()`**.
+
+* um template tem a habilidade de ativar/desativar o autoescapamento com a tag `{% autoescape %}`.
+
+* o Flask injeta algumas funções globais e auxiliadores dentro do contexto do Jinja2, além dos valores que estão presentes por padrão.
