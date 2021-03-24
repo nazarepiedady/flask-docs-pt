@@ -2543,3 +2543,9 @@ O Flask é flexível. Ele não exige que você use qualquer projeto ou estutura 
 [O projeto do tutorial está disponível como um exemplo no repositório do Flask](https://github.com/pallets/flask/tree/1.1.2/examples/tutorial), se você quiser comparar seu projeto com o produto final conforme você segue o tutorial.
 
 Continue para [Estrutura do Projeto](#estrutura-do-projeto).
+
+# Templates
+
+O Flask usa o Jinja2 como seu gerador de templates. Obviamente você está livre para usar um gerador de template diferente, mas você ainda terá de instalar o Jinja2 para executar o Flask. Este requesito é necessário para ativar ricas extensões. Uma extensão pode depender da presença do Jinja2.
+
+Esta seção somente lhe proverá uma introdução rápida sobre como o Jinja2 é integrado ao Flask. Se você quiser informação sobre a sintáxi do gerador de template, se diriga a [Documentação Oficial de Template do Jinja2](http://jinja.pocoo.org/docs/templates/) para obter mais detalhes.
