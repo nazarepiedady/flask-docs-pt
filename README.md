@@ -2561,3 +2561,20 @@ A menos que seja modificada, o Jinja2 é configurado pelo Flask da seguinte mane
 * um template tem a habilidade de ativar/desativar o autoescapamento com a tag `{% autoescape %}`.
 
 * o Flask injeta algumas funções globais e auxiliadores dentro do contexto do Jinja2, além dos valores que estão presentes por padrão.
+
+## Contexto Padrão
+
+O variávies globais a seguir estão disponíveis dentro dos templates Jinja2 por padrão:
+
+* **`config`**: O objeto da configuração atual (**`flask.config`**)
+  * Relatório de mudança, mudança introduzida na versão 0.10: este agora está disponível, até dentro de templates importados. Novo dentro da versão 0.6.
+
+* **`request`**: o objeto da requisição atual (**`flask.request`**). Esta variável não estará disponível se o template for renderizado sem um contexto de requisição ativo.
+
+* **`session`**: o objeto da seção atual (**`flask.session`**). Esta variável não estará disponível se o template for renderizado sem um contexto de requisição ativo.
+
+* **`g`**: o objeto vinculado a requisição para variávies globais (**`flask.g`**). Esta variável não estará disponível se o template for renderizado sem um contexto de requisição ativo.
+
+* **`url_for()`**: a função **`flask.url_for()`**.
+
+* **`get_flashed_messages()`**: a função **`flask.get_flashed_messages()`**.
