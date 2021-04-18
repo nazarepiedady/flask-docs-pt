@@ -2594,3 +2594,25 @@ O variávies globais a seguir estão disponíveis dentro dos templates Jinja2 po
 > ```jinja2
 > {% from '_helpers.html' import my_macro with context %}
 >```
+
+## Filtros Padrão
+
+O Flask oferece as seguintes filtros para o Jinja2 além dos filtros oferecidos pelo próprio Jinja2:
+
+**`tojson()`**: Esta função converte o objeto dado em uma representação JSON. Isto é, por exemplo, muito útil se você tentar gerar JavaScript dinamicamente.
+
+```jinja2
+<script type=text/javascript>
+    doSomethingWith({{ user.username|tojson }});
+</script>
+```
+
+Também é seguro usar a saída de |tojson em um atributo HTML entre aspas simples.
+
+```jinja2
+<button onclick='doSomethingWith({{ user.username|tojson }})'>
+    Click me
+</button>
+```
+
+Note que em versões do Flask anteriores a 0.10, se estiver usando a saída de `|tojson` dentro de `script`, deves se certificar de desativar o escapamento com `|safe`. No Flask 0.10 e adiante, isto acontece automaticamente.
