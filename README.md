@@ -2578,3 +2578,19 @@ O variávies globais a seguir estão disponíveis dentro dos templates Jinja2 po
 * **`url_for()`**: a função **`flask.url_for()`**.
 
 * **`get_flashed_messages()`**: a função **`flask.get_flashed_messages()`**.
+
+
+> ## O Comportamento de Contexto do Jinja
+> Estas variáveis são adicionadas ao contexto de variáveis, elas não são variávies globais. A diferença é que por padrão estes não serão exibidos no contexto dos templates importados. Isto é parcialmante causado por questões performance, parcialmente por manter as coisas explicitas.
+>
+> O que isto significa para você? Se você tem um macro que deseja importar, que precisa acessar o objeto da requisição, você tem duas possibilidades:
+>
+> 1. Você explicitamente passa a requisição para o macro como paramêtro, ou o atributo do objeto da requisição que você está interessado.
+>
+> 2. Você importa o macro "com contexto (with context)".
+>
+> Importação com contexto se parece com isto:
+>
+> ```jinja2
+> {% from '_helpers.html' import my_macro with context %}
+>```
