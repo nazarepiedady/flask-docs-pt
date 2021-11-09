@@ -2710,3 +2710,55 @@ $ pip install pytest
 Primeiro, precisaremos de uma aplicação para testar; usaremos a aplicação construida na seção do [Tutorial](#tutorial). Se você ainda não tiver a aplicação, pegue o código-fonte dos [exemplos](https://github.com/pallets/flask/tree/2.0.1/examples/tutorial).
 
 Só então é que podemos importar o módulo `flaskr` correctamente, precisamos executar `pip install -e .` dentro da pasta tutorial.
+
+
+## O Esqueleto dos Testes
+
+Nós começaremos por adicionar uma pasta de testes com o nome `tests` dentro da raíz da aplicação. Depois criar um ficheiro em Python com o nome `test_flaskr.py` para guardar os nossos testes. Quando formatamos o nome do ficheiro como `test_*.py`, ele será automaticamente alcançado pelo pytest.
+
+A seguir, criamos um [pytest fixture](https://docs.pytest.org/en/latest/fixture.html) com nome de **`client`** que configura a aplicação para os testes e inicializa um novo banco de dados:
+
+```py
+import os
+import tempfile
+
+import pytest
+
+from flaskr import create_app
+
+
+@pytest.fixture
+def client():
+    db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
+    flaskr.app.config['TESTING'] = True
+
+    with flaskr.app.test_client() as client:
+        with flaskr.app.app_context():
+            flaskr.init_db()
+        yield client
+
+    os.close(db_fd)
+    os.unlink(flaskr.app.config['DATABASE'])
+```
+
+Esta fixture do cliente será chamada em cada teste individual. Isto dá-nos uma interface símples para aplicação, onde poderemos realizar requisições de teste para aplicação. O cliente também rasteará os cookies por nós.
+
+Durante a configuração, a bandeira (flag) **`TESTING`** é ativada. O que isto faz é desactivar a captura de erros durante a realização de uma requisição, assim você pode receber relatório de erros melhores quando estiver realizando requisições de teste contra a aplicação.
+
+Por SQLite3 ser baseado no sistema de ficheiros, podemos facilmente usar o módulo [`tempfile`](https://docs.python.org/3/library/tempfile.html#module-tempfile) para criar um banco de dados temporário e inicializa-lo. A função [`mkstemp()`](https://docs.python.org/3/library/tempfile.html#tempfile.mkstemp) faz duas coisas por nós: ela retorna um manipulador de ficheiro de baixo nível e um nome de ficheiro aleatório, que por fim usamos como nome de banco de dados. Apenas temos que deixar o *db_fd* por perto, assim podemos usar a função [`os.close()`](https://docs.python.org/3/library/os.html#os.close) para fechar o ficheiro.
+
+Para deletar o banco de dados depois do teste, o fixture fecha o ficheiro e remove-o do sistema de ficheiro.
+
+Se agora executarmos a sequência de teste (test suite), veremos uma saída semelhante a que está abaixo:
+
+```sh
+$ pytest
+
+================ test session starts ================
+rootdir: ./flask/examples/flaskr, inifile: setup.cfg
+collected 0 items
+
+=========== no tests ran in 0.07 seconds ============
+```
+
+Apesar de não ter executado nenhum teste atual, já sabemos que nossa aplicação **`flaskr`** é sintaticamente valída, ou do contrário a importação teria morrido com uma exceção.
