@@ -3007,3 +3007,31 @@ with app.test_client() as c:
 ```
 
 Repare que neste caso, você tem de usar o objeto `sess` ao invés do proxy **`flask.session`**. O objeto contudo ele mesmo fornecerá a mesma interface.
+
+
+## Testando APIS em JSON
+
+* Relatório de Mundaça
+    * Novo a partir da versão 1.0
+
+O Flask tem grande suporte para JSON, que é uma escolha popular para construção de APIS em JSON. Fazer requisições em JSON e examinar o JSON retornado pela resposta é algo muito conveniente:
+
+```py
+from flask import request, jsonify
+
+@app.route('/api/auth')
+def auth():
+    json_data = request.get_json()
+    email = json_data['email']
+    password = json_data['password']
+    return jsonify(token=generate_token(email, password))
+
+with app.test_client() as c:
+    rv = c.post('/api/auth', json={
+        'email': 'flask@example.com', 'password': 'secret'
+    })
+    json_data = rv.get_json()
+    assert verify_token(email, json_data['token'])
+```
+
+Passando o argumento `json` dentro do método do cliente de teste configura o dado requisitado para objeto JSON serializado e configura o tipo de conteúdo para `application/json`. Você recebe JSON a partir da requisição ou resposta através do método `get_json`.
