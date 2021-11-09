@@ -2616,3 +2616,27 @@ Também é seguro usar a saída de |tojson em um atributo HTML entre aspas simpl
 ```
 
 Note que em versões do Flask anteriores a 0.10, se estiver usando a saída de `|tojson` dentro de `script`, deves se certificar de desativar o escapamento com `|safe`. No Flask 0.10 e adiante, isto acontece automaticamente.
+
+
+## Controlando Autoescapamento
+
+O autoescapamento é o conceito de automaticamente escapar caracteres especiais por você. Caracteres especiais no sentido de HTML (ou XML, e assim XHTML) são `&`, `>`, `<`, `"` como também `'`. Por esses caracteres carregarem significados especiais nos documentos por conta própria, você tem de substituir-los pelos chamadas "entidades" caso você quiser usá-los para compôr o texto. Não fazer isso podera causar não só frustrações ao usuário por não poder usar tais caracteres no texto, mas também pode conduzir a problemas de segurança. (Consulte [Cross-Site Scripting](#cross-site-scripting))
+
+No entanto algumas vezes você precisará desativar o autoescapamento em templates. Este pode ser o caso se você quiser explicitamente injetar código HTML dentro das páginas, por exemplo se eles vierem de um sistema que gera código HTML seguro tal como um conversor de código Markdown para HTML.
+
+Existem três maneiras de alcançar isso:
+
+* No código Python, envolva a string de código HTML dentro de um objeto Markup passa-lo para o template. Esta é em geral a maneira recomendada.
+* Dentro do template, use o filtro `!safe` para explicitamente marcar uma string como código HTML seguro (`{{ myvariable|safe }}`)
+* Desativar totalmente por tempo indeterminado o sistema de autoescapamento.
+
+Para desativar o sistema de autoescapemento em templates, você pode usar o bloco `{% autoescape %}`:
+
+```jinja2
+{% autoescape false %}
+    <p>autoescaping is disabled here
+    <p>{{ will_not_be_escaped }}
+{% endautoescape %}
+```
+
+Sempre que fizer isso, por favor seja muito cauteloso em relação as variáveis que você estiver usando neste bloco.
