@@ -2640,3 +2640,27 @@ Para desativar o sistema de autoescapemento em templates, você pode usar o bloc
 ```
 
 Sempre que fizer isso, por favor seja muito cauteloso em relação as variáveis que você estiver usando neste bloco.
+
+
+## Registando Filtros
+
+Se você quiser registar seus próprios filtros no Jinja2, você tem duas maneiras de fazer isso. Você pode tanto pôr eles dentro da váriavel **`jinja_env`** ou usar o decorador **`template_filter()`**.
+
+Ambos os dois exemplos seguintes funcionam e ambos invertem um objeto:
+
+```py
+@app.template_filter('reverse')
+def reverse_filter(s):
+    return s[::-1]
+
+def reverse_filter(s):
+    return s[::-1]
+app.jinja_env.filters['reverse'] = reverse_filter
+```
+
+No caso de decorador, o argumento é opcional se você quiser usar o nome da função como nome do filtro. Uma vez registada, você pode usar o filtro dentro do seu template da mesma maneira que se usa os filtros que vêm imbutido dentro do Jinja2, por exemplo se você tem no contexto uma lista Python chamada *mylist*:
+
+```jinja2
+{% for x in mylist | reverse %}
+{% endfor %}
+```
