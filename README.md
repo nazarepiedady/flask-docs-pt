@@ -2915,3 +2915,50 @@ with app.test_request_context('/?name=Peter'):
 ```
 
 Em geral isto é menos útil porque até aquele momento você pode de maneira direta começar a usar o cliente de teste.
+
+
+## Contexto e Recursos Fantasmas
+
+* Relatório de Mundaça
+    * Novo a partir da versão 0.10
+
+Um padrão muito comum é guardar informações de autorização do usuário e conexões com o banco de dados no contexto da aplicação ou no objeto **`flask.g`**. O principal padrão para se alcançar isso é pôr lá o objeto em primeiro momento de uso e depois remove-lo numa teardown. Imagine por algo momento este código para pegar o usuário atual:
+
+```py
+def get_user():
+    user = getattr(g, 'user', None)
+    if user is None:
+        user = fetch_current_user_from_database()
+        g.user = user
+    return user
+```
+
+Para um teste seria bom sobrescrever este usuário a partir de fora sem ter que mudar código algum. Isto pode ser alcançado encaixando o sinal **`flask.appcontext_pushed`**:
+
+```py
+from contextlib import contextmanager
+from flask import appcontext_pushed, g
+
+@contextmanager
+def user_set(app, user):
+    def handler(sender, **kwargs):
+        g.user = user
+    with appcontext_pushed.connected_to(handler, app):
+        yield
+```
+
+E depois usa-lo:
+
+```py
+from flask import json, jsonify
+
+@app.route('/users/me')
+def users_me():
+    return jsonify(username=g.user.username)
+
+with user_set(app, my_user):
+    with app.test_client() as c:
+        resp = c.get('/users/me')
+        data = json.loads(resp.data)
+        assert data['username'] == my_user.username
+```
