@@ -2962,3 +2962,21 @@ with user_set(app, my_user):
         data = json.loads(resp.data)
         assert data['username'] == my_user.username
 ```
+
+
+## Mantendo o Contexto Por Perto
+
+* Relatório de Mundaça
+    * Novo a partir da versão 0.4
+
+Algumas vezes é útil acionar uma requisição comum porém todavia manter o contexto por perto por mais tempo para que uma introspeção adicional possa acontecer. Com o Flask 0.4 isso é possível através do método **`test_client()`** com um bloco `with`:
+
+```py
+app = flask.Flask(__name__)
+
+with app.test_client() as c:
+    rv = c.get('/?tequila=42')
+    assert request.args['tequila'] == '42'
+```
+
+Se você estivesse usando apenas o **`test_client`** sem o bloco `with`, o `assert` falharia com um erro porque *request* não se encontra mais disponível (porque você está tentando usa-lo fora da requisição atual).
