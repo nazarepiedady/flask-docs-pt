@@ -2704,3 +2704,9 @@ Nesta documentação usaremos o pacote [pytest](https://docs.pytest.org/) como f
 $ pip install pytest
 ```
 
+
+## A Aplicação
+
+Primeiro, precisaremos de uma aplicação para testar; usaremos a aplicação construida na seção do [Tutorial](#tutorial). Se você ainda não tiver a aplicação, pegue o código-fonte dos [exemplos](https://github.com/pallets/flask/tree/2.0.1/examples/tutorial).
+
+Só então é que podemos importar o módulo `flaskr` correctamente, precisamos executar `pip install -e .` dentro da pasta tutorial.
