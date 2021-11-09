@@ -2980,3 +2980,30 @@ with app.test_client() as c:
 ```
 
 Se você estivesse usando apenas o **`test_client`** sem o bloco `with`, o `assert` falharia com um erro porque *request* não se encontra mais disponível (porque você está tentando usa-lo fora da requisição atual).
+
+
+## Acessando e Modificando Sessões
+
+* Relatório de Mundaça
+    * Novo a partir da versão 0.8
+
+Algumas vezes pode ser muito útil acessar ou modificar as sessões a partir do cliente de teste. Geralmente existem duas maneiras de fazer isso. Se você quiser apenas garantir que a sessão tem certas chaves para certos valores, você pode apenas manter o contexto por perto e acessar **`flask.session`**:
+
+```py
+with app.test_client() as c:
+    rv = c.get('/')
+    assert flask.session['foo'] == 42
+```
+
+Isto contudo não torna-o possível modificar ou acessar a sessão antes que uma requisição seja acionada. Desde a versão 0.8 do Flask passamos a fornecer o que é chamado de "transação de sessão" que simula as chamadas apropriadas para abertura de uma sessão dentro do contexto do cliente de teste e modifica-lo. Ao final da transação a sessão está guardada e pronta para ser usada pelo cliente de teste. Isto funciona independentemente da sessão usada no backend:
+
+```py
+with app.test_client() as c:
+    with c.session_transaction() as sess:
+        sess['a_key'] = 'a value'
+
+    # uma vez que isto estiver alcançado a sessão foi guardada e está pronta para ser usada pelo cliente
+    c.get(...)
+```
+
+Repare que neste caso, você tem de usar o objeto `sess` ao invés do proxy **`flask.session`**. O objeto contudo ele mesmo fornecerá a mesma interface.
