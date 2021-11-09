@@ -2871,3 +2871,47 @@ tests/test_flaskr.py::test_messages PASSED
 
 ============= 3 passed in 0.23 seconds ==============
 ```
+
+
+## Outras Tecnicas de Testes
+
+Além de usar o cliente de teste como é exibido acima, há támbém o método **`test_request_context()`** que pode ser usado combinado com o declaração `with` para ativar uma contexto de requisição temporariamente. Com isto você pode acessar os objetos **`request`**, **`g`** e **`session`** como nas funções de apresentação (views). Aqui está um exemplo completo que demostra o uso desta técnica:
+
+```py
+import flask
+
+app = flask.Flask(__name__)
+
+with app.test_request_context('/?name=Peter'):
+    assert flask.request.path == '/'
+    assert flask.request.args['name'] == 'Peter'
+```
+
+Todos os outros objetos que estão relacionados ao contexto podem ser usados da mesma maneira.
+
+Se você quiser testar sua aplicação usando configurações diferentes e parecer não haver uma boa maneira de faze-lo, considere a possibilidade de mudar a fábricas de aplicação (veja [Fábricas de Aplicação](#fábricas-de-aplicação)).
+
+Perceba, todavia se você estiver usando um contexto de requisição de teste, as funções **`before_request()`** e **`after_request()`** não são chamados automaticamente. Contudo as funções **`teardown_request()`** são de fato executadas quando o contexto de requisição de teste deixa o bloco `with`. Se você quiser que as funções **`before_request()`** sejam executadas também, você precisa executar você mesmo o **`preprocess_request()`**:
+
+```py
+app = flask.Flask(__name__)
+
+with app.test_request_context('/?name=Peter'):
+    app.preprocess_request()
+    ...
+```
+
+Pode ser necessário para isto, abrir conexões com banco de dados ou algo similar dependendo de como a sua aplicação foi desenhada.
+
+Se você quiser executar as funções **`after_request()`** você precisa chama-las dentro do **`process_response()`** que todavia requer que você passe-o um objeto de resposta:
+
+```py
+app = flask.Flask(__name__)
+
+with app.test_request_context('/?name=Peter'):
+    resp = Response('...')
+    resp = app.process_response(resp)
+    ...
+```
+
+Em geral isto é menos útil porque até aquele momento você pode de maneira direta começar a usar o cliente de teste.
