@@ -2793,3 +2793,44 @@ tests/test_flaskr.py::test_empty_db PASSED
 
 ============= 1 passed in 0.10 seconds ==============
 ```
+
+
+## Iniciando e Terminando Sessão
+
+A maioria das funcionalidades de nossa aplicação está somente disponível para o usuário administrador, sendo assim precisamos de uma maneira de permitir com que o nosso cliente de teste inicie e termine sessão em nossa aplicação. Para fazer isso, disparamos algumas requisições para as páginas login e logout com os dados obrigatórios do formulário (username e password). E pelas páginas de login e logout redirecionarem, dizemos ao cliente para prosseguir o redirecionamento configurando o atributo *follow_redirects* com valor verdadeiro.
+
+Adiciona as seguintes funções dentro do seu ficheiro `test_flaskr.py`:
+
+```py
+def login(client, username, password):
+    return client.post('/login', data=dict(
+        username=username,
+        password=password
+    ), follow_redirects=True)
+
+
+def logout(client):
+    return client.get('/logout', follow_redirects=True)
+```
+
+Agora podemos testar facilmente que o inicio e termino de sessão funcionam e que falham com credenciais inválidas. Adiciona esta nova função de teste:
+
+```py
+def test_login_logout(client):
+    """Make sure login and logout works."""
+
+    username = flaskr.app.config["USERNAME"]
+    password = flaskr.app.config["PASSWORD"]
+
+    rv = login(client, username, password)
+    assert b'You were logged in' in rv.data
+
+    rv = logout(client)
+    assert b'You were logged out' in rv.data
+
+    rv = login(client, f"{username}x", password)
+    assert b'Invalid username' in rv.data
+
+    rv = login(client, username, f'{password}x')
+    assert b'Invalid password' in rv.data
+```
