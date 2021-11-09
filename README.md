@@ -2834,3 +2834,40 @@ def test_login_logout(client):
     rv = login(client, username, f'{password}x')
     assert b'Invalid password' in rv.data
 ```
+
+
+## Testar com Adição de Mensagens
+
+Devemos também testar que a adição de mensagem funciona. Adiciona uma função de teste como está:
+
+```py
+def test_messages(client):
+    """Test that messages work."""
+
+    login(client, flaskr.app.config['USERNAME'], flaskr.app.config['PASSWORD'])
+    rv = client.post('/add', data=dict(
+        title='<Hello>',
+        text='<strong>HTML</strong> allowed here'
+    ), follow_redirects=True)
+    assert b'No entries here so far' not in rv.data
+    assert b'&lt;Hello&gt;' in rv.data
+    assert b'<strong>HTML</strong> allowed here' in rv.data
+```
+
+Aqui verificamos que o código HTML é permitido no texto, mas não no título, o que é o comportamento esperado.
+
+Agora ao executar deve devolver-nos três testes passando:
+
+```sh
+$ pytest -v
+
+================ test session starts ================
+rootdir: ./flask/examples/flaskr, inifile: setup.cfg
+collected 3 items
+
+tests/test_flaskr.py::test_empty_db PASSED
+tests/test_flaskr.py::test_login_logout PASSED
+tests/test_flaskr.py::test_messages PASSED
+
+============= 3 passed in 0.23 seconds ==============
+```
