@@ -2762,3 +2762,34 @@ collected 0 items
 ```
 
 Apesar de não ter executado nenhum teste atual, já sabemos que nossa aplicação **`flaskr`** é sintaticamente valída, ou do contrário a importação teria morrido com uma exceção.
+
+
+## O Primeiro Teste
+
+Agora é o momento de começar a testar a funcionalidade da aplicação. Vamos verificar se a aplicação exibe o texto "No entries here so far" quando acessamos a raíz da aplicação (/). Para fazer isso, adicionamos uma nova função de teste como esta ao **`test_flaskr.py`**:
+
+```py
+def test_empty_db(client):
+    """Start with a blank database."""
+
+    rv = client.get('/')
+    assert b'No entries here so far' in rv.data
+```
+
+Repare que nossas funções de testes começam com a palavra *test*; isto permite que o [pytest](https://docs.pytest.org/) identifique automaticamente a função como um teste a ser executado.
+
+Ao usar o `client.get` podemos enviar uma requisição HTTP do tipo `GET` para aplicação no caminho dado. O valor retornado será um objeto **`response_class`**. Podemos agora usar o atributo [**`data`**](https://werkzeug.palletsprojects.com/en/1.0.x/wrappers/#werkzeug.wrappers.BaseResponse.data) para inspecionar o valor retornado (como string) da aplicação. Neste caso, nós garantimos que `'No entries here so far'` seja parte da saída.
+
+Execute-o novamente e verás um teste passando:
+
+```sh
+$ pytest -v
+
+================ test session starts ================
+rootdir: ./flask/examples/flaskr, inifile: setup.cfg
+collected 1 items
+
+tests/test_flaskr.py::test_empty_db PASSED
+
+============= 1 passed in 0.10 seconds ==============
+```
