@@ -3035,3 +3035,49 @@ with app.test_client() as c:
 ```
 
 Passando o argumento `json` dentro do método do cliente de teste configura o dado requisitado para objeto JSON serializado e configura o tipo de conteúdo para `application/json`. Você recebe JSON a partir da requisição ou resposta através do método `get_json`.
+
+
+## Testando Comandos da CLI
+
+O Click vem com utilitários para testar seus comandos da CLI. Um **`CliRunner`** executa os comandos de forma insolada e captura suas saídas dentro de um objeto **`Result`**.
+
+O Flask fornece o **`test_cli_runner()`** para criar um **`FlaskCliRunner`** que passa a aplicação Flask para a CLI automaticamente. Use seu método **`invoke()`** para chamar comandos da mesma maneira que seriam chamados a partir da linha de comando.
+
+```py
+import click
+
+@app.cli.command('hello')
+@click.option('--name', default='World')
+def hello_command(name):
+    click.echo(f'Hello, {name}!')
+
+def test_hello():
+    runner = app.test_cli_runner()
+
+    # invoca o comando diretamente
+    result = runner.invoke(hello_command, ['--name', 'Flask'])
+    assert 'Hello, Flask' in result.output
+
+    # ou pelo seu nome
+    result = runner.invoke(args=['hello'])
+    assert 'World' in result.output
+```
+
+No exemplo acima, é útil invocar o comando pelo nome porque ele verifica que o comando foi corretamente registado com a aplicação.
+
+Se você quiser testar como o seu comando parsea os paramentros, sem executar o comando, use seu método **`make_context()`**. Isto é útil para testes de validações complexas e tipos personalizados.
+
+```py
+def upper(ctx, param, value):
+    if value is not None:
+        return value.upper()
+
+@app.cli.command('hello')
+@click.option('--name', default='World', callback=upper)
+def hello_command(name):
+    click.echo(f'Hello, {name}!')
+
+def test_hello_params():
+    context = hello_command.make_context('hello', ['--name', 'flask'])
+    assert context.params['name'] == 'FLASK'
+```
