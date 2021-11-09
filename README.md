@@ -2664,3 +2664,27 @@ No caso de decorador, o argumento é opcional se você quiser usar o nome da fun
 {% for x in mylist | reverse %}
 {% endfor %}
 ```
+
+## Processadores de Contexto
+
+Existe dentro do Flask processadores de contexto, que lhe permitem injetar automaticamente novas variáveis dentro do contexto de um template. Processadores de contexto executam antes do template ser renderizado e possuem a habilidade de injetar novos valores dentro do contexto do template. Um processador de contexto é uma função que retorna um dicionário. As chaves e valores do dicionário são depois combinadas com o template, para todos os templates na aplicação:
+
+```py
+@app.context_processor
+def inject_user():
+    return dict(user=g.user)
+```
+
+O processador de contexto descrito acima torna uma variável chamada *user* com o valor de *g.user* disponível dentro do template. Este exemplo não é de todo muito interessante visto que *g* já está disponível dentro do template de qualquer maneira, mas dá uma ideia de como a coisa funciona.
+
+Variáveis não estão limitadas aos valores; um processador de contexto podem também tornar funções disponíveis para o template (desde que o Python permita passar funções):
+
+```py
+@app.context_processor
+def utility_processor():
+    def format_price(amount, currency='€'):
+        return f'{amount:.2f}{currency}'
+    return dict(format_price=format_price)
+```
+
+O processador de contexto acima torna a função *format_price* disponível em todos os templates.
