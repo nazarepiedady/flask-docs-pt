@@ -2688,3 +2688,19 @@ def utility_processor():
 ```
 
 O processador de contexto acima torna a função *format_price* disponível em todos os templates.
+
+
+# Testando Aplicações Flask
+
+**O que não estiver testado, está quebrado**
+
+A origem desta citação é desconhecida e enquanto que não é inteiramente verdadeiro, também não está longe da verdade. Aplicações que não são testadas fazem com que seja difícil de melhorar o código existente e desenvolvedores de aplicações que não usam testes tendem a se tornar muito paranoicos. Se uma aplicação faz uso de testes automatizados, você pode seguramente fazer mudanças e instantaneamente saber se alguma coisa quebrou.
+
+Flask fornece uma maneira de testar sua aplicação através da exposição do [cliente de teste do Werkzeug](https://werkzeug.palletsprojects.com/en/2.0.x/test/#werkzeug.test.Client) e manipula os contexto locais por você. Você pode então usa-lo com a sua solução de teste favorita.
+
+Nesta documentação usaremos o pacote [pytest](https://docs.pytest.org/) como framework base para os nossos testes. Você pode instala-lo com o comando `pip`, como em:
+
+```sh
+$ pip install pytest
+```
+
