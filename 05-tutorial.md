@@ -11,11 +11,11 @@ $ cd flask-tutorial
 
 Depois siga as [instruções de instalação](#instalação) para configurar um ambiente virtual em Python e instalar o Flask para o seu projeto.
 
-O tutorial assumirá que você está trabalhando a partir da pasta `flask-tutorial` a partir de agora. O nome de arquivo em cima de cada bloco de código são relativos a essa pasta.
+O tutorial assumirá que você está trabalhando a partir da pasta `flask-tutorial` a partir de agora. O nome de ficheiro em cima de cada bloco de código são relativos a essa pasta.
 
 ---
 
-Uma aplicação Flask que pode ser tão simples quanto um único arquivo.
+Uma aplicação Flask que pode ser tão simples quanto um único ficheiro.
 
 `hello.py`
 ```py
@@ -29,7 +29,7 @@ def hello():
     return 'Hello, World!'
 ```
 
-Todavia, como um projeto vai ficando maior, se torna insustentável, manter todo código em um único arquivo. Projetos em Python usam *pacotes* para organizar código dentro de vários módulos que pode ser importados onde é necessitado e o tutorial fará isso também.
+Todavia, como um projeto vai ficando maior, se torna insustentável, manter todo código em um único ficheiro. Projetos em Python usam *pacotes* para organizar código dentro de vários módulos que pode ser importados onde é necessitado e o tutorial fará isso também.
 
 A pasta do projeto conterá:
 
@@ -106,7 +106,7 @@ Ao invés de criar uma instância do **`Flask`** globalmente, você irá cria-lo
 
 ### A Fabrica da Aplicação
 
-É hora de começar a codificar! Crie a pasta `flaskr` e adiciona o arquivo `__init__.py`. O `__init__.py` serve a duas responsabilidades: ela irá conter a fabrica da aplicação, e ele dirá ao Python que a pasta `flaskr` deve ser tratada como um pacote.
+É hora de começar a codificar! Crie a pasta `flaskr` e adiciona o ficheiro `__init__.py`. O `__init__.py` serve a duas responsabilidades: ela irá conter a fabrica da aplicação, e ele dirá ao Python que a pasta `flaskr` deve ser tratada como um pacote.
 
 ```sh
 $ mkdir flaskr
@@ -154,19 +154,19 @@ def create_app(test_config=None):
 1. `app = Flask(__name__, instance_relative_config=True)` cria a instância **`Flask`**.
     * `__name__` é o nome do módulo atual do Python. O app precisa saber onde está localizado para configurar alguns caminhos, e `__name__` é uma maneira conveniente de dizer isso a ele.
 
-    * `instance_relative_config=True` diz a app que as arquivos de configuração são relativo a [pasta da instância](#pasta-da-instância). A pasta da instância se encontra fora do pacote `flaskr` e pode segurar dados locais que não deveriam ser consolidados pelo controlo de versão, tal como configurações secretas e o arquivo do banco de dados.
+    * `instance_relative_config=True` diz a app que as arquivos de configuração são relativo a [pasta da instância](#pasta-da-instância). A pasta da instância se encontra fora do pacote `flaskr` e pode segurar dados locais que não deveriam ser consolidados pelo controlo de versão, tal como configurações secretas e o ficheiro do banco de dados.
 
 2. **`app.config.from_mapping()`** configura alguma configuração padrão que a app usará:
     * **`SECRET_KEY`** é usado pelo Flask e suas extensões para manter os dados em segurança. Está configurado para `dev` para fornecer um valor conveniente durante o desenvolvimento, mas ele deve ser sobrescrito com um valor aleatório quando estiver instalando.
 
-    * `DATABASE` é o caminho onde o arquivo do banco de dados SQLite será salvo. Está de baixo de `app.instance_path`, que é o caminho que o Flask escolheu para a pasta da instância. Você aprenderá mais sobre o banco de dados na próxima secção.
+    * `DATABASE` é o caminho onde o ficheiro do banco de dados SQLite será salvo. Está de baixo de `app.instance_path`, que é o caminho que o Flask escolheu para a pasta da instância. Você aprenderá mais sobre o banco de dados na próxima secção.
 
-3. **`app.config.from_pyfile()`** sobrescreve as configurações padrão com valores dadas pelo arquivo `config.py` na pasta da instância se ela existir. Por exemplo, quando instalando, isso pode ser usado para configurar uma `SECRET_KEY` real.
+3. **`app.config.from_pyfile()`** sobrescreve as configurações padrão com valores dadas pelo ficheiro `config.py` na pasta da instância se ela existir. Por exemplo, quando instalando, isso pode ser usado para configurar uma `SECRET_KEY` real.
     * `test_config` pode também ser passado para a fabrica, e será usado ao invés da instância de configuração. Isto é, os testes que você escreverá depois no tutorial podem ser configurado independentemente de quaisquer valores de desenvolvimento que você tem configurado.
 
-4. **`os.makedirs()`** garante que **`app.instance_path`** exista. O Flask não cria a pasta da instância automaticamente, mas ela precisa ser criada porque seu projeto irá criar o arquivo do banco de dados SQLite lá.
+4. **`os.makedirs()`** garante que **`app.instance_path`** exista. O Flask não cria a pasta da instância automaticamente, mas ela precisa ser criada porque seu projeto irá criar o ficheiro do banco de dados SQLite lá.
 
-5. **`@app.route()`** cria uma simples rotas então você pode ver a aplicação trabalhando antes de ter contato com o resto do tutorial. Ele cria uma conexão entre a URL `/hello` e uma função que retorna uma resposta, neste caso a string(texto) `Hello, World!`.
+5. **`@app.route()`** cria uma simples rotas então você pode ver a aplicação trabalhando antes de ter contacto com o resto do tutorial. Ele cria uma conexão entre a URL `/hello` e uma função que retorna uma resposta, neste caso a string(texto) `Hello, World!`.
 
 
 ### Executar a Aplicação
@@ -266,7 +266,7 @@ def close_db(e=None):
 
 ### Criar as Tabelas
 
-No SQLite, os dados são armazenados em *tabelas* e *colunas*. Estes precisam ser criados antes de você poder guardar e recuperar dados. Flaskr armazenará os usuários na tabela `user`, e as publicações na tabela `post`. Crie um arquivo com os comandos SQL necessários para criar tabelas vazias:
+No SQLite, os dados são armazenados em *tabelas* e *colunas*. Estes precisam ser criados antes de você poder guardar e recuperar dados. Flaskr armazenará os usuários na tabela `user`, e as publicações na tabela `post`. Crie um ficheiro com os comandos SQL necessários para criar tabelas vazias:
 
 `flaskr/schema.sql`
 ```sql
@@ -289,7 +289,7 @@ CREATE TABLE post (
 );
 ```
 
-Adicione uma função Python que executará esses comandos SQL ao arquivo `db.py`:
+Adicione uma função Python que executará esses comandos SQL ao ficheiro `db.py`:
 
 `flaskr/db.py`
 ```py
@@ -308,9 +308,9 @@ def init_db_command():
     click.echo('Initialized the database.')
 ```
 
-**`open_resource()`** abre um arquivo relativo ao pacote `flaskr`, o que é útil, pois você não necessariamente saberá onde esse local é ao implementar a sua aplicação depois. `get_db` retorna uma conexão com o banco de dados, que é usada para executar os comandos lidos a partir do arquivo.
+**`open_resource()`** abre um ficheiro relativo ao pacote `flaskr`, o que é útil, pois você não necessariamente saberá onde esse local é ao implementar a sua aplicação depois. `get_db` retorna uma conexão com o banco de dados, que é usada para executar os comandos lidos a partir do ficheiro.
 
-**`click.command()`** define um comando de linha de comando com o nome `init-db` que chama a função `init_db` e mostra uma messagem de sucesso para o usuário. Você pode ler [Interface de Linha de Comando](#interface-de-linha-de-comando) para aprender mais sobre a escrita de comandos.
+**`click.command()`** define um comando de linha de comando com o nome `init-db` que chama a função `init_db` e mostra uma mensagem de sucesso para o usuário. Você pode ler [Interface de Linha de Comando](#interface-de-linha-de-comando) para aprender mais sobre a escrita de comandos.
 
 
 ### Registar com a Aplicação
@@ -359,14 +359,14 @@ $ flask init-db
 Initialized the database.
 ```
 
-Agora passará a existir um arquivo com o nome `flaskr.sqlite` dentro da pasta `instance` no seu projeto.
+Agora passará a existir um ficheiro com o nome `flaskr.sqlite` dentro da pasta `instance` no seu projeto.
 
 Continue para [Estruturas (Blueprints) e Apresentações (Views)](#estruturas-(blueprints)-e-apresentações-(views)).
 
 
 ## Estruturas (Blueprints) e Apresentações (Views)
 
-Uma função de view é o código que você escreve para responder a requisições para sua aplicação. O Flask usa um padrão para corresponder a URL da requisição de entrada para uma view que deve lidar com isso. A view retorna dados que o Flask transforma em uma resposta de saída. O Flask também pode ir em outra direção e gerar uma URL para uma view baseada em seu nome e argumentos.
+Uma função de apresentação é o código que você escreve para responder a requisições para sua aplicação. O Flask usa um padrão para corresponder a URL da requisição de entrada para uma apresentação que deve lidar com isso. A apresentação retorna dados que o Flask transforma em uma resposta de saída. O Flask também pode ir em outra direção e gerar uma URL para uma apresentação baseada em seu nome e argumentos.
 
 ### Criar uma Estrutura (Blueprint)
 
@@ -699,7 +699,7 @@ Continue para [Ficheiros Estáticos](#ficheiros-estáticos).
 
 ## Ficheiros Estáticos
 
-As apresentações de autenticação e modelos de marcação funcionam, porém eles parecem muito plano por agora. Algum [CSS](https://developer.mozilla.org/docs/Web/CSS) pode ser adicionado para adicionar estilo ao esquema de HTML que você construiu. O estilo não irá mudar, assim é um arquivo *estático* em vez de um template.
+As apresentações de autenticação e modelos de marcação funcionam, porém eles parecem muito plano por agora. Algum [CSS](https://developer.mozilla.org/docs/Web/CSS) pode ser adicionado para adicionar estilo ao esquema de HTML que você construiu. O estilo não irá mudar, assim é um ficheiro *estático* em vez de um template.
 
 O Flask automaticamente adiciona uma apresentação `static` que pega um caminho relativo para pasta `flaskr/static` e servir ele. O modelo de marcação `base.html` já tem uma ligação para o ficheiro `style.css`:
 
@@ -708,7 +708,7 @@ O Flask automaticamente adiciona uma apresentação `static` que pega um caminho
 ```
 Fora o CSS, outros tipos de ficheiros estáticos podem ser ficheiros com funções JavaScript, ou uma imagem com logótipo. Eles são todos colocados na pasta `flaskr/static` e referenciados com `url_for('static', filaname='...')`.
 
-Esta aula prática não é focada em como escrever CSS, então pode simplesmente copiar o seguinte para o arquivo `flaskr/static/style.css`:
+Esta aula prática não é focada em como escrever CSS, então pode simplesmente copiar o seguinte para o ficheiro `flaskr/static/style.css`:
 
 `flaskr/static/style.css`
 
@@ -964,7 +964,7 @@ def update(id):
     return render_template('blog/update.html', post=post)
 ```
 
-Ao contrário das apresentações que você escreveu até agora, a função `update` leva um argumento, `id`. Que corresponde ao `<int:id>` na rota. Uma URL real será parecido com `/1/update`. O Flask capturará o `1`, garante que seja um [**`int`**](https://docs.python.org/3/library/functions.html#int), e passa-lo como o argumento `id`. Se você não especificar `int:` e ao invés disso fizer `<id>`, ele será uma string. Para gerar um URL para a página de atualização, [**`url_for()`**](#flask.url_for) precisa ser passado o `id` assim ele sabe o que preencher: `url_for('blog.update', id=post['id'])`. Isto está também no arquivo `index.html` acima.
+Ao contrário das apresentações que você escreveu até agora, a função `update` leva um argumento, `id`. Que corresponde ao `<int:id>` na rota. Uma URL real será parecido com `/1/update`. O Flask capturará o `1`, garante que seja um [**`int`**](https://docs.python.org/3/library/functions.html#int), e passa-lo como o argumento `id`. Se você não especificar `int:` e ao invés disso fizer `<id>`, ele será uma string. Para gerar um URL para a página de atualização, [**`url_for()`**](#flask.url_for) precisa ser passado o `id` assim ele sabe o que preencher: `url_for('blog.update', id=post['id'])`. Isto está também no ficheiro `index.html` acima.
 
 As apresentações `create` e `update` parecem muito similares. A principal diferença é que a apresentação `update` usa um objeto `post` e uma consulta de tipo `UPDATE` ao invés de um `INSERT`. Com alguma refatoração inteligente, você poderia usar uma apresentação e um modelo de marcação para ambas ações, porém para o tutorial é mais claro manter eles separados.
 
@@ -1021,7 +1021,7 @@ Continue em [Tornar o Projeto Instalável](#tornar-o-projeto-instalável).
 
 ## Tornar o Projeto Instalável
 
-Tornar seu projeto instalável significa que você pode construir um arquivo de distribuição e instala-lo em outros ambientes, do mesmo jeito que você instalou o Flask no ambiente do seu projeto. Isto faz com que implementação do seu projeto seja o mesmo que instalar qualquer outra biblioteca, assim você está usando todas as ferramentas padrão do Python para gerir tudo.
+Tornar seu projeto instalável significa que você pode construir um ficheiro de distribuição e instala-lo em outros ambientes, do mesmo jeito que você instalou o Flask no ambiente do seu projeto. Isto faz com que implementação do seu projeto seja o mesmo que instalar qualquer outra biblioteca, assim você está usando todas as ferramentas padrão do Python para gerir tudo.
 
 A instalação também vem com outros benefícios que podem não estar óbvios no tutorial ou para usuário de Python inexperientes, incluindo:
 
@@ -1037,7 +1037,7 @@ A instalação também vem com outros benefícios que podem não estar óbvios n
 
 ### Descreva o Projeto
 
-O arquivo `setup.py` descreve seu projeto e os arquivos que pertencem a ele.
+O ficheiro `setup.py` descreve seu projeto e os arquivos que pertencem a ele.
 
 
 `setup.py`
@@ -1057,7 +1057,7 @@ setup(
 )
 ```
 
-`packages` informa ao Python quais pastas de pacotes (e os arquivos Python que eles contêm) incluir. `find_packages()` encontra essas pastas automaticamente assim você não tem que informa-los. Para incluir outros arquivos, tais como a pastas de arquivos estáticos e templates, `include_package_data` é configurado. O Python precisa de outro arquivo chamado `MANIFEST.in` para informar quais são esses outros dados.
+`packages` informa ao Python quais pastas de pacotes (e os arquivos Python que eles contêm) incluir. `find_packages()` encontra essas pastas automaticamente assim você não tem que informa-los. Para incluir outros arquivos, tais como a pastas de arquivos estáticos e templates, `include_package_data` é configurado. O Python precisa de outro ficheiro chamado `MANIFEST.in` para informar quais são esses outros dados.
 
 `MANIFEST.in`
 
@@ -1068,7 +1068,7 @@ graft flaskr/templates
 global-exclude *.pyc
 ```
 
-Isso diz ao Python para copiar tudo dentro das pastas `static` e `templates`, e o arquivo `schema.sql`, contudo exclui todos arquivos de bytecode.
+Isso diz ao Python para copiar tudo dentro das pastas `static` e `templates`, e o ficheiro `schema.sql`, contudo exclui todos arquivos de bytecode.
 
 Veja o [guia oficial de empacotamento](https://packaging.python.org/tutorials/packaging-projects/) para obter outras explicações sobre os arquivos e opções usadas.
 
@@ -1125,9 +1125,9 @@ $ pip install pytest coverage
 
 ### Setup and Fixtures
 
-O código de teste está localizado na pasta `tests`. Esta pasta está *próxima* ao `flaskr`, não dentro dele. O arquivo `tests/conftest.py` contém funções de configuração chamadas *fixtures* que cada teste usará. Em Python, testes são módulos que começam com `test_`, e cada função de teste nesses módulos também começam com `test_`.
+O código de teste está localizado na pasta `tests`. Esta pasta está *próxima* ao `flaskr`, não dentro dele. O ficheiro `tests/conftest.py` contém funções de configuração chamadas *fixtures* que cada teste usará. Em Python, testes são módulos que começam com `test_`, e cada função de teste nesses módulos também começam com `test_`.
 
-Cada teste criará um novo arquivo de banco de dados temporário e popular com alguns dados que serão usados nos testes. Escreva um arquivo SQL para inserir aqueles dados.
+Cada teste criará um novo ficheiro de banco de dados temporário e popular com alguns dados que serão usados nos testes. Escreva um ficheiro SQL para inserir aqueles dados.
 
 `tests/data.sql`
 
@@ -1187,7 +1187,7 @@ def runner(app):
     return app.test_cli_runner()
 ```
 
-[**tempfile.mkstemp()**](https://docs.python.org/3/library/tempfile.html#tempfile.mkstemp) cria e abri um arquivo temporário, retornando o objeto do arquivo e o caminho para ele. O caminho `DATABASE` é substituido, então ele aponta para este caminho temporário ao invés da pasta da instância. Depois de configurar o caminho, as tabelas do banco de dados são criados e os dados de teste são inseridos. Depois o teste estiver terminado, o arquivo temporário é fechado e removido.
+[**tempfile.mkstemp()**](https://docs.python.org/3/library/tempfile.html#tempfile.mkstemp) cria e abri um ficheiro temporário, retornando o objeto do ficheiro e o caminho para ele. O caminho `DATABASE` é substituido, então ele aponta para este caminho temporário ao invés da pasta da instância. Depois de configurar o caminho, as tabelas do banco de dados são criados e os dados de teste são inseridos. Depois o teste estiver terminado, o ficheiro temporário é fechado e removido.
 
 [**TESTING**](#testing) diz ao Flask que a aplicação está no modo de este. O Flask muda alguns comportamentos internos, então é mais fácil testar, e outras extensões podem também usar a flag (bandeira) para fazer teste neles facilmente.
 
@@ -1263,12 +1263,12 @@ def test_init_db_command(runner, monkeypatch):
     assert Recorder.called
 ```
 
-Este teste usa o fixture `monkeypatch` do Pytest para substituir a função `init_db` com um daqueles registros que estão sendo chamados. O fixture `runner` que você escreveu acima é usado para chamar o comando `init-db` pelo nome.
+Este teste usa o fixture `monkeypatch` do Pytest para substituir a função `init_db` com um daqueles registos que estão sendo chamados. O fixture `runner` que você escreveu acima é usado para chamar o comando `init-db` pelo nome.
 
 
 ### Autenticação
 
-Para a maioria das views, um usuário precisa estar logado. A maneira mais fácil de fazer isso nos testes é fazer uma requisição `POST` para a view `login` com o cliente. Em vez de escrever isso todas as vezes, você pode escrever um classe com metódos para fazer isso, e usar uma fixture para passa-lo para o cliente em cada teste.
+Para a maioria das views, um usuário precisa estar iniciado. A maneira mais fácil de fazer isso nos testes é fazer uma requisição `POST` para a view `login` com o cliente. Em vez de escrever isso todas as vezes, você pode escrever um classe com métodos para fazer isso, e usar uma fixture para passa-lo para o cliente em cada teste.
 
 `tests/conftest.py`
 
@@ -1292,9 +1292,9 @@ def auth(client):
     return AuthActions(client)
 ```
 
-Com a fixture `auth`, você pode chamar `auth.login()` em um teste para logar como usuário `test`, que foi inserido como parte dos dados do teste na fixture `app`.
+Com a fixture `auth`, você pode chamar `auth.login()` em um teste para iniciar como usuário `test`, que foi inserido como parte dos dados do teste na fixture `app`.
 
-A view `register` deve renderizar com sucesso em `GET`. No `POST` com dados de formulário validos, ele deve redirecionar para a URL de login e o dados do usuário devem estar dentro do banco de dados. Dados invalidos devem exibir mensagens de erro.
+A apresentação `register` deve renderizar com sucesso em `GET`. No `POST` com dados de formulário validos, ele deve redirecionar para a URL de login e o dados do usuário devem estar dentro do banco de dados. Dados inválidos devem exibir mensagens de erro.
 
 `tests/test_auth.py`
 
@@ -1330,7 +1330,7 @@ def test_register_validate_input(client, username, password, message):
     assert message in response.data
 ```
 
-[**client.get()**](https://werkzeug.palletsprojects.com/en/1.0.x/test/#werkzeug.test.Client.get) faz uma requisição `GET` e retorna o objeto [**Response**](#flask.response) retornado pelo Flask. Semelhantemente, [**client.post()**](https://werkzeug.palletsprojects.com/en/1.0.x/test/#werkzeug.test.Client.post) faz uma requisição `POST`, convertendo o dicionário `data` em dado de formulário.
+[**client.get()**](https://werkzeug.palletsprojects.com/en/1.0.x/test/#werkzeug.test.Client.get) faz uma requisição `GET` e retorna o objeto [**Response**](#flask.response) retornado pelo Flask. Igualmente, [**client.post()**](https://werkzeug.palletsprojects.com/en/1.0.x/test/#werkzeug.test.Client.post) faz uma requisição `POST`, convertendo o dicionário `data` em dado de formulário.
 
 Para testar que a página renderiza com sucesso, uma simples requisição é feita e confirmada por um [**status_code**](#flask.response.status_code) `200 OK`. Se a renderização falhar, o Flask retornaria um código `500 Internal Server Error`.
 
@@ -1340,7 +1340,7 @@ Para testar que a página renderiza com sucesso, uma simples requisição é fei
 
 `pytest.mark.parametrize` diz ao Pytest para executar a mesma função de teste com diferentes argumentos. Você pode usa-lo aqui para testar diferentes entradas invalidas e mensagens de erro sem escrever a mesma código três vezes.
 
-Os testes para a view `login` são muito similar a aqueles para o `register`. Ao invês de testar os dados dentro do banco de dados, [**session**](#flask.session) deve ter o `user_id` configurado depois de logado.
+Os testes para a view `login` são muito similar a aqueles para o `register`. Ao invés de testar os dados dentro do banco de dados, [**session**](#flask.session) deve ter o `user_id` configurado depois de iniciado.
 
 `tests/test_auth.py`
 
@@ -1367,7 +1367,7 @@ def test_login_validate_input(auth, username, password, message):
 
 Usando o `client` em um bloco `with` permite acessar variáveis de contexto tais como [**session**](#flask.session) depois da resposta retornada. Normalmente, acessar a `session` fora da requisição levantaria um erro.
 
-Testar o `logout` é o oposto de `login`. [**session**](#flask.session) não deve conter o `user_id` depois de deslogar.
+Testar o `logout` é o oposto de `login`. [**session**](#flask.session) não deve conter o `user_id` depois de sair.
 
 `tests/test_auth.py`
 
@@ -1382,11 +1382,11 @@ def test_logout(client, auth):
 
 ### Blog
 
-Todas as views do blog usam a fixture `auth` que você escreveu mais cedo. Chama `auth.login()` e as requisições subsequentes do cliente irão ser logadas como usuário `test`.
+Todas as views do blog usam a fixture `auth` que você escreveu mais cedo. Chama `auth.login()` e as requisições subsequentes do cliente irão ser iniciadas como usuário `test`.
 
-A view `index` deve exibir informação sobre a publicação que foi adicionada com o dados do teste. Quando logado como o autor, deve haver um link para editar a publicação.
+A view `index` deve exibir informação sobre a publicação que foi adicionada com o dados do teste. Quando iniciado como o autor, deve haver um link para editar a publicação.
 
-Você pode também testar mais algum comportamento de autenticação enquanto testa a view `index`. Quando não estiver logado, cada página exibe links para logar ou registar. Quando logado, há um link para deslogar.
+Você pode também testar mais algum comportamento de autenticação enquanto testa a view `index`. Quando não estiver iniciado, cada página exibe links para iniciar ou registar. Quando iniciado, há um link para sair.
 
 `tests/test_blog.py`
 
@@ -1409,7 +1409,7 @@ def test_index(client, auth):
     assert b'href="/1/update"' in response.data
 ```
 
-Um usuário deve estar logado para acessar as views `create`, `update`, e `delete`. O usuário logado deve ser o autor da publicação para acessar o `update` e o `delete`, do contrário um estado `403 Forbidden` é retornado. Se um `post` com o `id` dado não existir, `update` e `delete` devem retornar `404 Not Found`.
+Um usuário deve estar iniciado para acessar as views `create`, `update`, e `delete`. O usuário iniciado deve ser o autor da publicação para acessar o `update` e o `delete`, do contrário um estado `403 Forbidden` é retornado. Se um `post` com o `id` dado não existir, `update` e `delete` devem retornar `404 Not Found`.
 
 `tests/test_blog.py`
 
@@ -1426,6 +1426,7 @@ def test_login_required(client, path):
 
 def test_author_required(app, client, auth):
     # change the post author to another user
+    # mudar o autor da publicação para um outro usuário
     with app.app_context():
         db = get_db()
         db.execute('UPDATE post SET author_id = 2 WHERE id = 1')
@@ -1433,9 +1434,11 @@ def test_author_required(app, client, auth):
 
     auth.login()
     # current user can't modify other user's post
+    # o utilizador atual não pode modificar a publicação de outro utilizador
     assert client.post('/1/update').status_code == 403
     assert client.post('/1/delete').status_code == 403
     # current user doesn't see edit link
+    # o utilizador atual não vê a ligação `edit`
     assert b'href="/1/update"' not in client.get('/').data
 
 
@@ -1503,7 +1506,7 @@ def test_delete(client, auth, app):
 
 ### Executando os Testes
 
-Alguma configuração extra, que não é necessária mas que torna a execução dos testes com o coverage menos verbosa, pode ser adicionado ao arquivo `setup.cfg` do projeto.
+Alguma configuração extra, que não é necessária mas que torna a execução dos testes com o coverage menos verbosa, pode ser adicionado ao ficheiro `setup.cfg` do projeto.
 
 `setup.cfg`
 
@@ -1558,7 +1561,7 @@ flaskr/db.py            24      0      4      0   100%
 TOTAL                  153      0     44      0   100%
 ```
 
-Um relatório em HTML permite você ver quais linhas foram cobertas em cada arquivo:
+Um relatório em HTML permite você ver quais linhas foram cobertas em cada ficheiro:
 
 ```sh
 $ coverage html
@@ -1571,26 +1574,26 @@ Continue para  [Instalar em Produção](#instalar-em-produção).
 
 ## Instalar em Produção
 
-Esta parte do tutorial assume que você tenha um servidor onde você quer fazer o deploy da sua aplicação. Ele concede uma visão geral de como criar um arquivo de distribuição e instala-lo, mas não entrará em assuntos especificos sobre servidor ou software usar. Você pode configurar um novo ambiente em seu computador de desenvolvimento para tentar aplicar as instruções abaixo, mas provavelmente não deveria usa-lo para hospedar uma aplicação pública real. Veja [Opções de Instalação](#opções-de-instalação) para uma listagem de varias diferentes maneiras de hospedar sua aplicação.
+Esta parte do tutorial assume que você tenha um servidor onde você quer fazer o deploy da sua aplicação. Ele concede uma visão geral de como criar um ficheiro de distribuição e instala-lo, mas não entrará em assuntos específicos sobre servidor ou software usar. Você pode configurar um novo ambiente em seu computador de desenvolvimento para tentar aplicar as instruções abaixo, mas provavelmente não deveria usa-lo para hospedar uma aplicação pública real. Veja [Opções de Instalação](#opções-de-instalação) para uma listagem de varias diferentes maneiras de hospedar sua aplicação.
 
 
 ### Construir e Instalar
 
-Quando você quiser instalar sua aplicação em outro lugar, você constróis um arquivo de distribuição. O atual padrão para distruibuição Python é o formato *wheel* (roda), com a extensão `.whl`. Certifique-se de que a biblioteca wheel seja instalada primeiro:
+Quando você quiser instalar sua aplicação em outro lugar, você constróis um ficheiro de distribuição. O atual padrão para distribuição Python é o formato *wheel* (roda), com a extensão `.whl`. Certifique-se de que a biblioteca wheel seja instalada primeiro:
 
 ```sh
 $ pip install wheel
 ```
 
-Executar `setup.py` com Python dá para você uma ferramenta de linha de comando para emitir um comandos relacionados a construção. O comando `bdist_wheel` irá construir um arquivo de distribuição wheel.
+Executar `setup.py` com Python dá para você uma ferramenta de linha de comando para emitir um comandos relacionados a construção. O comando `bdist_wheel` irá construir um ficheiro de distribuição wheel.
 
 ```sh
 $ python setup.py bdist_wheel
 ```
 
-Você pode encontrar o arquivo em `dist/flaskr-1.0.0-py3-none-any.whl`. O nome do arquivo é o nome do projeto, a versão, e algumas tags (etiquetas) que o arquivo pode instalar.
+Você pode encontrar o ficheiro em `dist/flaskr-1.0.0-py3-none-any.whl`. O nome do ficheiro é o nome do projeto, a versão, e algumas tags (etiquetas) que o ficheiro pode instalar.
 
-Copie este aquivo para outra maquina, [configure um novo ambiente virtual](#criar-um-ambiente), depois instale o arquivo com `pip`.
+Copie este ficheiro para outra maquina, [configure um novo ambiente virtual](#criar-um-ambiente), depois instale o ficheiro com `pip`.
 
 ```sh
 $ pip install flaskr-1.0.0-py3-none-any.whl
@@ -1619,7 +1622,7 @@ $ python -c 'import os; print(os.urandom(16))'
 b'_5#y2L"F4Q8z\n\xec]/'
 ```
 
-Crie o arquivo `config.py` na pasta da instância, que a fábrica irá ler se ele existir. Copie o valor gerado para dentro dele.
+Crie o ficheiro `config.py` na pasta da instância, que a fábrica irá ler se ele existir. Copie o valor gerado para dentro dele.
 
 `venv/var/flask-instance/config.py`
 
@@ -1679,19 +1682,19 @@ Se você quiser continuar desenvolvendo seu projeto Flaskr, aqui estão algumas 
 
 Divirta-se e contrua aplicações incríveis!
 
-Este tutorial encaminhará você através da criação de uma aplicação básica do tipo blogue chamada Flaskr. Os usuários será capazes de se registar, logar, criar publicações, e editar ou eliminar suas próprias publicações. Você será capaz de empacotar e instalar a aplicação em outros computadores.
+Este tutorial encaminhará você através da criação de uma aplicação básica do tipo blogue chamada Flaskr. Os usuários será capazes de se registar, iniciar, criar publicações, e editar ou eliminar suas próprias publicações. Você será capaz de empacotar e instalar a aplicação em outros computadores.
 
-![página inicial do flaskr](./static_files/flaskr_index.png)
+![Página Inicial do flaskr](./static_files/flaskr_index.png)
 
 É assumido que você já está familiarizado com o Python. O [tutotial oficial](https://docs.python.org/3/tutorial/) na documentação do Python é excelente maneira de aprender e revisar a linguagem.
 
 Enquanto é desenhado para fornecer um bom ponto de partida, o tutorial não cobri todas funcionalidades do Flask. Consulte o [Começo Rápido](#começo-rápido) para uma revisão daquilo que o Flask pode fazer, depois mergulhe dentro da documentação para encontrar mais. O tutorial somente usa o que é fornecido pelo Flask e Python. Em outro projeto, você pode decidir usar [Extensões](#extensões) ou outras bibliotecas para realizar algumas tarefas de maneira mais símples.
 
-![página de login do flaskr](./static_files/flaskr_login.png)
+![Página Iniciar do flaskr](./static_files/flaskr_login.png)
 
 O Flask é flexível. Ele não exige que você use qualquer projeto ou estutura de código em particular. No entanto, ao começar pela primeira vez, é útil use a solução mais estruturada. Isto signica que o tutorial exigirá um pouco de boilerplate no início, mas é feito para evitar muitos erros comuns com os quais desenvolvedores inexperientes se deparam, e ele cria um projeto que é fácil de expandir. Uma vez que você se sinta mais confortável com Flask, você pode abandonar esta estrutura e tirar vantagem da flexibilidade do Flask.
 
-![página de editar do flaskr](./static_files/flaskr_edit.png)
+![Página Editar do flaskr](./static_files/flaskr_edit.png)
 
 [O projeto do tutorial está disponível como um exemplo no repositório do Flask](https://github.com/pallets/flask/tree/1.1.2/examples/tutorial), se você quiser comparar seu projeto com o produto final conforme você segue o tutorial.
 
