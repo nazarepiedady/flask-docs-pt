@@ -1,4 +1,4 @@
-# Começo Rápido
+# Começar
 
 Pronto para começar? Esta página dá um boa introdução ao Flask. Ela assume que você já tem o Flask instalado. Se você ainda não o tiver instalado, siga para a secção [Instalação](#instalação).
 
@@ -69,7 +69,7 @@ Agora siga para https://127.0.0.1:5000, e você verá sua saudação Olá Mundo.
 >
 > Isso diz ao sistema operacional para ouvir todos os IPs públicos.
 
-## O que fazer se o servidor não iniciar
+## O que fazer caso o servidor não iniciar
 
 No caso de **python -m flask** falhar ou **flask** não existir, há varias razões pelas quais este pode ser o caso. Antes de tudo você precisa verificar a mensagem de erro.
 
@@ -188,7 +188,7 @@ def about():
 
 A URL canónica para o ponto final de `projects` tem uma barra final. É similar a uma pasta dentro de um sistema de ficheiros. Se você acessar a URL sem a barra final, Flask leva você para a URL canónica com a barra final.
 
-A URL canónica para o ponto final `about` não tem uma barra final. É similar ao nome do caminho de um arquivo. Acessar a URL com uma barra final produz um erro 404 de "página não encontrada". Isto ajuda a manter as URLs para esses recursos únicas, que ajuda os mecanismos de busca a evitar a indexação da mesma página duas vezes.
+A URL canónica para o ponto final `about` não tem uma barra final. É similar ao nome do caminho de um ficheiro. Acessar a URL com uma barra final produz um erro 404 de "página não encontrada". Isto ajuda a manter as URLs para esses recursos únicas, que ajuda os mecanismos de busca a evitar a indexação da mesma página duas vezes.
 
 
 ### Construindo uma URL
@@ -266,13 +266,13 @@ Para gerar URLs para os ficheiros estáticos, use o nome de ponto final especial
 url_for('static', filename='style.css')
 ```
 
-O arquivo tem de estar armazenado no sistema de ficheiros como `static/style.css`.
+O ficheiro tem de estar armazenado no sistema de ficheiros como `static/style.css`.
 
-## Renderizando Templates
+## Renderizando Modelos de Marcação
 
-Gerar o HTML a partir do Python não é divertido, e atualmente um pouco embaraçoso porque você tem de fazer o escapamento do HTML manualmente para manter a segurança da aplicação. Por causa disto o Flask configura o gerenciador de template [Jinja2](http://jinja.pocoo.org/) automaticamente para você.
+Gerar o HTML a partir do Python não é divertido, e atualmente um pouco embaraçoso porque você tem de fazer o escapamento do HTML manualmente para manter a segurança da aplicação. Por causa disto o Flask configura o gestor de modelo de marcação [Jinja2](http://jinja.pocoo.org/) automaticamente para você.
 
-Você pode usar o método **`render_template()`** para renderizar um template. Tudo que você tem de fazer é prover o nome do template e as variáveis que você quer passar para o gerenciador de template como argumentos de palavra-chave. Aqui está um exemplo simples de como renderizar um template:
+Você pode usar o método **`render_template()`** para renderizar um modelo de marcação. Tudo que você tem de fazer é prover o nome do modelo de marcação e as variáveis que você quer passar para o gestor de modelo de marcação como argumentos de palavra-chave. Aqui está um exemplo simples de como renderizar um modelo de marcação:
 
 ```py
 from flask import render_template
@@ -283,7 +283,7 @@ def hello(name=None):
     return render_template('hello.html', name=name)
 ```
 
-O Flask irá procurar pelos templates dentro da pasta `templates`. Então se sua aplicação é um módulo, esta pasta está proxima a esse módulo, se é um pacote está atualmente dentro do seu pacote:
+O Flask irá procurar pelos modelos de marcação dentro da pasta `templates`. Então se sua aplicação é um módulo, esta pasta está proxima a esse módulo, se é um pacote está atualmente dentro do seu pacote:
 
 1º caso: um módulo:
 
@@ -302,9 +302,9 @@ O Flask irá procurar pelos templates dentro da pasta `templates`. Então se sua
         /hello.html
 ```
 
-Você pode usar todo o poder dos templates Jinja2 nos seus templates. Siga em frente para a [Documentação de Template Jinja2](http://jinja.pocoo.org/docs/templates/) oficial para mais informações.
+Você pode usar todo o poder dos modelos de marcação Jinja2 nos seus modelos de marcação. Siga em frente para a [Documentação do Modelo de Marcação Jinja2](http://jinja.pocoo.org/docs/templates/) oficial para mais informações.
 
-Aqui está um exemplo de template:
+Aqui está um exemplo de modelo de marcação:
 
 ```jinja
 <!doctype html>
@@ -316,11 +316,11 @@ Aqui está um exemplo de template:
 {% endif %}
 ```
 
-Dentro dos templates você também tem acesso aos  objetos **request**, **session** e **g** como também a função **`get_flashed_messages()`**.
+Dentro dos modelos de marcação você também tem acesso aos objetos **request**, **session** e **g** como também a função **`get_flashed_messages()`**.
 
-Os templates são especialmente úteis quando a herança é usada. Se você quiser saber como isso funciona, siga para documentação do padrão de [Herança de Template](#herança-de-template). Basicamente a herança de template torna possível manter certos elementos em cada página (como, cabeçalho, navegação e o rodapé).
+Os modelos de marcação são especialmente úteis quando a herança é usada. Se você quiser saber como isso funciona, siga para documentação do padrão de [Herança de Modelo de Marcação](#herança-de-modelo-de-marcação). Basicamente a herança de modelo de marcação torna possível manter certos elementos em cada página (como, cabeçalho, navegação e o rodapé).
 
-O escapamento automático está ativado, então se a variável `name` conter código HTML ele será escapado automaticamente. Se você poder confiar uma variável e você sabe que será um código HTML seguro (por exemplo porque veio de um módulo que converte a marcação do wiki em HTML) você pode marcar ele como sendo seguro pelo uso da classe **Markup** ou pelo uso do filtro `|safe` dentro do template. Siga para a documentação do Jinja2 para obter mais exemplos de uso.
+O escapamento automático está ativado, então se a variável `name` conter código HTML ele será escapado automaticamente. Se você poder confiar uma variável e você sabe que será um código HTML seguro (por exemplo porque veio de um módulo que converte a marcação do wiki em HTML) você pode marcar ele como sendo seguro pelo uso da classe **Markup** ou pelo uso do filtro `|safe` dentro do modelo de marcação. Siga para a documentação do Jinja2 para obter mais exemplos de uso.
 
 Aqui está uma introdução básica de como a classe **Markup** funciona:
 
@@ -342,24 +342,24 @@ Não tem certeza do que o objeto **g** é? É algo em que você pode armazenar i
 
 ## Acessando os Dados da Requisição
 
-Para aplicações web é crucial reagir aos dados que um cliente envia para o servidor. No Flask esta informação é fornecida através do objeto global **request**. Se você tem alguma experiência com o Python, você ficaria maravilhado de como esse objeto pode ser global e como o Flask gerencia-o para o manter seguro (threadsafe). A resposta é locais de contexto:
+Para aplicações web é crucial reagir aos dados que um cliente envia para o servidor. No Flask esta informação é fornecida através do objeto global **request**. Se você tem alguma experiência com o Python, você ficaria maravilhado de como esse objeto pode ser global e como o Flask gerência-o para o manter seguro (threadsafe). A resposta é locais de contexto:
 
 ### Locais de Contexto
 
 > ## Informação de Mantenedor
-> Se você quiser entender como isso funciona e como você pode implementar testes com locais de contexto, leia esta seção, ou do contrário você pode apenas salta-la.
+> Se você quiser entender como isso funciona e como você pode implementar testes com locais de contexto, leia esta secção, ou do contrário você pode apenas salta-la.
 
-Certos objetos no Flask são globais, mas não do tipo comum. Esses objetos são intermédiarios(proxies) de objetos que estão locais para um contexto especifico. Que legal. Porém é um pouco mais fácil de entender.
+Certos objetos no Flask são globais, mas não do tipo comum. Esses objetos são intermediários(proxies) de objetos que estão locais para um contexto especifico. Que legal. Porém é um pouco mais fácil de entender.
 
-Imagina o contexto sendo o manipulador de thread. Uma requesição chega e o servidor web decide gerar uma nova thread (ou outra coisa, o objeto subjacente é capaz de lidar com sistemas de concorrência diferentes de threads). Quando o Flask inicia seu manipulador de requisição interno ele percebe que a thread atual é o contexto ativo e vincula a aplicação atual e o ambiente WSGI ao contexto (thread). Ele faz isso de uma maneira inteligente para que uma aplicação possa invocar outra aplicação sem quebrar.
+Imagina o contexto sendo o manipulador de thread. Uma requisição chega e o servidor web decide gerar uma nova thread (ou outra coisa, o objeto subjacente é capaz de lidar com sistemas de concorrência diferentes de threads). Quando o Flask inicia seu manipulador de requisição interno ele percebe que a thread atual é o contexto ativo e vincula a aplicação atual e o ambiente WSGI ao contexto (thread). Ele faz isso de uma maneira inteligente para que uma aplicação possa invocar outra aplicação sem quebrar.
 
-Então o que isso significa para você? Basicamente você pode ignorar completamente que esso é o caso a menos que você esteja fazendo algo como um teste unitário. Você perceberá que o código que depende de um objeto de requisição será interrompido repentinamente porque não há objeto de requisição. A solução é você mesmo criar um objeto de requisição e vincula-lo ao contexto. A solução mais fácil para teste unitário é usar o gerenciador de contexto **`test_request_context()`**. Em combinação com a instrução `with` ele vinculará uma requisição de teste para que você possa interagir com ela. Aqui está um exemplo:
+Então o que isso significa para você? Basicamente você pode ignorar completamente que esse é o caso a menos que você esteja fazendo algo como um teste unitário. Você perceberá que o código que depende de um objeto de requisição será interrompido repentinamente porque não há objeto de requisição. A solução é você mesmo criar um objeto de requisição e vincula-lo ao contexto. A solução mais fácil para teste unitário é usar o gestor de contexto **`test_request_context()`**. Em combinação com a instrução `with` ele vinculará uma requisição de teste para que você possa interagir com ela. Aqui está um exemplo:
 
 ```py
 from flask import request
 
 with app.test_request_context('/hello', method='POST'):
-    # agora você pode fazer algo com a requisiçã até o
+    # agora você pode fazer algo com a requisição até o
     # fim do bloco with, tal como asserções básicas:
     assert request.path == '/hello'
     assert request.method == 'POST'
@@ -377,7 +377,7 @@ with app.request_context(environ):
 
 ### O Objeto de Requisição
 
-O objeto de requesição é documentado na seção da API e não vamos cobri-lo aqui em detalhes (veja [Request](#request)). Aqui está um grande resumo de algumas das operações mais comuns. Antes de tudo você tem que importa-lo a partir do módulo `flask`:
+O objeto de requisição é documentado na secção da API e não vamos cobri-lo aqui em detalhes (veja [Request](#request)). Aqui está um grande resumo de algumas das operações mais comuns. Antes de tudo você tem que importa-lo a partir do módulo `flask`:
 
 ```py
 from flask import request
@@ -402,22 +402,22 @@ def login():
 
 O que acontece se a chave não existir dentro do atributo `form`? Neste caso um **`KeyError`** especial levantado. Você pode captura-lo igual a um **`KeyError`** padrão, mas se você não fizer isso, um erro HTTP 400 de Requisição Mal-feita será exibido na página. Mas para a maioria das situações você não tem que lidar com esse problema.
 
-Para acessar parametros enviados em uma URL (`?key=value`) você pode usar o atributo **`args`**:
+Para acessar parâmetros enviados em uma URL (`?key=value`) você pode usar o atributo **`args`**:
 
 ```py
 searchword = request.args.get('key', '')
 ```
 
-Recomendamos o acesso aos parametros da URL com *get* ou pela captura do **`KeyError`** porque os usuários podem mudar a URL e apresenta-los uma página de erro HTTP 400 Requisição Mal-feita nesse caso não seria amigável com o usuário.
+Recomendamos o acesso aos parâmetros da URL com *get* ou pela captura do **`KeyError`** porque os usuários podem mudar a URL e apresenta-los uma página de erro HTTP 400 Requisição Mal-feita nesse caso não seria amigável com o usuário.
 
 Para uma lista de métodos completa e atributos do objeto da requisição, siga para a documentação do **`Request`**.
 
 
-### Carregamento de Arquivo
+### Carregamento de Ficheiro
 
-Você pode manipular arquivos carregados facilmente com o Flask. Apenas certifique-se de não esquecer the configurar o atributo `enctype="multipart/form-data"` em seu formulário HTML, senão o browser não enviará de todo seus arquivos.
+Você pode manipular ficheiros carregados facilmente com o Flask. Apenas certifique-se de não esquecer the configurar o atributo `enctype="multipart/form-data"` em seu formulário HTML, senão o browser não enviará de todo seus ficheiros.
 
-Arquivos carregados são armazenados na memória ou em um local temporário no sistema de arquivos. Você pode acessar esses arquivos buscando por eles no atributo **`files`** do objeto da requisição. Cada arquivo carregado é armazenado dentro daquele dicionário. Ele se comporta como o objeto **`file`** padrão do Python, porém ele tem um método **`save()`** que permite você guardar aquele arquivo no sistema de arquivos do servidor. Aqui está um exemplo símples que mostra como isso funciona:
+Ficheiros carregados são armazenados na memória ou em um local temporário no sistema de ficheiros. Você pode acessar esses ficheiros buscando por eles no atributo **`files`** do objeto da requisição. Cada ficheiro carregado é armazenado dentro daquele dicionário. Ele se comporta como o objeto **`file`** padrão do Python, porém ele tem um método **`save()`** que permite você guardar aquele ficheiro no sistema de ficheiros do servidor. Aqui está um exemplo simples que mostra como isso funciona:
 
 ```py
 from flask import request
@@ -430,7 +430,7 @@ def upload_file():
     ...
 ```
 
-Se você quiser saber como o arquivo foi nomeado no cliente antes de ele ser carregado para a sua aplicação, você pode acessar o atributo **`filename`**. Sempre, por favor tenha em mente que esse valor pode ser esquecido então nunca, mas nunca confie naquele valor. Se você quiser usar o nome do arquivo do cliente para guardar o arquivo no servidor, passe-o através da função **`secure_filename()`** que o Werkzeug oference a você:
+Se você quiser saber como o ficheiro foi nomeado no cliente antes de ele ser carregado para a sua aplicação, você pode acessar o atributo **`filename`**. Sempre, por favor tenha em mente que esse valor pode ser esquecido então nunca, mas nunca confie naquele valor. Se você quiser usar o nome do ficheiro do cliente para guardar o ficheiro no servidor, passe-o através da função **`secure_filename()`** que o Werkzeug oferece a você:
 
 ```py
 from flask import request
@@ -444,11 +444,11 @@ def upload_file():
     ...
 ```
 
-Para exemplos melhores de como fazer carregamento de arquivos, consulte o padrão de [Carregamento de Arquivos](#carregando-arquivos).
+Para exemplos melhores de como fazer carregamento de ficheiros, consulte o padrão de [Carregamento de Ficheiros](#carregando-ficheiros).
 
 ### Cookies
 
-Para acessar os cookies você pode usar o atributo **`cookies`**. Para configurar os cookies você pode usar o método **`set_cookie`** do objeto da resposta. O atributo **`cookies`** do objeto da requisição é um dicionário com todos os cookies enviados pelo cliente. Se você quiser usar sessions(seções), não use os cookies diretamente mas ao invés disso use [Seções](#Seções) no Flask que adiciona alguma segurança em cima dos cookies por você.
+Para acessar os cookies você pode usar o atributo **`cookies`**. Para configurar os cookies você pode usar o método **`set_cookie`** do objeto da resposta. O atributo **`cookies`** do objeto da requisição é um dicionário com todos os cookies enviados pelo cliente. Se você quiser usar sessions(sessões), não use os cookies diretamente mas ao invés disso use [Sessões](#Sessões) no Flask que adiciona alguma segurança em cima dos cookies por você.
 
 Lendo os cookies:
 
@@ -484,7 +484,7 @@ Para isso veja também [Sobre Respostas](#sobre-respostas).
 
 ## Redireção e Erros
 
-Para redicionar um usuário para outro ponto final (endpoint), use a função **`redirect()`**; Para abortar a requisição anticipadamente com um código de erro, use a função **`abort()`**:
+Para redirecionar um usuário para outro ponto final (endpoint), use a função **`redirect()`**; Para abortar a requisição antecipadamente com um código de erro, use a função **`abort()`**:
 
 ```py
 from flask import abort, redirect, url_for
@@ -521,8 +521,8 @@ Veja [Manipuladores de Erro](#manipuladores-de-erros) para mais detalhes.
 O valor retornado da função de visualização é automaticamente convertida em um objeto de resposta por você. Se o valor retornado é uma string é convertida em um objeto de resposta com a string como corpo da resposta, um código de estado `200 OK` e um mimetype *text/html*. Se valor retornado é um dicionário (dict), **`jsonify()`** é chamado para produzir uma resposta. A lógica que o Flask aplica para converter valores retornados em um objetos de resposta é como os seguintes:
 
 1. Se um objeto de resposta do tipo correto é retornado é diretamente da view.
-2. Se é uma string, um objeto de resposta é criado com aquele dado e os parametros padrão.
-3. Se é um dicionario, um objeto de resposta é criado usando `jsonify`.
+2. Se é uma string, um objeto de resposta é criado com aquele dado e os parâmetros padrão.
+3. Se é um dicionário, um objeto de resposta é criado usando `jsonify`.
 4. Se uma tupla for retornada os itens na tupla podem oferecer informações extra. Tais tuplas tem de ser neste formato `(response, status)`, `(response, headers)`, ou `(response, status, headers)`. O valor de `status` sobrescreverá o código do estado e `headers` pode ser uma lista ou dicionário de valores adicionais do cabeçalho.
 5. Se nada disso funcionar, o Flask assumirá o valor retornado é uma aplicação WSGI e converte-o em um objeto de resposta.
 
@@ -548,7 +548,7 @@ def not_found(error):
 
 ### APIs com JSON
 
-Um formato de resposta comum quando se está escrenvendo uma API é o JSON. É fácil começar a escrever tal API com o Flask. Se você retornar um `dict` de uma view, ele será convertido em uma resposta JSON.
+Um formato de resposta comum quando se está escrevendo uma API é o JSON. É fácil começar a escrever tal API com o Flask. Se você retornar um `dict` de uma view, ele será convertido em uma resposta JSON.
 
 ```py
 @app.route("/me")
@@ -561,7 +561,7 @@ def me_api():
     }
 ```
 
-Depedendo do design da sua API, você pode querer criar respostas JSON para outros além do `dict`. Neste caso, use a função **`jsonify()`**, que serializará qualquer tipo de dados JSON suportado. Ou busque dentro da comunidade Flask, extensões que suportam aplicações mais complexas.
+Dependendo do desenho da sua API, você pode querer criar respostas JSON para outros além do `dict`. Neste caso, use a função **`jsonify()`**, que serializará qualquer tipo de dados JSON suportado. Ou busque dentro da comunidade Flask, extensões que suportam aplicações mais complexas.
 
 ```py
 @app.route("/users")
@@ -572,7 +572,7 @@ def users_api():
 
 ## Sessões
 
-Em adição ao objeto da requisição existem também um segundo objeto chamado **`session`** que permite você armazenar informações especificas para um usuário de uma requisição para a próxima. Isso é implementado em cima dos cookies para você e os simbolos dos cookies criptograficamente. O que isso quer dizer é que o usuários poderiam ver os conteudos de seu cookies porém não modifica-los, a menos que eles conheçam a chave secreta usada para acessar.
+Em adição ao objeto da requisição existem também um segundo objeto chamado **`session`** que permite você armazenar informações especificas para um usuário de uma requisição para a próxima. Isso é implementado em cima dos cookies para você e os símbolos dos cookies criptograficamente. O que isso quer dizer é que o usuários poderiam ver os conteúdos de seu cookies porém não modifica-los, a menos que eles conheçam a chave secreta usada para acessar.
 
 Em regra para usar sessões você tem que configurar um chava secreta, Aqui está um exemplo de como as sessões funcionam:
 
@@ -605,12 +605,12 @@ def login():
 
 @app.route('/logout')
 def logout():
-    # remova o nome do usuário se tiver, da seção
+    # remova o nome do usuário se tiver, da sessão
     session.pop('username', None)
     return redirect(url_for('index'))
 ```
 
-O método **`escape()`** mencionado aqui faz o escapamento por você se você não estiver usando o gerador de template (como neste exemplo).
+O método **`escape()`** mencionado aqui faz o escapamento por você se você não estiver usando o gerador de modelo de marcação (como neste exemplo).
 
 > ## Como gerar um boas chaves secretas:
 >
@@ -627,7 +627,7 @@ Ao contrário do padrão de sessões do lado do cliente, se você quiser manipul
 
 ## Mensagem de Alerta
 
-Boas interfaces de usuário e aplicações tem tudo haver com feedback(resposta). Se os usuários não receberem respostas suficientes eles irão provavelmente acabar odeiando a aplicação. O Flask oferece uma maneira realmente símples de dar resposta a um usuário com o sistema de alerta. O sistema de alerta basicamente tornam possível armazenar uma mensagem no fim de uma requisição e acessa-la na proxima (e somente na proxima) requisição. Isso é usualmente combinado com um layout de template para expor a mensagem.
+Boas interfaces de usuário e aplicações tem tudo haver com feedback(resposta). Se os usuários não receberem respostas suficientes eles irão provavelmente acabar odiando a aplicação. O Flask oferece uma maneira realmente simples de dar resposta a um usuário com o sistema de alerta. O sistema de alerta basicamente tornam possível armazenar uma mensagem no fim de uma requisição e acessa-la na proxima (e somente na proxima) requisição. Isso é usualmente combinado com um layout de modelo de marcação para expor a mensagem.
 
 Para alertar uma mensagem use o método **`flash()`**, para ter acesso a mensagem você pode usar **`get_flashed_messages()`** que está também disponível nos templates. Consulte a [Mensagem de Alerta](#mensagem-de-alerta) para ter um exemplo completo.
 
@@ -652,7 +652,7 @@ O **`logger`** atrelado é um **`Logger`** padrão de logging, então siga para 
 
 Leia mais em [Erros da Aplicação](#erros-da-aplicação).
 
-## Interceptando em WSGI Middleware
+## Intercetando em WSGI Middleware
 
 Para adicionar um WSGI Middleware a sua aplicação Flask, envolva o atributo `wsgi_app` da aplicação. Por exemplo, para aplicar **`ProxyFix`** middleware do Werkzeug para executar por trás do Nginx:
 
