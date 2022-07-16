@@ -14,3 +14,6 @@ A Flask depende do gerador de modelos de marcação [Jinja](https://www.palletsp
 Esta parte da documentação, a qual é na sua maioria prosa, começa com algumas informações de fundo sobre a Flask, depois foca-se nas instruções passo a passo para o desenvolvimento web com a Flask.
 
 * [Prefácio](./01-foreword.md)
+    * [O que "micro" significa?](./01-foreword.md#o-que-\"micro\"-quer-realmente-dizer)
+    * [Configuração e Convenções](./01-foreword.md#configuração-e-convenções)
+    * [Crescendo com a Flask](./01-foreword.md#crescendo-com-flask)
