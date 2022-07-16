@@ -6,3 +6,7 @@ A Flask depende do gerador de modelos de marcação [Jinja](https://www.palletsp
 
 * [Documentação da Jinja](https://jinja.palletsprojects.com/)
 * [Documentação da Werkzeug](https://werkzeug.palletsprojects.com/)
+
+## Guia de Utilizador
+
+Esta parte da documentação, a qual é na sua maioria prosa, começa com algumas informações de fundo sobre a Flask, depois foca-se nas instruções passo a passo para o desenvolvimento web com a Flask.
