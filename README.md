@@ -21,3 +21,7 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Fio Condutor Local dentro da Flask](./02-forword-for-experienced-programmers.md#fio-condutor-local-dentro-da-flask)
     * [Programe para Web com Cautela](./02-forword-for-experienced-programmers.md#programa-para-web-com-cautela)
 * [Instalação](./03-installation.md)
+    * [Versão da Python](./03-installation.md#versão-da-python)
+    * [Dependências](./03-installation.md#dependências)
+    * [Ambientes Virtuais](./03-installation.md#ambiente-virtual)
+    * [Instalar a Flask](./03-installation.md#instalar-a-flask)
