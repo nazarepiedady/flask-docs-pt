@@ -1,6 +1,6 @@
 # Instalação
 
-## Versão do Python
+## Versão da Python
 
 Nós recomendamos o uso da última versão do Python 3. O Flask suporta o Python 3.5 até as mais recentes, Python 2.7, e o PyPy.
 
@@ -25,13 +25,13 @@ Estas distribuições não serão automaticamente instaladas. O Flask irá detet
 
 ## Ambiente Virtual
 
-Use um ambiente virtual para gerenciar as dependências para o seu projeto, tanto as de desenvolvimento quanto as de produção.
+Use um ambiente virtual para gestão das dependências para o seu projeto, tanto as de desenvolvimento quanto as de produção.
 
 Quais problemas um ambiente virtual resolve? Ajuda a manter os vários projetos Python que você tem, aos quais possivelmente estão usando versões de bibliotecas Python diferentes, ou até mesmo versões diferentes do próprio Python. Novas versões de bibliotecas para um projeto podem quebrar a compatibilidade em outro projeto.
 
 Ambientes virtuais são grupos independente de bibliotecas Python, uma para cada projeto. Pacotes instalados a um projeto não irão afetar outros projetos, nem interferir com o funcionamento dos pacotes do sistema operacional.
 
-Python 3 vem embalado com o módulo `venv` para criar ambientes virtuais. Se você estiver usando uma versão moderna do Python, você pode continuar para a seção seguinte.
+Python 3 vem embalado com o módulo `venv` para criar ambientes virtuais. Se você estiver usando uma versão moderna do Python, você pode continuar para a secção seguinte.
 
 Se você estiver usando Python 2, consulte primeiro [Instalar o virualenv](#instalar-o-virtualenv).
 
@@ -51,7 +51,7 @@ No Windows:
 $ py -3 -m venv venv
 ```
 
-Se você precisar instalar o módulo virtualvenv porque está usando o Python 2, use o comando a seguir na vez do de acima:
+Se você precisar instalar o módulo `virtualvenv` porque está usando o Python 2, use o comando a seguir na vez do de acima:
 
 ```sh
 $ python2 -m virtualvenv venv
@@ -79,19 +79,19 @@ No Windows:
 
 A sua interface de linha de comando irá mudar para exibir o nome do ambiente virtual em uso.
 
-## Instale o Flask
+## Instalar a Flask
 
-Dentro do ambiente virtual em uso, use o seguinte comando para instalar o Flask:
+Dentro do ambiente virtual em uso, use o seguinte comando para instalar a Flask:
 
 ```sh
 $ pip install Flask
 ```
 
-O Flask está agora instalado. Consulte o [Começo Rápido](#começo-rápido) ou [Resumo da Documentação](#resumo-da-documentação).
+A Flask está agora instalada. Consulte a [Introdução Rápida](./04-quickstart.md) ou [Resumo da Documentação](#resumo-da-documentação).
 
 #### Vivendo no Limite
 
-Se você quiser trabalhar com a última versão do código do Flask mesmo antes deste ser lançado, instale ou atualize o código a partir da ramo principal (master):
+Se você quiser trabalhar com a última versão do código da Flask mesmo antes deste ser lançado, instale ou atualize o código a partir da ramo principal (master):
 
 ```sh
 $ pip install -U https://github.com/pallets/flask/archive/master.tar.gz
@@ -101,7 +101,7 @@ $ pip install -U https://github.com/pallets/flask/archive/master.tar.gz
 
 Se você estiver usando o Python 2, o módulo `venv` não está disponível para você usar. Ao invés disso, instale o [virtualenv](https://virtualenv.pypa.io/).
 
-No Linux, virtualenv é provido pelo seu gestor de pacotes:
+No Linux, `virtualenv` é provido pelo seu gestor de pacotes:
 
 ```sh
 # Debian, Ubuntu
