@@ -18,3 +18,5 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Configuração e Convenções](./01-foreword.md#configuração-e-convenções)
     * [Crescendo com a Flask](./01-foreword.md#crescendo-com-flask)
 * [Prefácio para Programadores Experientes](./02-forword-for-experienced-programmers.md)
+    * [Fio Condutor Local dentro da Flask](./02-forword-for-experienced-programmers.md#fio-condutor-local-dentro-da-flask)
+    * [Programe para Web com Cautela](./02-forword-for-experienced-programmers.md#programa-para-web-com-cautela)
