@@ -120,6 +120,24 @@ Mais informações sobre o uso do depurador pode ser encontrado na [documentaç�
 
 Tens outro depurador em mente? Veja [Trabalhando com Depuradores](#trabalhando-com-depuradores).
 
+## Tratando o HTML
+
+Quando estiver retornando o HTML (o tipo de resposta padrão em Flask), quaisquer valores fornecidos pelo utilizador traduzidos na saída devem ser tratados para proteger de ataques de injeção. Os modelos de marcação de HTML interpretados com a Jinja, introduzida depois, fará isto automaticamente.
+
+`escape()`, mostrado aqui, pode ser usado manualmente. É omitido na maioria dos exemplos por questões de brevidade, mas você sempre deve estar ciente de como está utilizando dados não confiáveis.
+
+```py
+from markupsafe import escape
+
+@app.route("/<name>")
+def hello(name):
+    return f"Hello, {escape(name)}!"
+```
+
+Se um utilizador conseguiu submeter o nome `<script>alert("bad")</script>`, o tratamento faz com que ele seja transformado em texto, ao invés de executar o `script` no navegador do utilizador.
+
+O `<name>` na rota captura um valor a partir da URL e passa-o para uma função de apresentação. Estas variáveis são explicadas abaixo.
+
 ## Roteamento
 
 Aplicações web modernas usam URLs semânticas para ajudar os usuários. Usuários são mais propensos a gostarem de uma página e voltar a ela se a página usar uma URL semântica que eles possam lembrar e usar para visitar diretamente uma página.
