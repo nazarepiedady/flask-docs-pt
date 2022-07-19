@@ -25,3 +25,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Dependências](./03-installation.md#dependências)
     * [Ambientes Virtuais](./03-installation.md#ambiente-virtual)
     * [Instalar a Flask](./03-installation.md#instalar-a-flask)
+* [Introdução Rápida](./04-quickstart.md)
