@@ -165,18 +165,18 @@ from markupsafe import escape
 
 @app.route('/user/<username>')
 def show_user_profile(username):
-    # exiba o perfil do usuário para esse usuário
-    return 'User %s' % escape(username)
+    # exiba o perfil do utilizador para esse utilizador
+    return f'User {escape(username)}'
 
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
     # exiba a publicação com o dado id, o id é um inteiro
-    return 'Post %d' % post_id
+    return f'Post {post_id}'
 
 @app.route('/path/<path:subpath>')
 def show_subpath(subpath):
-    # exiba a subpasta depois de /path/
-    return 'Subpath %s' % escape(subpath)
+    # exiba o caminho depois de /path/
+    return f'Subpath {escape(subpath)}'
 ```
 
 Tipos de conversores:
