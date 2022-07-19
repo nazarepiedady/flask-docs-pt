@@ -26,3 +26,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Ambientes Virtuais](./03-installation.md#ambiente-virtual)
     * [Instalar a Flask](./03-installation.md#instalar-a-flask)
 * [Introdução Rápida](./04-quickstart.md)
+    * [Uma Aplicação Minima](./04-quickstart.md#uma-aplicação-minima)
