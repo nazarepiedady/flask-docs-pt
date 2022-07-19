@@ -30,3 +30,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [O Que Fazer Se O Servidor Não Iniciar](./04-quickstart.md#o-que-fazer-caso-o-servidor-não-iniciar)
     * [Mode de Depuração](./04-quickstart.md#modo-de-depuração)
     * [Tratando o HTML](04-quickstart.md#tratando-o-html)
+    * [Roteamento](04-quickstart.md#roteamento)
