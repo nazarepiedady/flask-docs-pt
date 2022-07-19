@@ -27,3 +27,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Instalar a Flask](./03-installation.md#instalar-a-flask)
 * [Introdução Rápida](./04-quickstart.md)
     * [Uma Aplicação Minima](./04-quickstart.md#uma-aplicação-minima)
+    * [O Que Fazer Se O Servidor Não Iniciar](./04-quickstart.md#o-que-fazer-caso-o-servidor-não-iniciar)
