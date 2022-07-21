@@ -670,7 +670,7 @@ O [**`logger`**]() atrelado é um [**`Logger`**]() padrão de logging, então si
 
 Leia mais em [Erros da Aplicação](#erros-da-aplicação).
 
-## Intercetando em WSGI Middleware
+## Intercetando no Intermediário de WSGI
 
 Para adicionar um WSGI Middleware a sua aplicação Flask, envolva o atributo `wsgi_app` da aplicação. Por exemplo, para aplicar **`ProxyFix`** middleware do Werkzeug para executar por trás do Nginx:
 
