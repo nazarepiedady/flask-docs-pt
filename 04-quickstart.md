@@ -687,6 +687,6 @@ Extensões são pacotes que ajudam você a concluir tarefas comuns. Por example,
 
 Para saber mais sobre extensões no Flask, dê uma olhada em [Extensões](#extensões).
 
-## Instalar em um Servidor Web
+## Instalando em um Servidor Web
 
 Pronto para instalar sua nova aplicação Flask? Vá para [Opções de Instalação](#opções-de-instalação).
