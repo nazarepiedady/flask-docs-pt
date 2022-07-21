@@ -36,3 +36,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Acessando os Dados da Requisição](04-quickstart.md#acessando-os-dados-da-requisição)
     * [Redirecionamentos e Erros](04-quickstart.md#redirecionamentos-e-erros)
     * [Sobre Respostas](04-quickstart.md#sobre-respostas)
+    * [Sessões](04-quickstart.md#sessões)
