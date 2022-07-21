@@ -37,3 +37,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Redirecionamentos e Erros](04-quickstart.md#redirecionamentos-e-erros)
     * [Sobre Respostas](04-quickstart.md#sobre-respostas)
     * [Sessões](04-quickstart.md#sessões)
+    * [Mensagem de Alerta](./04-quickstart.md#mensagem-de-alerta)
