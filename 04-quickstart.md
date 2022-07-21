@@ -681,7 +681,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 
 Envolvendo o `app.wsgi_app` ao invés de `app` significa que `app` continua apontando para a sua aplicação Flask, e não para o middleware, então você pode continuar usar e configurar `app` diretamente.
 
-## Usando Extensões do Flask
+## Utilizando Extensões de Flask
 
 Extensões são pacotes que ajudam você a concluir tarefas comuns. Por example, Flask-SQLAlchemy fornece suporte ao SQLAlchemy que torna simples e fácil o seu uso com Flask.
 
