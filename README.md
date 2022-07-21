@@ -38,3 +38,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Sobre Respostas](04-quickstart.md#sobre-respostas)
     * [Sessões](04-quickstart.md#sessões)
     * [Mensagem de Alerta](./04-quickstart.md#mensagem-de-alerta)
+    * [Registo](04-quickstart.md#registo)
