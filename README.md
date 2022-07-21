@@ -40,3 +40,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Mensagem de Alerta](./04-quickstart.md#mensagem-de-alerta)
     * [Registo](04-quickstart.md#registo)
     + [Intercetando no Intermediário de WSGI](04-quickstart.md#intercetando-no-intermediário-de-wsgi)
+    * [Utilizando Extensões de Flask](04-quickstart.md#utilizando-extensões-de-flask)
