@@ -500,7 +500,7 @@ Algumas vezes você quererá configurar um cookie em um ponto onde o objeto da r
 
 Para isso veja também [Sobre Respostas](#sobre-respostas).
 
-## Redireção e Erros
+## Redirecionamentos e Erros
 
 Para redirecionar um usuário para outro ponto final (endpoint), use a função **`redirect()`**; Para abortar a requisição antecipadamente com um código de erro, use a função **`abort()`**:
 
