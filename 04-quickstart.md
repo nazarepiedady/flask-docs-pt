@@ -649,7 +649,7 @@ Boas interfaces de usuário e aplicações tem tudo haver com feedback(resposta)
 
 Para alertar uma mensagem use o método **`flash()`**, para ter acesso a mensagem você pode usar **`get_flashed_messages()`** que está também disponível nos templates. Consulte a [Mensagem de Alerta](#mensagem-de-alerta) para ter um exemplo completo.
 
-## Logging
+## Registo
 
 * **Relatório de Mudança**:
     * Novo desde a versão 0.3.
@@ -666,7 +666,7 @@ app.logger.warning('A warning occurred (%d apples)', 42)
 app.logger.error('An error occurred')
 ```
 
-O **`logger`** atrelado é um **`Logger`** padrão de logging, então siga para documentação oficial de **`logging`** para mais informações.
+O [**`logger`**]() atrelado é um [**`Logger`**]() padrão de logging, então siga para documentação oficial de [**`logging`**]() para mais informações.
 
 Leia mais em [Erros da Aplicação](#erros-da-aplicação).
 
