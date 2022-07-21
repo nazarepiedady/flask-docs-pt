@@ -32,3 +32,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Tratando o HTML](04-quickstart.md#tratando-o-html)
     * [Roteamento](04-quickstart.md#roteamento)
     * [Ficheiros Estáticos](04-quickstart.md#ficheiros-estáticos)
+    * [Interpretando os Modelos de Marcação](04-quickstart.md#interpretando-os-modelos-de-marcação)

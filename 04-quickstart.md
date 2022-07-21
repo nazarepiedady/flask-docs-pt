@@ -286,11 +286,11 @@ url_for('static', filename='style.css')
 
 O ficheiro tem de estar armazenado no sistema de ficheiros como `static/style.css`.
 
-## Renderizando Modelos de Marcação
+## Interpretando os Modelos de Marcação
 
-Gerar o HTML a partir do Python não é divertido, e atualmente um pouco embaraçoso porque você tem de fazer o escapamento do HTML manualmente para manter a segurança da aplicação. Por causa disto o Flask configura o gestor de modelo de marcação [Jinja2](http://jinja.pocoo.org/) automaticamente para você.
+Gerar o HTML a partir do Python não é divertido, e atualmente um pouco embaraçoso porque você tem de fazer o tratamento da HTML manualmente para manter a segurança da aplicação. Por causa disto o Flask configura o gestor de modelo de marcação [Jinja2](http://jinja.pocoo.org/) automaticamente para você.
 
-Você pode usar o método **`render_template()`** para renderizar um modelo de marcação. Tudo que você tem de fazer é prover o nome do modelo de marcação e as variáveis que você quer passar para o gestor de modelo de marcação como argumentos de palavra-chave. Aqui está um exemplo simples de como renderizar um modelo de marcação:
+Você pode usar o método **`render_template()`** para interpretar um modelo de marcação. Tudo que você tem de fazer é prover o nome do modelo de marcação e as variáveis que você quer passar para o gestor de modelo de marcação como argumentos de palavra-chave. Aqui está um exemplo simples de como renderizar um modelo de marcação:
 
 ```py
 from flask import render_template
