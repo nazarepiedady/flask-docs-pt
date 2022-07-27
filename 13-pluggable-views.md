@@ -55,3 +55,36 @@ class UserView(ListView):
     def get_objects(self):
         return User.query.all()
 ```
+
+Isto de certeza não é tão útil para um exemplo tão pequeno, mas é bom o suficiente para explicar o princípio básico. Quando tiveres uma apresentação baseada em classe a questão surgi para o que `self` aponta. A maneira que isto funciona é que sempre que a requisição é despachada uma nova instância da classe é criada e o método [`dispatch_request()`](#) é chamado com os parâmetros da regra de URL. A classe em si mesma é instanciada com os parâmetros passados para a função [`as_view()`](#). Por exemplo você pode escrever uma classe tipo esta:
+
+```py
+class RenderTemplateView(View):
+    def __init__(self, template_name):
+        self.template_name = template_name
+    def dispatch_request(self):
+        return render_template(self.template_name)
+```
+
+E depois podes registá-la deste jeito:
+
+```py
+app.add_url_rule('/about', view_func=RenderTemplateView.as_view(
+    'about_page', template_name='about.html'))
+```
+
+## Sugestões de Método
+
+As apresentações conectáveis estão presas a aplicação como uma função regular com o uso tanto de [`route()`](#) ou de [`add_url_rule()`](#). Isto no entanto significa que terias que fornecer os nomes dos métodos HTTP que a apresentação suporta quando atribuires esta. No sentido de mover aquela informação para a classe você pode fornecer um atributo [`methods`](#) que tem esta informação:
+
+```py
+class MyView(View):
+    methods = ['GET', 'POST']
+
+    def dispatch_request(self):
+        if request.method == 'POST':
+            ...
+        ...
+
+app.add_url_rule('/myview', view_func=MyView.as_view('myview'))
+```
