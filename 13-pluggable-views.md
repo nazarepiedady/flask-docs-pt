@@ -88,3 +88,25 @@ class MyView(View):
 
 app.add_url_rule('/myview', view_func=MyView.as_view('myview'))
 ```
+
+## Comunicação Baseada em Método
+
+Para APIs em RESTful é especialmente útil executar uma função diferente para cada método de HTTP. Com a [`flask.views.MethodView`](#) podes facilmente fazer isto. Cada método de HTTP aponta para um método da classe com o mesmo nome (só em minúsculas):
+
+```py
+from flask.views import MethodView
+
+class UserAPI(MethodView):
+
+    def get(self):
+        users = User.query.all()
+        ...
+    
+    def post(self):
+        user = User.from_form_data(request.form)
+        ...
+
+app.add_url_rule('/users/', view_func=UserAPI.as_view('users'))
+```
+
+Desta maneira você também não precisa fornecer o atributo [`methods`](#). É automaticamente definido baseada nos métodos definidos na classe.
