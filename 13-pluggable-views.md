@@ -110,3 +110,21 @@ app.add_url_rule('/users/', view_func=UserAPI.as_view('users'))
 ```
 
 Desta maneira você também não precisa fornecer o atributo [`methods`](#). É automaticamente definido baseada nos métodos definidos na classe.
+
+
+## Decorando Apresentações
+
+Visto que a classe de apresentação em si mesma não é a função de apresentação que é adicionada ao sistema de roteamento, não faz muito sentido decorar a própria classe. No lugar disto precisas decorar o valor de retorno de [`as_view()`](#):
+
+```py
+def user_required(f):
+    """Verifique se o utilizador está iniciado ou lance o erro 401"""
+    def decorator(*args, **kwargs):
+        if not g.user:
+            abort(401)
+        return f(*args, **kwargs):
+    return decorator
+
+view = user_required(UserAPI.as_view('users'))
+app.add_url_rule('/users/', view_func=view)
+```
