@@ -137,3 +137,68 @@ class UserAPI(MethodView):
 ```
 
 Devido a própria natureza implícita da perspetiva do chamador tu não podes utilizar decoradores de apresentações regulares sobre métodos individuais da apresentação de qualquer modo, lembre-se disto.
+
+
+## Método de Apresentações para APIs
+
+APIs de Web estão muitas vezes trabalhando muito próximos com os verbos de HTTP assim faz muito sentido implementar tal API baseada no [`MethodView`](#). Dito isto, repararás que a API precisará diferentes regras de URL que vão para o mesmo método de apresentação na maior parte do tempo. Por exemplo, considere que estás expondo um objeto de utilizador na web:
+
+URL           | Método   | Descrição
+----          | ------   | --------- 
+`/users/`     | `GET`    | Devolve uma lista com todos utilizadores
+`/users/`     | `POST`   | Cria um novo utilizador
+`/users/<id>` | `GET`    | Exibe um único utilizador
+`/users/<id>` | `PUT`    | Atualiza um único utilizador
+`/users/<id>` | `DELETE` | Elimina um único utilizador
+
+Então o que tu farias com o [`MethodView`](#)? O truque é tirar vantagem do fato de que podes fornecer várias regras para a mesma apresentação.
+
+Vamos assumir por agora que a apresentação se pareceria com isto:
+
+```py
+class UserAPI(MethodView):
+    def get(self, user_id):
+        if user_id is None:
+            # retornar uma lista de utilizadores
+            pass
+        else:
+            # expor uma único utilizador
+            pass
+    
+    def post(self):
+        # criar um novo utilizador
+        pass
+    
+    def delete(self, user_id):
+        # eliminar um único utilizador
+        pass
+    
+    def put(self, user_id):
+        # atualizar um único utilizador
+        pass
+```
+
+Então como capturamos isto com o sistema de roteamento? Com a adição de duas regras e mencionando explicitamente os métodos para cada rota:
+
+```py
+user_view = UserAPI.as_view('user_api')
+app.add_url_rule('/users/', defaults={'user_id': None},
+                 view_func=user_view, methods=['GET',])
+app.add_url_rule('/users/', view_func=user_view, methods=['POST',])
+app.add_url_rule('/users/<int:user_id>', view_func=user_view,
+                 methods=['GET', 'PUT', 'DELETE'])
+```
+
+Se tiveres muitas APIs que são semelhantes tu podes refatorar o código do registo:
+
+```py
+def register_api(view, endpoint, url, pk='id', pk_type='int'):
+    view_func = view.as_view(endpoint)
+    app.add_url_rule(url, defaults={pk: None},
+                     view_func=view_func, methods=['GET',])
+    app.add_url_rule(url, view_func=view_func, methods=['POST',])
+    app.add_url_rule(f'{url}<{pk_type}:{pk}>', view_func=view_func,
+                     methods=['GET', 'PUT', 'DELETE'])
+
+register_api(UserAPI, 'user_api', '/users/', pk='user_id')
+```
