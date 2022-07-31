@@ -128,3 +128,12 @@ def user_required(f):
 view = user_required(UserAPI.as_view('users'))
 app.add_url_rule('/users/', view_func=view)
 ```
+
+Desde a versão 0.8 da Flask existe também uma maneira alternativa onde podes especificar uma lista de decoradores para aplicar em uma decoração de classe:
+
+```py
+class UserAPI(MethodView):
+    decorators = [user_required]
+```
+
+Devido a própria natureza implícita da perspetiva do chamador tu não podes utilizar decoradores de apresentações regulares sobre métodos individuais da apresentação de qualquer modo, lembre-se disto.
