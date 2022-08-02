@@ -14,3 +14,10 @@ A Flask resolve este problema com o *contexto de aplicação*. No lugar de refer
 A Flask *empurra* automaticamente um contexto de aplicação quando estiveres manipulando uma requisição. As funções de apresentação, manipuladores de erro, outras funções que executam durante uma requisição terão acesso ao [**`current_app`**](#).
 
 A Flask irá automaticamente empurrar um contexto de aplicação quando estiveres executando comandos de interface de linha de comando registados com a [**`Flask.cli`**] utilizando a `@app.cli.command()`.
+
+
+## O Tempo de Vida do Contexto
+
+O contexto de aplicação é criado e destruído quando necessário. Quando uma aplicação Flask começar a manipulação de uma requisição, ela empurra um contexto de aplicação e um [contexto de requisição](#). Quando a requisição terminar ela passa o contexto da requisição e depois o contexto da aplicação. Normalmente, um contexto de aplicação terá o mesmo tempo de vida de um uma requisição.
+
+Consulte [O Contexto de Requisição](#) para mais informações sobre como os contextos funcionam e o ciclo de vida completo de uma requisição.
