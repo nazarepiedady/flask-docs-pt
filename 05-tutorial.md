@@ -361,14 +361,14 @@ Initialized the database.
 
 Agora passará a existir um ficheiro com o nome `flaskr.sqlite` dentro da pasta `instance` no seu projeto.
 
-Continue para [Estruturas (Blueprints) e Apresentações (Views)](#estruturas-(blueprints)-e-apresentações-(views)).
+Continue para [Estruturas (Blueprints) e Apresentações (Views)](#estruturas-e-apresentações).
 
 
-## Estruturas (Blueprints) e Apresentações (Views)
+## Estruturas e Apresentações
 
 Uma função de apresentação é o código que você escreve para responder a requisições para sua aplicação. O Flask usa um padrão para corresponder a URL da requisição de entrada para uma apresentação que deve lidar com isso. A apresentação retorna dados que o Flask transforma em uma resposta de saída. O Flask também pode ir em outra direção e gerar uma URL para uma apresentação baseada em seu nome e argumentos.
 
-### Criar uma Estrutura (Blueprint)
+### Criar uma Estrutura
 
 Uma **`Estrutura (Blueprint)`** é uma maneira de organizar um grupo de apresentações relacionadas e outros códigos. Em vez de registrar as apresentações e outros códigos diretamente com uma aplicação, eles são registados com uma estrutura. Em seguida, a estrutura é registada com a aplicação quando estiver disponível na função de fabricação.
 
