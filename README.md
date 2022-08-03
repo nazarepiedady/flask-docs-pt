@@ -48,3 +48,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Definir e Acessar a Base de Dado](05-tutorial.md#definir-e-acessar-o-banco-de-dados)
     * [Estruturas e Apresentações](05-tutorial.md#estruturas-e-apresentações)
     * [Modelos de Marcação de Hipertexto](05-tutorial.md#modelos-de-marcação)
+    * [Ficheiros Estáticos](05-tutorial.md#ficheiros-estáticos)
