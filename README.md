@@ -43,3 +43,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Utilizando Extensões de Flask](04-quickstart.md#utilizando-extensões-de-flask)
     * [Instalando em um Servidor Web](04-quickstart.md#instalando-em-um-servidor-web)
 * [Lição](05-tutorial.md)
+    * [Estrutura de Projeto](05-tutorial.md#estrutura-de-projeto)
