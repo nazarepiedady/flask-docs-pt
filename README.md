@@ -44,3 +44,5 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Instalando em um Servidor Web](04-quickstart.md#instalando-em-um-servidor-web)
 * [Lição](05-tutorial.md)
     * [Estrutura de Projeto](05-tutorial.md#estrutura-de-projeto)
+    * [Configuração da Aplicação](05-tutorial.md#configuração-da-aplicação)
+    
