@@ -48,3 +48,55 @@ def create_app():
 ```
 
 Se veres aquele erro em algum lugar no teu código que não está relacionado a configuração da aplicação, muito provavelmente indica que deves mover aquele código para dentro de uma função de apresentação ou comando de interface de linha de comando.
+
+
+## Armazenando de Dados
+
+O contexto de aplicação é um bom lugar para guardar dados comuns durante uma requisição ou comando de interface de linha de comando. A Flask fornece o objeto [**`g`**](#) para este propósito. É um simples objeto de nome reservado que tem o mesmo tempo de vida de um contexto de aplicação.
+
+---
+
+### Note:
+
+O nome `g` significa “global”, mas esta está referindo-se aos dados que são globais *dentro de um contexto*. Os dados em `g` são perdidos depois do contexto terminar, e não é um lugar apropriado para guardar dados entre requisições. Utilize a [**`session`**](#) ou uma base de dados para guardar os dados através das requisições.
+
+---
+
+Um uso comum para [**`g`**](#) é de gerir recursos durante uma requisição.
+
+1. `get_X()` cria o recurso `X` se ele não existir, cacheando ele como `g.X`.
+2. `teardown_X()` fecha ou de outro modo desloca o recurso se ele existir. Está registado como um manipulador de [**`teardown_appcontext()`**](#).
+
+Por exemplo, tu podes gerir uma conexão de base de dado utilizando este padrão:
+
+```py
+from flask import g
+
+def get_db():
+    if 'db' not in g:
+      g.db = connect_to_database()
+
+    return g.db
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    db = g.pop('db', None)
+
+    if db is not None:
+        db.close()
+```
+
+Durante uma requisição, todas chamadas para `get_db()` retornará a mesma conexão, será automaticamente fechada no final da requisição.
+
+Tu podes utilizar [**`LocalProxy`**] para produzir um novo contexto local a partir de `get_db()`:
+
+```py
+from werkzeug.local import LocalProxy
+db = LocalProxy(get_db)
+```
+
+O acesso ao `db` chamará `get_db` internamente, da mesma maneira que [**`current_app`**](#) funciona.
+
+---
+
+Se estiveres escrevendo uma extensão, [**`g`**](#) deve ser reservado para o código do utilizador. Tu podes guardar dados internos no próprio contexto, mas certifique-se de utilizar um nome suficientemente único. O contexto atual é acessado com [**`_app_ctx_stack.top`**](#). Para mais informações consulte [Desenvolvimento de Extensão de Flask](#).
