@@ -21,3 +21,30 @@ A Flask irá automaticamente empurrar um contexto de aplicação quando estivere
 O contexto de aplicação é criado e destruído quando necessário. Quando uma aplicação Flask começar a manipulação de uma requisição, ela empurra um contexto de aplicação e um [contexto de requisição](#). Quando a requisição terminar ela passa o contexto da requisição e depois o contexto da aplicação. Normalmente, um contexto de aplicação terá o mesmo tempo de vida de um uma requisição.
 
 Consulte [O Contexto de Requisição](#) para mais informações sobre como os contextos funcionam e o ciclo de vida completo de uma requisição.
+
+
+## Empurrar um Contexto Manualmente
+
+Se tentares acessar a [**`current_app`**](#), ou qualquer coisa que a utilize, fora de um contexto de aplicação, receberás esta mensagem de erro:
+
+```
+RuntimeError: Working outside of application context.
+
+This typically means that you attempted to use functionality that
+needed to interface with the current application object in some way.
+To solve this, set up an application context with app.app_context().
+```
+
+Se veres este erro enquanto estiveres configurando a tua aplicação, tal como quando estiveres inicializando uma extensão, tu podes empurrar um contexto manualmente desde tenhas acesso direto ao `app`. Utilize [**`app_context()`**](#) com um bloco `with`, e tudo que executares dentro do bloco terá acesso ao [**`current_app`**](#).
+
+```py
+def create_app():
+    app = Flask(__name__)
+
+    with app.app_context():
+        init_db()
+
+    return app
+```
+
+Se veres aquele erro em algum lugar no teu código que não está relacionado a configuração da aplicação, muito provavelmente indica que deves mover aquele código para dentro de uma função de apresentação ou comando de interface de linha de comando.
