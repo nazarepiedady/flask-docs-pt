@@ -100,3 +100,10 @@ O acesso ao `db` chamará `get_db` internamente, da mesma maneira que [**`curren
 ---
 
 Se estiveres escrevendo uma extensão, [**`g`**](#) deve ser reservado para o código do utilizador. Tu podes guardar dados internos no próprio contexto, mas certifique-se de utilizar um nome suficientemente único. O contexto atual é acessado com [**`_app_ctx_stack.top`**](#). Para mais informações consulte [Desenvolvimento de Extensão de Flask](#).
+
+
+## Eventos e Sinais
+
+A aplicação chamará as funções registadas com [**`teardown_appcontext()`**](#) quando o contexto da aplicação for passado.
+
+Se [**`signals_available`**](#) for verdadeiro, os seguintes sinais são enviados: [**`appcontext_pushed`**](#), [**`appcontext_tearing_down`**](#), e [**`appcontext_popped`**](#).
