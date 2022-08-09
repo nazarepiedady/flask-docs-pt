@@ -1103,10 +1103,10 @@ wheel          0.30.0
 
 Nada muda no que diz respeito a como você tem estado a executar seu projeto. `FLASK_APP` continua a estar configurado para o `flaskr` e `flask run` continua a executar a aplicação, mas agora você pode chama-lo de qualquer, não apenas na dentro da pasta `flask-tutorial`.
 
-Continue para [Cobertura de Testes](#cobertura-de-testes).
+Continue para [Cobertura de Teste](#cobertura-de-teste).
 
 
-## Cobertura de Testes
+## Cobertura de Teste
 
 Escrever testes unitários para sua aplicação permite você verificar se o código que você escreveu funciona da maneira esperada por você. O Flask fornece um cliente de teste que simula requisições para a aplicação e retorna os dados da resposta.
 
