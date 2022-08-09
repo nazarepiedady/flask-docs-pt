@@ -51,3 +51,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Ficheiros Estáticos](05-tutorial.md#ficheiros-estáticos)
     * [Estrutura do Blogue](05-tutorial.md#estrutura-de-blogue)
     * [Tornar o Projeto Instalável](05-tutorial.md#tornar-o-projeto-instalável)
+    * [Cobertura de Teste](05-tutorial.md#cobertura-de-teste)
