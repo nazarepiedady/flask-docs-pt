@@ -58,3 +58,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Contexto Padrão](06-templates.md#contexto-padrão)
     * [Controlando o Autoescapamento](06-templates.md#controlando-autoescapamento)
     * [Registando Filtros](06-templates.md#registando-filtros)
+    * [Processadores de Contexto](06-templates.md#processadores-de-contexto)
