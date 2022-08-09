@@ -50,3 +50,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Modelos de Marcação de Hipertexto](05-tutorial.md#modelos-de-marcação)
     * [Ficheiros Estáticos](05-tutorial.md#ficheiros-estáticos)
     * [Estrutura do Blogue](05-tutorial.md#estrutura-de-blogue)
+    * [Tornar o Projeto Instalável](05-tutorial.md#tornar-o-projeto-instalável)
