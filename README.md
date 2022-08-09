@@ -49,3 +49,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Estruturas e Apresentações](05-tutorial.md#estruturas-e-apresentações)
     * [Modelos de Marcação de Hipertexto](05-tutorial.md#modelos-de-marcação)
     * [Ficheiros Estáticos](05-tutorial.md#ficheiros-estáticos)
+    * [Estrutura do Blogue](05-tutorial.md#estrutura-de-blogue)
