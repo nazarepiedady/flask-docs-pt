@@ -1632,7 +1632,7 @@ SECRET_KEY = b'_5#y2L"F4Q8z\n\xec]/'
 
 Você pode também aplicar qualquer outra configuração necessária aqui, contudo `SECRET_KEY` é a unica necessária para o Flaskr.
 
-### Executar com um Servidor em Produção
+### Executar no Servidor em Produção
 
 Quando estiver executando publicamente ao invês de em desenvolvimento, você não deve usar o servidor de desenvolvimento incluso (`flask run`). O servidor de desenvolvimento é fornecido pelo Werkzeug por conveniência, porém não está desenhado para ser particularmente eficiente, estável ou seguro.
 
