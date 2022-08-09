@@ -57,3 +57,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Configuração da Jinja2](06-templates.md#configuração-do-jinja2)
     * [Contexto Padrão](06-templates.md#contexto-padrão)
     * [Controlando o Autoescapamento](06-templates.md#controlando-autoescapamento)
+    * [Registando Filtros](06-templates.md#registando-filtros)
