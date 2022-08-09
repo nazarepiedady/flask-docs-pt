@@ -54,3 +54,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Cobertura de Teste](05-tutorial.md#cobertura-de-teste)
     * [Executar no Servidor em Produção](05-tutorial.md#executar-no-servidor-em-produção)
 * [Modelos de Marcação de Hipertexto](06-templates.md)
+    * [Configuração da Jinja2](06-templates.md#configuração-do-jinja2)
