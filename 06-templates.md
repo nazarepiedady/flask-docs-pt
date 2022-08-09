@@ -4,7 +4,7 @@ O Flask usa o Jinja2 como seu gerador de modelos de marcação de hipertexto. Ob
 
 Esta secção somente lhe proverá uma introdução rápida sobre como o Jinja2 é integrado ao Flask. Se você quiser informação sobre a sintaxe do gerador de modelo de marcação de hipertexto, consulte a [Documentação Oficial de Modelo de Marcação de Hipertexto do Jinja2](http://jinja.pocoo.org/docs/templates/) para obter mais detalhes.
 
-## Configuração do Jinja2
+## Configuração da Jinja2
 
 A menos que seja modificada, o Jinja2 é configurado pelo Flask da seguinte maneira:
 
