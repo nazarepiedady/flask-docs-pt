@@ -52,4 +52,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Estrutura do Blogue](05-tutorial.md#estrutura-de-blogue)
     * [Tornar o Projeto Instalável](05-tutorial.md#tornar-o-projeto-instalável)
     * [Cobertura de Teste](05-tutorial.md#cobertura-de-teste)
-    * []
+    * [Executar no Servidor em Produção](05-tutorial.md#executar-no-servidor-em-produção)
