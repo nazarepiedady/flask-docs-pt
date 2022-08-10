@@ -66,3 +66,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Seguindo os Redirecionamentos](07-testing-flask-applications.md#seguindo-os-redirecionamentos)
     * [Acessando e Modificando a Sessão](07-testing-flask-applications.md#acessando-e-modificando-sessão)
     * [Executando Comandos com o Executor de CLI](07-testing-flask-applications.md#executando-comandos-com-o-executor-de-cli)
+    * [Testes que dependem de um Contexto Ativo](07-testing-flask-applications.md#testes-que-dependem-de-um-contexto-ativo)
