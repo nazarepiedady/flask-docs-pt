@@ -65,3 +65,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Enviando Requisições com o Cliente de Teste](07-testing-flask-applications.md#enviando-requisições-com-o-cliente-de-teste)
     * [Seguindo os Redirecionamentos](07-testing-flask-applications.md#seguindo-os-redirecionamentos)
     * [Acessando e Modificando a Sessão](07-testing-flask-applications.md#acessando-e-modificando-sessão)
+    * [Executando Comandos com o Executor de CLI](07-testing-flask-applications.md#executando-comandos-com-o-executor-de-cli)
