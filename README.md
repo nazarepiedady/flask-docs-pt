@@ -68,3 +68,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Executando Comandos com o Executor de CLI](07-testing-flask-applications.md#executando-comandos-com-o-executor-de-cli)
     * [Testes que dependem de um Contexto Ativo](07-testing-flask-applications.md#testes-que-dependem-de-um-contexto-ativo)
 * [Manipulando Erros de Aplicação](08-handling-application-errors.md)
+    * [Ferramentas de Registo de Erro](08-handling-application-errors.md#ferramentas-de-registo-de-erros)
