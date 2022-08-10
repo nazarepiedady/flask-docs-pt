@@ -59,3 +59,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Controlando o Autoescapamento](06-templates.md#controlando-autoescapamento)
     * [Registando Filtros](06-templates.md#registando-filtros)
     * [Processadores de Contexto](06-templates.md#processadores-de-contexto)
+* [Testando Aplicações em Flask](07-testing-flask-applications.md)
