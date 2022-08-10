@@ -62,3 +62,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
 * [Testando Aplicações em Flask](07-testing-flask-applications.md)
     * [Identificando os Testes](07-testing-flask-applications.md#identificando-os-testes)
     * [Instalações](07-testing-flask-applications.md#instalações)
+    * [Enviando Requisições com o Cliente de Teste](07-testing-flask-applications.md#enviando-requisições-com-o-cliente-de-teste)
