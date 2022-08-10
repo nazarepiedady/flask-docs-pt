@@ -61,3 +61,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Processadores de Contexto](06-templates.md#processadores-de-contexto)
 * [Testando Aplicações em Flask](07-testing-flask-applications.md)
     * [Identificando os Testes](07-testing-flask-applications.md#identificando-os-testes)
+    * [Instalações](07-testing-flask-applications.md#instalações)
