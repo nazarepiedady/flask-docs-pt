@@ -307,11 +307,11 @@ def method_not_allowed(e):
 ```
 
 
-## Retornar Erros da API como JSON
+## Retornando Erros de API como JSON
 
 Ao desenvolver APIS em Flask, alguns desenvolvedores perceberam que as exceções internas do Flask não são expressivas o suficiente para serem usadas em APIs e que o tipo de conteúdo (content type) do *text/html* que eles emitem não é muito útil para consumidores de API.
 
-Usando a mesma técnica usada acima e o método [**`jsonify()`**]() podemos retornar uma resposta JSON para os erros da API. O método [**`abort()`**] é chamado com um parâmetro `description`. O manipulador de erro usará aquilo como a mensagem de erro em JSON, e definir o código do estado para 404.
+Usando a mesma técnica usada acima e o método [**`jsonify()`**](#) podemos retornar uma resposta JSON para os erros da API. O método [**`abort()`**](#) é chamado com um parâmetro `description`. O manipulador de erro usará aquilo como a mensagem de erro em JSON, e definir o código do estado para 404.
 
 ```py
 from flask import abort, jsonify
