@@ -70,4 +70,5 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
 * [Manipulando Erros de Aplicação](08-handling-application-errors.md)
     * [Ferramentas de Registo de Erro](08-handling-application-errors.md#ferramentas-de-registo-de-erros)
     * [Manipuladores de Erro](08-handling-application-errors.md#manipuladores-de-erro)
-    * [Páginas de Erro Personalizado](08-handling-application-errors.md#páginas-de-erro-personalizadas)
+    * [Páginas de Erro Personalizado](08-handling-application-errors.md#páginas-de-erro-personalizada)
+    * [Estrutura dos Manipuladores de Erro](08-handling-application-errors.md#estrutura-dos-manipuladores-de-erro)
