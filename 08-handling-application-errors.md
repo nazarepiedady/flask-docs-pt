@@ -330,7 +330,7 @@ def get_one_cheese():
     return jsonify(resource)
 ```
 
-Também podemos criar classes de exceções personalizadas. Por exemplo, podemos introduzir uma nova exceção personalizada para uma API que pode carregar uma mensagem adequada humanamente legível, um código de estado para o erro e mais algumas opções adicionais (payload) para dar mais contexto ao erro.
+Também podemos criar classes de exceções personalizadas. Por exemplo, podemos introduzir uma nova exceção personalizada para uma API que pode carregar uma mensagem adequada humanamente legível, um código de estado para o erro e mais uma carga opcional para dar mais contexto ao erro.
 
 Esse é um exemplo simples:
 
