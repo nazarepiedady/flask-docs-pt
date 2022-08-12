@@ -154,7 +154,7 @@ O erro original está disponível como `e.original_exception`.
 Um manipulador de erro para "500 Internal Server Error" será passado com exceções não capturadas adicionais para explicitar erros 500. No modo de depuração, um manipulador para "500 Internal Server Error" não será usado. Ao invés disso, o depurador interativo será exibido.
 
 
-## Páginas de Erro Personalizadas
+## Páginas de Erro Personalizada
 
 Algumas vezes, quando estiver construindo uma aplicação em Flask, você desejará levantar uma [**`HTTPException`**](https://werkzeug.palletsprojects.com/en/2.0.x/exceptions/#werkzeug.exceptions.HTTPException) para avisar ao usuário que algo está errado com a requisição. Felizmente, O Flask vem com a útil função [**`abort()`**]() que como desejado, aborta uma requisição com um erro HTTP a partir do Werkzeug. Ele também fornecerá para você uma página de erro simples em preto e branco com uma descrição básica, mas nada agradável.
 
@@ -274,9 +274,9 @@ def internal_server_error(e):
 blog.register_error_handler(500, internal_server_error)
 ```
 
-## Esquema de Manipuladores de Erros
+## Estrutura dos Manipuladores de Erro
 
-Em [Aplicações Modulares com Esquemas](), a maioria dos manipuladores de erros funcionarão como esperado. Todavia, há um canivete no que respeita a manipuladores para exceções 404 e 405. Estes manipuladores de erros são unicamente invocadas a partir de uma declaração `raise` apropriada ou uma chamada para `abort` em outras funções de visualização (view) do esquema; eles não são invocados por, exemplo, acesso a uma URL inválida.
+Em [Aplicações Modulares com Estruturas](#), a maioria dos manipuladores de erros funcionarão como esperado. Todavia, há um canivete no que respeita a manipuladores para exceções 404 e 405. Estes manipuladores de erros são unicamente invocadas a partir de uma declaração `raise` apropriada ou uma chamada para `abort` em outras funções de visualização (view) do esquema; eles não são invocados por, exemplo, acesso a uma URL inválida.
 
 Isto é porque o esquema não "possui" um espaço de URL certo, assim a instância da aplicação não tem maneira de saber qual esquema de manipulador de erro deveria executar se receber uma URL inválida. Se você gostaria de executar uma estratégia diferente de manipulação para estes erros baseado nos prefixos da URL, eles podem ser definidos no nível da aplicação usando o objeto procurador (proxy) `request`.
 
@@ -311,7 +311,7 @@ def method_not_allowed(e):
 
 Ao desenvolver APIS em Flask, alguns desenvolvedores perceberam que as exceções internas do Flask não são expressivas o suficiente para serem usadas em APIs e que o tipo de conteúdo (content type) do *text/html* que eles emitem não é muito útil para consumidores de API.
 
-Usando a mesma técnica usada acima e o método [**`jsonify()`**]() podemos retornar uma resposta JSON para os erros da API. O método [**`abort()`**] é chamado com um parámetro `description`. O manipulador de erro usará aquilo como a mensagem de erro em JSON, e definir o código do estado para 404.
+Usando a mesma técnica usada acima e o método [**`jsonify()`**]() podemos retornar uma resposta JSON para os erros da API. O método [**`abort()`**] é chamado com um parâmetro `description`. O manipulador de erro usará aquilo como a mensagem de erro em JSON, e definir o código do estado para 404.
 
 ```py
 from flask import abort, jsonify
@@ -376,9 +376,9 @@ Agora uma apresentação pode levantar aquela exceção com uma mensagem de erro
 
 ## Registando (Logging)
 
-Consulte a secção de [Registando]() para obter mais informações sobre como fazer registo das exceções, tais como enviar-las por email para os administradores.
+Consulte a secção de [Registando](#) para obter mais informações sobre como fazer registo das exceções, tais como enviar-las por email para os administradores.
 
 
 ## Depurando (Debugging)
 
-Consulte a secção de [Depurando Erros da Aplicação]() para obter mais informações sobre como depurar erros em desenvolvimento e em produção.
+Consulte a secção de [Depurando Erros da Aplicação](#) para obter mais informações sobre como depurar erros em desenvolvimento e em produção.
