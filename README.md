@@ -77,3 +77,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Depurando](08-handling-application-errors.md#depurando-debugging)
 * [Depurando Erros de Aplicação](09-debugging-application-errors.md)
     * [Em Produção](09-debugging-application-errors.md#em-produção)
+    * [O Depurador Embutido](09-debugging-application-errors.md#o-depurador-embutido)
