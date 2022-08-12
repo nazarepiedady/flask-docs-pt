@@ -75,3 +75,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Retornando Erros de API como JSON](08-handling-application-errors.md#retornando-erros-de-api-como-json)
     * [Registando](08-handling-application-errors.md#registando-logging)
     * [Depurando](08-handling-application-errors.md#depurando-debugging)
+* [Depurando Erros de Aplicação](09-debugging-application-errors.md)
