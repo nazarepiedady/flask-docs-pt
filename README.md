@@ -72,3 +72,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Manipuladores de Erro](08-handling-application-errors.md#manipuladores-de-erro)
     * [Páginas de Erro Personalizado](08-handling-application-errors.md#páginas-de-erro-personalizada)
     * [Estrutura dos Manipuladores de Erro](08-handling-application-errors.md#estrutura-dos-manipuladores-de-erro)
+    * [Retornando Erros de API como JSON](08-handling-application-errors.md#retornando-erros-de-api-como-json)
