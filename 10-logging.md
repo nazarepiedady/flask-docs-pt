@@ -1,4 +1,4 @@
-# Registo de Atividade (Monitoramento)
+# Registando
 
 
 O Flask faz uso do [**``logging**](https://docs.python.org/3/library/logging.html#module-logging), módulo padrão do Python. As mensagens sobre o estado da sua aplicação são registadas com o [**`app.logger`**](), que recebe o mesmo nome que [**`app.name`**](). Este registador também pode ser usado para registar suas próprias mensagens.
@@ -69,7 +69,7 @@ app.logger.removeHandler(default_handler)
 
 No momento que aplicação estiver executando em um servidor remoto para produção, você provavelmente não estará consultando as mensagens no registo de atividades com frequência. O servidor WSGI provavelmente enviará mensagens sobre o atividade para um ficheiro, e você somente consultará aquele ficheiro se um usuário informar você que algo de errado aconteceu.
 
-Para ser proativo no que diz respeito a achar e corrigir problemas na aplicação (bugs), você pode configurar um [**`logging.handlers.SMTPHandler`**](https://docs.python.org/3/library/logging.handlers.html#logging.handlers.SMTPHandler) para enviar um email sempre que erros ou algo mais forem registados.
+Para ser pró-ativo no que diz respeito a achar e corrigir problemas na aplicação (bugs), você pode configurar um [**`logging.handlers.SMTPHandler`**](https://docs.python.org/3/library/logging.handlers.html#logging.handlers.SMTPHandler) para enviar um email sempre que erros ou algo mais forem registados.
 
 ```py
 import logging
@@ -150,6 +150,6 @@ for logger in (
 O werkzeug regista informações básicas da requisição/resposta ao registador do `'werkzeug'`. Se o registador raiz não tiver manipuladores registados, o Werkzeug adiciona um **`StreamHandler`** para o seu registador.
 
 
-## Extensões do Flask
+## Extensões de Flask
 
 Dependendo da situação, uma extensão pode escolher registar no **`app.logger`** ou em seu próprio registador nomeado. Consulte a documentação de cada extensão para obter informações mais detalhada.
