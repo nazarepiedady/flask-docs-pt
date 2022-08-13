@@ -85,3 +85,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Injetando Informações da Requisição](10-logging.md#injetando-informações-da-requisição)
     * [Outras Bibliotecas](10-logging.md#outras-bibliotecas)
 * [Manipulação da Configuração](11-configuration-handling.md)
+    * [Configurações Básicas](11-configuration-handling.md#configurações-básicas)
