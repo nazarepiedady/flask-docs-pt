@@ -64,7 +64,7 @@ Powershell
 É recomendado usar as variáveis de ambiente como foi descrito acima. Enquanto é possível definir o [**`ENV`**](#env) e o [**`DEBUG`**](#debug) dentro da sua configuração ou código, isto é fortemente desencorajado. Eles não podem ser lidos antecipadamente pelo comando `flask`, e alguns sistemas ou extensões podem ter já configurada elas mesmas baseadas em valor anterior.
 
 
-## Valores de Configurações Embutidos
+## Valores de Configuração Embutidos
 
 Os seguintes valores de configuração são usados internamente pelo Flask:
 
