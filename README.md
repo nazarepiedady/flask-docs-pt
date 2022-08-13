@@ -86,3 +86,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Outras Bibliotecas](10-logging.md#outras-bibliotecas)
 * [Manipulação da Configuração](11-configuration-handling.md)
     * [Configurações Básicas](11-configuration-handling.md#configurações-básicas)
+    * [Ambiente e Funcionalidades de Depuração](11-configuration-handling.md#ambiente-e-funcionalidades-de-depuração)
