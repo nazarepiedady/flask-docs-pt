@@ -470,7 +470,7 @@ Existem várias maneiras diferentes e está sobre você como você deseja gerir 
 * Use uma ferramenta como a [fabric](https://www.fabfile.org/) em produção para empurrar o código e as configurações separadamente para o servidor de produção. Para mais detalhes sobre como fazer isso, consulte o padrão de [Desdobrando com a Fabric]().
 
 
-## Pastas da Instância
+## Pastas de Instância
 
 * Relatório de mudança: Novo desde a versão 0.8
 
