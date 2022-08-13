@@ -328,7 +328,7 @@ import json
 app.config.from_file("config.json", load=json.load)
 ```
 
-## Configurando a partir de Variáveis de Ambientes
+## Configurando a partir de Variáveis de Ambiente
 
 Além de apontar para ficheiros de configuração usando variáveis de ambiente, você pode achar ele útil (ou necessário) para controlar seus valores de configuração diretamente do ambiente.
 
