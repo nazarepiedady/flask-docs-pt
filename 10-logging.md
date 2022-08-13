@@ -65,7 +65,7 @@ app.logger.removeHandler(default_handler)
 ```
 
 
-## Email de Erros para os Administradores
+## Enviar Mensagens de Erros para os Administradores
 
 No momento que aplicação estiver executando em um servidor remoto para produção, você provavelmente não estará consultando as mensagens no registo de atividades com frequência. O servidor WSGI provavelmente enviará mensagens sobre o atividade para um ficheiro, e você somente consultará aquele ficheiro se um usuário informar você que algo de errado aconteceu.
 
