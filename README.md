@@ -84,3 +84,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Enviar Mensagens de Erros para os Administradores](10-logging.md#enviar-mensagens-de-erros-para-os-administradores)
     * [Injetando Informações da Requisição](10-logging.md#injetando-informações-da-requisição)
     * [Outras Bibliotecas](10-logging.md#outras-bibliotecas)
+* [Manipulação da Configuração](11-configuration-handling.md)
