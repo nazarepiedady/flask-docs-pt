@@ -92,3 +92,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Configurando a partir de Ficheiros de Dados](11-configuration-handling.md#configurando-a-partir-de-ficheiros-de-dados)
     * [Configurando a partir de Variáveis de Ambiente](11-configuration-handling.md#configurando-a-partir-de-variáveis-de-ambiente)
     * [Boas Práticas de Configuração](11-configuration-handling.md#boas-práticas-de-configuração)
+    * [Desenvolvimento / Produção](11-configuration-handling.md#desenvolvimento--produção)
