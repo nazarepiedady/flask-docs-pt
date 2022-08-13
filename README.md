@@ -80,3 +80,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [O Depurador Embutido](09-debugging-application-errors.md#o-depurador-embutido)
     * [Depuradores Externos](09-debugging-application-errors.md#depuradores-externos)
 * [Registando](10-logging.md)
+    * [Configuração Básica](10-logging.md#configuração-básica)
