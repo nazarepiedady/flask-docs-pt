@@ -88,3 +88,4 @@ Esta parte da documentação, a qual é na sua maioria prosa, começa com alguma
     * [Configurações Básicas](11-configuration-handling.md#configurações-básicas)
     * [Ambiente e Funcionalidades de Depuração](11-configuration-handling.md#ambiente-e-funcionalidades-de-depuração)
     * [Valores de Configuração Embutidos](11-configuration-handling.md#valores-de-configuração-embutidos)
+    * [Configurando a partir de Ficheiros de Python](11-configuration-handling.md#configurando-a-partir-de-ficheiros-de-python)
