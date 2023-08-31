@@ -1,35 +1,24 @@
 .. rst-class:: hide-header
 
-Welcome to Flask
+Bem-vindo à Flask
 ================
 
 .. image:: _static/flask-horizontal.png
     :align: center
 
-Welcome to Flask's documentation. Get started with :doc:`installation`
-and then get an overview with the :doc:`quickstart`. There is also a
-more detailed :doc:`tutorial/index` that shows how to create a small but
-complete application with Flask. Common patterns are described in the
-:doc:`patterns/index` section. The rest of the docs describe each
-component of Flask in detail, with a full reference in the :doc:`api`
-section.
+Bem-vindo à documentação da Flask. Começa com a :doc:`installation` e depois tenha uma perspetiva geral com a :doc:`quickstart`. Também existe uma :doc:`tutorial/index` mais detalhada que mostra como criar uma pequena mas completa aplicação com a Flask. Os padrões comuns são descritos na seção :doc:`patterns/index`. O resto da documentação descreve cada componente da Flask em detalhes, com uma referência completa na seção :doc:`api`.
 
-Flask depends on the `Werkzeug`_ WSGI toolkit, the `Jinja`_ template engine, and the
-`Click`_ CLI toolkit. Be sure to check their documentation as well as Flask's when
-looking for information.
+A Flask depende do conjunto de ferramentas de WSGI `Werkzeug`_, o motor de modelos de marcação `Jinja`_, e o conjunto de ferramentas de interface de linha de comando `Click`_. Certifica-te de consultar as suas documentações assim como a da Flask quando procurares por informação.
 
 .. _Werkzeug: https://werkzeug.palletsprojects.com
 .. _Jinja: https://jinja.palletsprojects.com
 .. _Click: https://click.palletsprojects.com
 
 
-User's Guide
+Guia do Utilizador
 ------------
 
-Flask provides configuration and conventions, with sensible defaults, to get started.
-This section of the documentation explains the different parts of the Flask framework
-and how they can be used, customized, and extended. Beyond Flask itself, look for
-community-maintained extensions to add even more functionality.
+A Flask fornece configuração e convenções, com padrões sensíveis, para começar. Esta seção da documentação explica as diferentes partes da abstração Flask e como podem ser usadas, personalizadas, e estendidas. Além da própria Flask, procure por extensões mantidas pela comunidade para adicionar ainda mais funcionalidade.
 
 .. toctree::
    :maxdepth: 2
@@ -59,11 +48,10 @@ community-maintained extensions to add even more functionality.
    async-await
 
 
-API Reference
+Referência da API
 -------------
 
-If you are looking for information on a specific function, class or
-method, this part of the documentation is for you.
+Se estiveres a procurar por informação sobre uma função, classe ou método específico, esta parte da documentação é para ti.
 
 .. toctree::
    :maxdepth: 2
@@ -71,7 +59,7 @@ method, this part of the documentation is for you.
    api
 
 
-Additional Notes
+Notas Adicionais
 ----------------
 
 .. toctree::
