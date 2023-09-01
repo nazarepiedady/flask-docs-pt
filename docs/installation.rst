@@ -1,29 +1,24 @@
-Installation
+Instalação
 ============
 
 
-Python Version
+Versão da Python
 --------------
 
-We recommend using the latest version of Python. Flask supports Python 3.8 and newer.
+Nós recomendamos usar a versão mais recente da Python. A Flask suporta a Python 3.8 e as mais recentes.
 
 
-Dependencies
+Dependências
 ------------
 
-These distributions will be installed automatically when installing Flask.
+Estas distribuições serão instaladas automaticamente quando instalares a Flask.
 
-* `Werkzeug`_ implements WSGI, the standard Python interface between
-  applications and servers.
-* `Jinja`_ is a template language that renders the pages your application
-  serves.
-* `MarkupSafe`_ comes with Jinja. It escapes untrusted input when rendering
-  templates to avoid injection attacks.
-* `ItsDangerous`_ securely signs data to ensure its integrity. This is used
-  to protect Flask's session cookie.
-* `Click`_ is a framework for writing command line applications. It provides
-  the ``flask`` command and allows adding custom management commands.
-* `Blinker`_ provides support for :doc:`signals`.
+* `Werkzeug`_ implementa a WSGI, a interface da Python padrão entre as aplicações e servidores.
+* `Jinja`_ é uma linguagem de modelo de marcação que desenha as páginas que a tua aplicação serve.
+* `MarkupSafe`_ vem com a Jinja. Ela escapa entradas duvidosas quando geramos os modelos de marcação para evitar ataques de injeção.
+* `ItsDangerous`_ assina com segurança o dado para garantir sua integridade. Isto é usado para proteger o cookie da sessão da Flask.
+* `Click`_ é uma abstração para escrita de aplicações de linha de comando. Ela fornece o comando ``flask`` e permite adicionar comandos de gestão personalizados.
+* `Blinker`_ fornece suporte para os :doc:`signals`.
 
 .. _Werkzeug: https://palletsprojects.com/p/werkzeug/
 .. _Jinja: https://palletsprojects.com/p/jinja/
@@ -33,16 +28,13 @@ These distributions will be installed automatically when installing Flask.
 .. _Blinker: https://blinker.readthedocs.io/
 
 
-Optional dependencies
+Dependências Opcionais
 ~~~~~~~~~~~~~~~~~~~~~
 
-These distributions will not be installed automatically. Flask will detect and
-use them if you install them.
+Estas distribuições não serão instaladas automaticamente. A Flask detetará e as usará se as instalarmos.
 
-* `python-dotenv`_ enables support for :ref:`dotenv` when running ``flask``
-  commands.
-* `Watchdog`_ provides a faster, more efficient reloader for the development
-  server.
+* `python-dotenv`_ ativa suporte para a :ref:`dotenv` quando executamos os comandos da ``flask``.
+* `Watchdog`_ fornece um recarregador mais rápido e mais eficiente para o servidor de desenvolvimento.
 
 .. _python-dotenv: https://github.com/theskumar/python-dotenv#readme
 .. _watchdog: https://pythonhosted.org/watchdog/
@@ -51,40 +43,29 @@ use them if you install them.
 greenlet
 ~~~~~~~~
 
-You may choose to use gevent or eventlet with your application. In this
-case, greenlet>=1.0 is required. When using PyPy, PyPy>=7.3.7 is
-required.
+Nós podemos escolher usar ``gevent`` ou ``eventlet`` com a nossa aplicação. Neste caso, ``greenlet>=1.0`` é obrigatório. Quando usamos PyPY, ``PyPy>=7.3.7`` é obrigatório.
 
-These are not minimum supported versions, they only indicate the first
-versions that added necessary features. You should use the latest
-versions of each.
+Estas não sãos as versões mínimas suportadas, apenas indicam as primeiras versões que adicionaram funcionalidades necessárias. Nós deveríamos usar as versões mais recentes de cada.
 
 
-Virtual environments
+Ambientes Virtuais
 --------------------
 
-Use a virtual environment to manage the dependencies for your project, both in
-development and in production.
+Nós devemos sempre usar um ambiente virtual para gerir as dependências para o nosso projeto, tanto em desenvolvimento como em produção.
 
-What problem does a virtual environment solve? The more Python projects you
-have, the more likely it is that you need to work with different versions of
-Python libraries, or even Python itself. Newer versions of libraries for one
-project can break compatibility in another project.
+Qual problema um ambiente virtual soluciona? Quanto mais projetos de Python temos, mais provavelmente é que precisaremos de trabalhar com diferentes versões de bibliotecas de Python, ou mesmo a própria Python. As versões mais novas de bibliotecas para um projeto pode quebrar a compatibilidade em um outro projeto.
 
-Virtual environments are independent groups of Python libraries, one for each
-project. Packages installed for one project will not affect other projects or
-the operating system's packages.
+Os ambientes virtuais são grupos independentes de bibliotecas da Python, um para cada projeto. Os pacotes instalados para um projeto não afetarão outros projetos ou os pacotes do sistema operativo.
 
-Python comes bundled with the :mod:`venv` module to create virtual
-environments.
+A Python vem empacotada com o módulo :mod:`venv` para criar ambientes virtuais:
 
 
 .. _install-create-env:
 
-Create an environment
+Criar um Ambiente
 ~~~~~~~~~~~~~~~~~~~~~
 
-Create a project folder and a :file:`.venv` folder within:
+Criar uma pasta de projeto e um pasta :file:`.venv` dentro dela:
 
 .. tabs::
 
@@ -107,10 +88,10 @@ Create a project folder and a :file:`.venv` folder within:
 
 .. _install-activate-env:
 
-Activate the environment
+Ativar o ambiente
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Before you work on your project, activate the corresponding environment:
+Antes de trabalharmos no nosso projeto, vamos ativar o ambiente correspondente:
 
 .. tabs::
 
@@ -126,19 +107,16 @@ Before you work on your project, activate the corresponding environment:
 
          > .venv\Scripts\activate
 
-Your shell prompt will change to show the name of the activated
-environment.
+O nosso pronto da shell mudará para mostrar o nome do ambiente ativado.
 
 
-Install Flask
+Instalar a Flask
 -------------
 
-Within the activated environment, use the following command to install
-Flask:
+Dentro do ambiente ativado, usamos o seguinte comando para instalar a Flask:
 
 .. code-block:: sh
 
     $ pip install Flask
 
-Flask is now installed. Check out the :doc:`/quickstart` or go to the
-:doc:`Documentation Overview </index>`.
+A Flask agora está instalada. Consulte a :doc:`/quickstart` ou siga para a :doc:`Perspetiva geral da documentação </index>`.
