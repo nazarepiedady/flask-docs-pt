@@ -8,6 +8,7 @@ project = "Flask"
 copyright = "2010 Pallets"
 author = "Pallets"
 release, version = get_version("Flask")
+language = 'pt'
 
 # General --------------------------------------------------------------
 
@@ -54,7 +55,7 @@ singlehtml_sidebars = {"index": ["project.html", "localtoc.html", "ethicalads.ht
 html_static_path = ["_static"]
 html_favicon = "_static/shortcut-icon.png"
 html_logo = "_static/flask-vertical.png"
-html_title = f"Flask Documentation ({version})"
+html_title = f"Documentação da Flask ({version})"
 html_show_sourcelink = False
 
 # LaTeX ----------------------------------------------------------------
