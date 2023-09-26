@@ -1,7 +1,7 @@
 .. rst-class:: hide-header
 
 Bem-vindo à Flask
-================
+=================
 
 .. image:: _static/flask-horizontal.png
     :align: center
@@ -16,7 +16,7 @@ A Flask depende do conjunto de ferramentas de WSGI `Werkzeug`_, o motor de model
 
 
 Guia do Utilizador
-------------
+------------------
 
 A Flask fornece configuração e convenções, com padrões sensíveis, para começar. Esta seção da documentação explica as diferentes partes da abstração Flask e como podem ser usadas, personalizadas, e estendidas. Além da própria Flask, procure por extensões mantidas pela comunidade para adicionar ainda mais funcionalidade.
 
@@ -49,7 +49,7 @@ A Flask fornece configuração e convenções, com padrões sensíveis, para com
 
 
 Referência da API
--------------
+-----------------
 
 Se estiveres a procurar por informação sobre uma função, classe ou método específico, esta parte da documentação é para ti.
 
