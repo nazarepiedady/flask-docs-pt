@@ -616,7 +616,7 @@ Mensagem Intermitente
 
 As boas aplicações e interfaces de utilizador têm tudo a ver com reações. Se o utilizador não receber reações suficientes é provável que acabe por odiar a aplicação. A Flask fornece uma maneira muito simples de reagir à um utilizador com o sistema de intermitência. O sistema de intermitência basicamente torna possível gravar uma mensagem no final duma requisição e acessá-la na próxima (e apenas na próxima) requisição. Isto é normalmente combinado com um modelo de marcação de disposição para expor a mensagem.
 
-Para fazer piscar uma mensagem usamos o método :func:`~flask.flash`, para obter as mensagens podemos usar :func:`~flask.get_flashed_messages` que também está disponível nos modelos de marcação. Consulte a :doc:`patters/flashing` por um exemplo completo.
+Para fazer piscar uma mensagem usamos o método :func:`~flask.flash`, para obter as mensagens podemos usar :func:`~flask.get_flashed_messages` que também está disponível nos modelos de marcação. Consulte a :doc:`patterns/flashing` por um exemplo completo.
 
 Registos
 --------
