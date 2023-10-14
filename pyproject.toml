@@ -1,6 +1,6 @@
 [project]
 name = "Flask"
-description = "A simple framework for building complex web applications."
+description = "Uma abstração simples para construção de aplicações de Web complexas."
 readme = "README.rst"
 license = {file = "LICENSE.rst"}
 maintainers = [{name = "Pallets", email = "contact@palletsprojects.com"}]
@@ -53,9 +53,9 @@ name = "flask"
 [tool.flit.sdist]
 include = [
     "docs/",
-    "examples/",
+    #"examples/",
     "requirements/",
-    "tests/",
+    #"tests/",
     "CHANGES.rst",
     "CONTRIBUTING.rst",
     "tox.ini",
