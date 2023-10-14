@@ -3,13 +3,13 @@ Instalação
 
 
 Versão da Python
---------------
+------------------
 
 Nós recomendamos usar a versão mais recente da Python. A Flask suporta a Python 3.8 e as mais recentes.
 
 
 Dependências
-------------
+--------------
 
 Estas distribuições serão instaladas automaticamente quando instalares a Flask.
 
@@ -29,7 +29,7 @@ Estas distribuições serão instaladas automaticamente quando instalares a Flas
 
 
 Dependências Opcionais
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Estas distribuições não serão instaladas automaticamente. A Flask detetará e as usará se as instalarmos.
 
@@ -41,7 +41,7 @@ Estas distribuições não serão instaladas automaticamente. A Flask detetará 
 
 
 greenlet
-~~~~~~~~
+~~~~~~~~~~~
 
 Nós podemos escolher usar ``gevent`` ou ``eventlet`` com a nossa aplicação. Neste caso, ``greenlet>=1.0`` é obrigatório. Quando usamos PyPY, ``PyPy>=7.3.7`` é obrigatório.
 
@@ -110,8 +110,8 @@ Antes de trabalharmos no nosso projeto, vamos ativar o ambiente correspondente:
 O nosso pronto da shell mudará para mostrar o nome do ambiente ativado.
 
 
-Instalar a Flask
--------------
+Instalação da Flask
+----------------------
 
 Dentro do ambiente ativado, usamos o seguinte comando para instalar a Flask:
 
