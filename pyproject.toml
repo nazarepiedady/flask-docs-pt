@@ -53,9 +53,9 @@ name = "flask"
 [tool.flit.sdist]
 include = [
     "docs/",
-    #"examples/",
+    "examples/",
     "requirements/",
-    #"tests/",
+    "tests/",
     "CHANGES.rst",
     "CONTRIBUTING.rst",
     "tox.ini",
